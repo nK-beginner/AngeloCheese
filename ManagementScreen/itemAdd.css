@@ -1,0 +1,433 @@
+
+
+
+
+
+/********** メモ **********/
+/* サムネイル画像投稿枠の大きさは 370 x 400
+/*
+/* サブ画像の投稿枠は各数値 ÷ 5.3
+/*
+/* 今後Online Shop画面, 商品一覧画面で商品を見る場合は
+/* 基本、上記の大きさを割り算して並べるように
+/* 
+/* 
+/* 
+/* 
+
+/********** CSS変数の定義 **********/
+:root {
+    --bgblack: #242424;     /* 全体背景色 */
+    --width: 100%;            /* 全体幅を100%に変更 */
+    --gold: #C2A26A;        /* メインの金色 */
+    --hoveredGold: #dabc89; /* ホバー時の金色 */
+    --bgblack: #242424;     /* 全体背景色 */
+    --bgblack2: #303030;    /* フォーム内背景色 */
+    --bgblack3: #272727;    /* インプット内、フッター背景色 */
+}
+
+/********** 各種初期設定 **********/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style: none;
+}
+
+/********** 全体をgridに指定 **********/
+.grid-container {
+    display: grid;
+    grid-template-columns: 215px 1.7fr 1fr; /* サイドバー、詳細書き込み欄、画像ドラッグアンドドロップ欄 */
+    height: 100%;
+}
+
+/********** sidebar **********/
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    border-right: 1px solid #242424;
+    overflow: hidden; /* 初期時点ではスクロールオフ */
+}
+
+.sidebar-contents {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto; /* サイドバー内項目が沢山開いたらスクロールオン */
+}
+
+.sidebar .sidebar-logo {
+    height: auto;
+    width: 195px;
+    margin-top: 7px;
+}
+
+.sidebar-contents .menu .item {
+    width: 100%;
+    position: relative;
+}
+
+.sidebar-contents .menu .item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    background: #d3d3d3;
+    height: 1px;
+    width: 70%;
+}
+
+.sidebar-contents .menu .item-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.sidebar-contents h3 {
+    font-size: 18px;
+}
+
+.sidebar-contents .fa-solid {
+    position: absolute;
+    right: 30px;
+    transition: 0.3s ease;
+}
+
+.sidebar-contents .submenu {
+    text-align: center;
+    margin: 0 auto;
+    width: 70%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar-contents .submenu li {
+    padding: 12px;
+    cursor: pointer;
+}
+
+.sidebar-contents .submenu li:hover {
+    background: #cccccc;
+}
+
+/*** user-info ***/
+.sidebar .user-info {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    width: 100%;
+    padding: 22px;
+    gap: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .user-info:hover {
+    background: var(--hoveredGold);
+}
+
+.sidebar .user-info i {
+    font-size: 28px;
+}
+
+.sidebar .user-info p {
+    font-size: 18px;
+}
+
+/*** JS：クリック時反応 ***/
+.sidebar-contents .submenu.toggle {
+    max-height: 200px;
+    opacity: 1;
+}
+
+.sidebar-contents .fa-solid.toggle {
+    transform: rotate(180deg);
+}
+
+/********** main **********/
+main {
+    background: #f1f1f1;
+    padding: 10px 20px 20px 20px;
+    overflow-y: auto;
+}
+
+main h1 {
+    position: relative;
+}
+
+main h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    background: var(--hoveredGold);
+    height: 1.21px;
+    width: 102px;
+}
+
+main form {
+    margin-top: 15px;
+    border: 1px solid #888888;
+    border-radius: 2px;
+    padding: 9px 9px 13px 9px;
+    background: #fff;
+}
+
+main form .block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3px;
+}
+
+main form label {
+    font-size: 19px;
+}
+
+main form .size-title {
+    display: block;
+    margin-top: 15px;
+}
+
+main form .block input {
+    width: 100%;
+    border: 1px solid;
+}
+
+main form .block .label {
+    margin-top: 10px;
+}
+
+main form .block input, 
+select {
+    border-radius: 4px;
+    height: 27px;
+    padding: 4px;
+}
+
+main form .block textarea {
+    height: 220px;
+    width: 100%;
+    padding: 4px;
+    resize: vertical;
+}
+
+main form .flex-block {
+    display: flex;
+    flex-wrap: wrap;
+    width: 400px;
+    gap: 0 13px;
+    align-items: center;
+}
+
+main form .radio-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-left: 15px;
+}
+
+/********** photo-drop-area **********/
+.photo-drop-area {
+    background: #f1f1f1;
+    padding-top: 45px;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+.photo-drop-area .photo-drop-container {
+    width: 370px;
+}
+
+.photo-drop-area span {
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+.photo-drop-area .drop-area {
+    border: 1.5px dashed #ccc;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    background: #e9e9e9;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    transition: background-color 0.1s ease, border-color 0.1s ease;;
+}
+
+.photo-drop-area .drop-area.drag-over {
+    background-color: #d0f0ff;
+    border-color: #5ef1fc;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-input,
+.custom-button {
+    position: relative;
+    z-index: 1;
+}
+
+.remove-button {
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    background: #000000;
+    color: white;
+    border: none;
+    padding: 2px 7px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.remove-button:hover {
+    background: #ff3b3b;
+}
+
+.photo-drop-area .drop-area .custom-button {
+    padding: 4px 12px;
+    background: #b3b3b3;
+    position: relative;
+    top: 0;
+    cursor: pointer;
+    margin-top: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.photo-drop-area .drop-area .custom-button:hover {
+    background: #d4d4d4;
+}
+
+.photo-drop-area .subtitle {
+    margin-top: 20px;
+}
+
+.photo-drop-area .flex-block {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 17px 0px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.photo-drop-area .flex-block .drop-area {
+    width: calc(100% / 5.3);
+    height: calc(400px / 5.3);
+}
+
+.photo-drop-area .flex-block .drop-area p,
+.photo-drop-area .flex-block .drop-area label {
+    font-size: 6px;
+    font-weight: bold;
+}
+
+.photo-drop-area .flex-block .drop-area .custom-button {
+    padding: -30px;
+    border: 0.1px dashed;
+    border-radius: 50%;
+    background: none;
+    font-size: 22px;
+    color: #5c5c5c;
+    transition: background-color 0.2s ease;
+}
+
+.photo-drop-area .flex-block .drop-area .custom-button:hover {
+    background: #ffffff;
+}
+
+.photo-drop-area .flex-btns {
+    display: flex;
+    justify-content: center;
+    width: 250px;
+    margin: 25px auto;
+    gap: 15px;
+}
+
+.photo-drop-area .flex-btns .savebtn {
+    padding: 8px 42px;
+    color: #fff;
+    background: var(--gold);
+    border: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.photo-drop-area .flex-btns .savebtn:hover {
+    background: var(--hoveredGold);
+}
+
+.photo-drop-area .flex-btns .cancelbtn {
+    padding: 8px 17px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-grow: 1;
+}
+
+
+
+
+/********** 各スクロールバー **********/
+.sidebar-contents::-webkit-scrollbar,
+main::-webkit-scrollbar,
+.photo-drop-area::-webkit-scrollbar { 
+    /* 横幅調整 */
+    width: 1.6px;
+}
+
+.sidebar-contents::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track,
+.photo-drop-area::-webkit-scrollbar-track { 
+    /* トラック部分の色 */
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.sidebar-contents::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb,
+.photo-drop-area::-webkit-scrollbar-thumb { 
+    /* つまみ部分の色 */
+    background: #888;
+    border-radius: 10px;
+}

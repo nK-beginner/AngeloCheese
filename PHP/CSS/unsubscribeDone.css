@@ -1,0 +1,75 @@
+
+
+
+
+
+main .fa-solid {
+    color: var(--gold);
+    margin-right: 3.2px;
+}
+
+main .unsubscribe-done-container {
+    color: #fff;
+    margin: 0 auto;
+    text-align: center;
+}
+
+main .unsubscribe-done-container h3 {
+    font-size: 2.7rem;
+}
+
+main .unsubscribe-done-container p {
+    font-size: 1.5rem;
+}
+
+main .to-top {
+    font-size: 1.7rem;
+    padding: 8px 24px;
+    margin-top: 24px;
+    border-radius: 7px;
+    background: var(--gold);
+}
+
+main .reccomended-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 56px;
+    width: 100%;
+}
+
+main .reccomended-container h2 {
+    color: #fff;
+    font-size: 3.23rem;
+    position: relative;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    margin-bottom: 100px;
+}
+
+main .reccomended-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    width: 34%;
+    background: var(--gold);
+}
+
+@media screen and (max-width: 510px) {
+    main {
+        margin-top: 85px !important;
+    }
+
+    main .main-container {
+        width: 90%;
+    }
+
+    main .main-container .unsubscribe-done-container p {
+        /* width: 240px; */
+        width: 90%;
+        margin: 0 auto;
+    }
+}

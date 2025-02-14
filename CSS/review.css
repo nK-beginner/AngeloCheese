@@ -1,0 +1,101 @@
+
+
+
+
+
+main .form #product-name {
+    background: rgba(204, 204, 204, 0.877);
+}
+
+main .form .gender-btns {
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+    margin-left: 45px;
+    gap: 17px;
+}
+
+main .form .gender-btns .gender-btn {
+    display: flex;
+    align-items: center;
+    gap: 3.4px;
+}
+
+main .form .gender-btns label {
+    display: block;
+    margin: 0 auto;
+    font-size: 1.7rem;
+}
+
+main .form .rating {
+    display: flex;
+    margin: 0 auto;
+    width: 85%;
+    gap: 24px;
+}
+
+main .form .rating .star {
+    font-size: 3.2rem;
+    color: var(--gold);
+    cursor: pointer;
+}
+
+main .form #main-sentence {
+    resize: vertical;
+    height: 200px;
+}
+
+main .form .accept-policy {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+    margin-bottom: 24px;
+    gap: 17px;
+}
+
+main .form .accept-policy .accept-btn {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    gap: 3.4px;
+}
+
+main .form .accept-policy label {
+    display: block;
+    margin: 0 auto;
+}
+
+main .form .btns {
+    display: flex;
+    justify-content: center;
+    gap: 23px;
+}
+
+main .form .btns button {
+    padding: 8px 52px;
+    font-size: 16px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+main .form .btns .discard {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+main .form .btns .discard:hover {
+    background: #444444;
+}
+
+main .form .btns .submit {
+    background: var(--gold);
+    border: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+main .form .btns .submit:hover {
+    background: var(--hoveredGold);
+}

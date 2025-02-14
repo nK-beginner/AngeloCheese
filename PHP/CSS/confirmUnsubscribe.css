@@ -1,0 +1,31 @@
+
+
+
+
+
+main .reason-container {
+    width: 85%;
+    margin: 0 auto;
+    color: #fff;
+}
+
+main .reason-container .reason {
+    font-size: 1.7rem;
+}
+
+main .confirm-unsubscribe {
+    display: block;
+    margin: 35px auto 5px auto;
+    padding: 12px 42px;
+    text-align: center;
+    border: none;
+    border-radius: 7px;
+    font-size: 1.7rem;
+    background: #FB5B5B;
+    transition: background-color 0.2s;
+    color: #fff;
+}
+
+main .confirm-unsubscribe:hover {
+    background: #ff8787;
+}

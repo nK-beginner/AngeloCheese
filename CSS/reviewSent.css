@@ -1,0 +1,135 @@
+
+
+
+
+
+main {
+    max-width: var(--width);
+    width: 100%;
+    margin: 130px auto 0 auto;
+}
+
+
+main .thankyou-container,
+main .reccomended-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+main .thankyou-container h1 {
+    color: #fff;
+    font-family: "Mea Culpa", serif;
+    font-size: 12.7rem;
+    font-weight: 100;
+    text-align: center;
+}
+
+main .thankyou-container h3 {
+    color: #fff;
+    margin-top: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+}
+
+main .thankyou-container .fa-solid {
+    color: var(--gold);
+    margin-right: 3.2px;
+}
+
+main .thankyou-container .btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    margin-top: 17px;
+    flex-wrap: wrap-reverse;
+}
+
+main .thankyou-container button {
+    border-radius: 7px;
+}
+
+main .thankyou-container .btns .add-another-review {
+    font-size: 1.2rem;
+    padding: 3px 32px;
+    background: none;
+    color: #fff;
+    border: 1px solid;
+    transition: background-color 0.1s ease;
+}
+
+main .thankyou-container .btns .add-another-review:hover {
+    background: #4b4b4bb7;
+}
+
+main .thankyou-container .btns .to-top-page {
+    font-size: 17px;
+    padding: 9px 21px;
+    border: none;
+    background: var(--gold);
+    transition: background-color 0.1s ease;
+}
+
+main .thankyou-container .btns .to-top-page:hover {
+    background: var(--hoveredGold);
+}
+
+main .reccomended-container {
+    width: 100%;
+    margin: 76px auto 0 auto;
+}
+
+main .reccomended-container h2 {
+    color: #fff;
+    font-size: 3.23rem;
+    position: relative;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    margin-bottom: 100px;
+}
+
+main .reccomended-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); /* left 50%とtranslate -50%で若干無理やり中央へ移動 */
+    height: 1px;
+    width: 34%;
+    background: var(--gold);
+}
+
+/********** レスポンシブ：スマホ画面 **********/
+@media screen and (max-width: 510px) {
+    main {
+        margin-top: 62px;
+        width: 100%;
+    }
+
+    main .thankyou-container h1 {
+        font-size: 8.3rem;
+    }
+
+    main .thankyou-container .btns .add-another-review {
+        padding: 5px 32px;
+    }
+
+    main .reccomended-container {
+        margin-top: 47px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,198 @@
+
+
+
+
+
+main .profile-item {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    border-bottom: 0.37px solid #808080;
+    padding-bottom: 6px;
+    margin: 0 auto;
+}
+
+main .profile-item:nth-child(n+2) {
+    margin-top: 30px;
+}
+
+main .profile-item:last-child {
+    margin-bottom: 35px;
+}
+
+main .profile-item p {
+    font-size: 1.5rem;
+    color: var(--gold);
+}
+
+main .profile-item .content {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+main .profile-item .content h3 {
+    font-size: 1.6rem;
+    color: #fff;
+}
+
+main .profile-item .content a {
+    padding: 6px 55px;
+    border: 1px solid var(--gold);
+    border-radius: 7px;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    background: var(--bgblack3);
+    transition: background-color 0.2s ease;
+}
+
+main .profile-item .content a:hover {
+    background: var(--gold);
+}
+
+main .form .delete-account {
+    display: block;
+    width: fit-content;
+    margin: 35px auto 5px auto;
+    padding: 14px 25px;
+    text-align: center;
+    border: none;
+    border-radius: 7px;
+    font-size: 1.7rem;
+    background: #FB5B5B;
+    transition: background-color 0.2s;
+}
+
+main .form .delete-account:hover {
+    background: #ff8787;
+}
+
+main .logout-container {
+    display: block;
+    margin: 0 auto;
+    width: 60.2%;
+}
+
+main .logout-button {
+    display: inline;
+    color: #96d7ff;
+    margin-top: 3px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    float: right;
+}
+
+main .logout-button:hover {
+    text-decoration: underline;
+}
+
+main .logout-button:active {
+    color: #0199f8;
+}
+
+/********** ログアウトダイアログ **********/
+.logout-wrapper {
+    display: none;
+    position: fixed;
+    top: -60px;
+    left: 0;
+    width: 100vw;
+    min-height: 110vh;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    gap: 12px 0;
+    z-index: 100;
+}
+
+.logout-dialog {
+    border: 2px solid var(--gold);
+    background: #fff;
+    padding: 25px;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    position: relative;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logout-dialog p {
+    font-size: 1.6rem;
+    margin-top: 15px;
+}
+
+.logout-dialog .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    padding: 3px 9px 0 9px;
+    background: #d3d3d3;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.logout-dialog .close-btn:hover {
+    color: black;
+}
+
+.logout-dialog .logout-btns {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.logout-dialog .logout-btn {
+    font-size: 1.7rem;
+    font-weight: 800;
+    padding: 7px 21px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.logout-dialog .logout-btns .cancel {
+    background: none;
+    border: 1.97px solid var(--gold);
+    color: var(--gold);
+}
+
+.logout-dialog .logout-btns .cancel:hover {
+    outline: 1.5px solid;
+}
+
+.logout-dialog .logout-btns .confirm {
+    background: var(--gold);
+    border: none;
+    color: #fff;
+    transition: background-color 0.2s;
+}
+
+.logout-dialog .logout-btns .confirm:hover {
+    background: var(--hoveredGold);
+}
+
+@media screen and (max-width: 510px) {
+    main .logout-container {
+        width: 100%;
+    }
+}

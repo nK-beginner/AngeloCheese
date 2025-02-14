@@ -1,0 +1,36 @@
+
+
+
+
+
+main .main-container .form .help-link {
+    margin: 22px 0 7px 0;
+    text-align: center;
+}
+
+main .main-container .form .help-link a {
+    color: #96d7ff;
+    font-size: 1.5rem;
+}
+
+main .main-container .form .help-link a:hover {
+    text-decoration: underline;
+}
+
+main .main-container .already-have-acc {
+    margin: 32px 0 -12px 0;
+    text-align: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+/***** PHPより生成のエラーメッセージ *****/
+main .main-container .form .error-msg {
+    margin-top: 15px;
+    text-align: center;
+}
+
+main .main-container .form .error-msg p {
+    color: #ff5a5a;
+    font-size: 1.5rem;
+}

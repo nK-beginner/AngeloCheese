@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品追加</title>
+    <link rel="stylesheet" href="itemAdd.css">
+    <script src="https://kit.fontawesome.com/5d315d0cb7.js" crossorigin="anonymous"></script>   
+</head>
+<body>
+    <div class="grid-container">
+        <!-- サイドバーエリア -->
+        <aside class="sidebar">
+            <img src="images/AngeloCheese_logo1.png" alt="logo" class="sidebar-logo">
+
+            <div class="sidebar-contents">
+                <ul class="menu">
+                    <li class="item">
+                        <div class="item-title">
+                            <h3>商品管理</h3>
+                            <i class="fa-solid fa-angle-down"></i>
+                        </div>
+                        
+                        <ul class="submenu">
+                            <a href="itemAdd.html"><li>商品追加</li></a>
+                            <a href="itemDelete.html"><li>商品削除</li></a>
+                            <li><a href="#">商品編集</a></li>
+                            <li><a href="#">商品一覧</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="item">
+                        <div class="item-title">
+                            <h3>注文管理</h3>
+                            <i class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <ul class="submenu">
+                            <li>商品追加</li>
+                            <li>商品削除</li>
+                            <li>商品編集</li>
+                            <li>商品一覧</li>
+                        </ul>
+                    </li>
+
+                    <li class="item">
+                        <div class="item-title">
+                            <h3>顧客管理</h3>
+                            <i class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <ul class="submenu">
+                            <li>商品追加</li>
+                            <li>商品削除</li>
+                            <li>商品編集</li>
+                            <li>商品一覧</li>
+                        </ul>
+                    </li>
+
+                    <li class="item">
+                        <div class="item-title">
+                            <h3>在庫管理</h3>
+                            <i class="fa-solid fa-angle-down"></i>
+                        </div>
+                        <ul class="submenu">
+                            <li>商品追加</li>
+                            <li>商品削除</li>
+                            <li>商品編集</li>
+                            <li>商品一覧</li>
+                        </ul>
+                    </li>
+                </ul>  
+            </div>
+
+            <div class="user-info">
+                <i class="fa-regular fa-circle-user"></i>
+                <p>ゲストさん</p>
+            </div>
+        </aside>
+
+        <!-- 商品詳細エリア -->
+        <main>
+            <h1>商品追加</h1>
+            <div class="product-info">
+                <form action="#">
+                    <div class="block">
+                        <label for="product-name">商品名</label>
+                        <input type="text" class="product-name" id="product-name" name="product-name" placeholder="例：チーズケーキサンド" required>                        
+                    </div>
+
+                    <div class="block">
+                        <label for="product-description" class="label">商品説明</label>
+                        <textarea class="product-description" id="product-description" name="product-description" required></textarea>                        
+                    </div>
+
+                    <div class="block">
+                        <label for="product-category" class="label">商品カテゴリー</label>
+                        <select class="product-category" name="product-category" id="product-category">
+                            <option value="" selected>選択してください。</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    
+                    <div class="block">
+                        <label for="keyword" class="label">キーワード</label>
+                        <input type="text" class="keyword" id="keyword" name="keyword" placeholder="例：北海道産">                        
+                    </div>
+
+                    <div class="size-title">
+                        <label for="size" class="label">サイズ(cm)</label>
+                    </div>
+                    <div class="flex-block">
+                        <div class="block">
+                            <input type="text" class="size" id="size1" name="size1" inputmode="numeric" placeholder="例：15" maxlength="3">
+                        </div>
+                        <p>✖</p>
+                        <div class="block">
+                            <input type="text" class="size" id="size2" name="size2" inputmode="numeric" placeholder="例：10" maxlength="3">                        
+                        </div> 
+                    </div>
+                </form>
+
+                <form action="#">
+                    <div class="">
+                        <label for="tax-rate" class="">税率</label>
+                        <div class="tax-rate">
+                            <label><input type="radio" value="0.1"  pattern="\d*" class="tax" id="tax10" name="tax-rate" checked>10%</label>
+                            <label><input type="radio" value="0.08" pattern="\d*" class="tax" id="tax8"  name="tax-rate">8%</label>
+                        </div>
+          
+                    </div>
+                    <div class="flex-block">
+                        <!-- 値段 -->
+                        <div class="block">
+                            <label for="price" class="label">値段</label>
+                            <input type="text" pattern="\d*" class="price" id="price" name="price" inputmode="numeric" maxlength="5">                        
+                        </div>
+
+                        <!-- 税込み価格（自動計算） -->
+                        <div class="block">
+                            <label for="tax-included-price" class="label">税込み価格</label>
+                            <input type="text" class="tax-included-price" id="tax-included-price" name="tax-included-price" disabled value="¥0">                        
+                        </div>
+
+                        <!-- 原価 -->
+                        <div class="block">
+                            <label for="cost" class="label">原価</label>
+                            <input type="text" pattern="\d*" class="cost" id="cost" name="cost" inputmode="numeric" maxlength="5">                        
+                        </div>
+                    </div>
+                </form>
+
+                <form action="#">
+                    
+                </form>
+            </div>
+        </main>
+
+        <!-- 写真投稿エリア -->
+        <aside class="photo-drop-area">
+            <div class="photo-drop-container">
+                <h3 class="thumbnail">メイン画像</h3>
+                <div class="drop-area">
+                    <p id="drop-text">ここに画像をドロップ<br>または</p>
+                    <label for="thumbnail" class="custom-button">ファイルを選択</label>
+                    <input type="file" class="file-input" id="thumbnail" accept="image/*" hidden>
+                </div>
+
+                <h3 class="subtitle">サブ画像<span>(ドラッグアンドドロップで追加できます。)</span></h3>
+                <div class="flex-block">
+                    <div class="drop-area">
+                        <!-- <p>ここに画像をドロップ<br>または</p> -->
+                        <label for="file1" class="custom-button">+</label>
+                        <input type="file" class="file-input" id="file1" accept="image/*" hidden>
+                    </div>
+
+                    <div class="drop-area">
+                        <!-- <p>ここに画像をドロップ<br>または</p> -->
+                        <label for="file2" class="custom-button">+</label>
+                        <input type="file" class="file-input" id="file2" accept="image/*" hidden>
+                    </div>
+
+                    <div class="drop-area">
+                        <!-- <p>ここに画像をドロップ<br>または</p> -->
+                        <label for="file3" class="custom-button">+</label>
+                        <input type="file" class="file-input" id="file3" accept="image/*" hidden>
+                    </div>
+
+                    <div class="drop-area">
+                        <!-- <p>ここに画像をドロップ<br>または</p> -->
+                        <label for="file4" class="custom-button">+</label>
+                        <input type="file" class="file-input" id="file4" accept="image/*" hidden>
+                    </div>
+
+                    <div class="drop-area">
+                        <!-- <p>ここに画像をドロップ<br>または</p> -->
+                        <label for="file5" class="custom-button">+</label>
+                        <input type="file" class="file-input" id="file5" accept="image/*" hidden>
+                    </div>
+                    
+                </div>
+
+                <div class="flex-btns">
+                    <button type="submit" class="savebtn">保存</button>
+                    <button class="cancelbtn">キャンセル</button>
+                </div>                
+            </div>
+        </aside>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
