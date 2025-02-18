@@ -76,7 +76,7 @@
 
         // ユーザー登録処理
         $stmt = $pdo -> prepare('insert into test_users (username, email, password, created_at, updated_at)
-                                                 values(:username, :email, :password, NOW(), NOW())');
+                                                 values(:username, :email, :password, now(), now())');
         $stmt -> bindValue(':username', $username, PDO::PARAM_STR);
         $stmt -> bindValue(':email',    $email,    PDO::PARAM_STR);
         $stmt -> bindValue(':password', $hashed_password, PDO::PARAM_STR);

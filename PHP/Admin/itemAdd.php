@@ -20,7 +20,7 @@
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-        // 各name属性取得
+        // フォームデータ取得とサニタイズ
         $name              = trim($_POST['product-name'] ?? '');
         $description       = trim($_POST['product-description'] ?? '');
         $category          = $_POST['product-category'] ?? '';
@@ -77,6 +77,33 @@
         if($exprationdateMin2 > $exprationdateMax2) {
             $errors[] = '消費期限(解凍後)の大小関係が不正です。';
         }
+
+        // エラーあったらフォームへリダイレクト
+        if(!empty($errors)) {
+            header('Location: itemAdd.php');
+            exit;
+        }
+
+        // 商品詳細登録処理
+        $stmt = $pdo -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2, created_at, updated_at)
+                                               values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2, now(), now())');
+        $stmt -> bindValue(':name',                $name,              PDO::PARAM_STR);
+        $stmt -> bindValue(':description',         $description,       PDO::PARAM_STR);
+        $stmt -> bindValue(':category_id',         $category,          PDO::PARAM_INT);
+        $stmt -> bindValue(':keyword',             $keyword,           PDO::PARAM_STR);
+        $stmt -> bindValue(':size1',               $size1,             PDO::PARAM_INT);
+        $stmt -> bindValue(':size2',               $size2,             PDO::PARAM_INT);
+        $stmt -> bindValue(':tax_rate',            $taxrate,           PDO::PARAM_INT);
+        $stmt -> bindValue(':price',               $price,             PDO::PARAM_INT);
+        $stmt -> bindValue(':tax_included_price',  $taxIncludedPrice,  PDO::PARAM_INT);
+        $stmt -> bindValue(':cost',                $cost,              PDO::PARAM_INT);
+        $stmt -> bindValue(':expirationdate_min1', $exprationdateMin1, PDO::PARAM_INT);
+        $stmt -> bindValue(':expirationdate_max1', $exprationdateMax1, PDO::PARAM_INT);
+        $stmt -> bindValue(':expirationdate_min2', $exprationdateMin2, PDO::PARAM_INT);
+        $stmt -> bindValue(':expirationdate_max2', $exprationdateMax2, PDO::PARAM_INT);
+        $stmt -> execute();
+
+        // 商品画像登録処理
     }
 
 ?>
@@ -135,10 +162,10 @@
                             <label for="product-category" class="label">商品カテゴリー</label>
                             <select class="product-category" name="product-category" id="product-category">
                                 <option value="" selected>選択してください。</option>
-                                <option value="popular">人気商品</option>
-                                <option value="cheesecake-sandwich">チーズケーキサンド</option>
-                                <option value="angelo-cheese">アンジェロチーズ</option>
-                                <option value="others">その他</option>
+                                <option value="1">人気商品</option>
+                                <option value="2">チーズケーキサンド</option>
+                                <option value="3">アンジェロチーズ</option>
+                                <option value="99">その他</option>
                             </select>
                         </div>
                         
