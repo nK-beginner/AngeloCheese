@@ -8,7 +8,9 @@
     require_once __DIR__ . '/backend/connection.php';
     require_once __DIR__ . '/backend/csrf_token.php';
 
-    $errors = $_SESSION['errors'] ?? [];       // $_SESSION['errors']が存在しない or Nullの場合は空の配列[]が入る
+    $errors = $_SESSION['errors'] ?? [];
+
+    unset($_SESSION['errors']);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
@@ -23,27 +25,29 @@
         // フォームデータ取得とサニタイズ
         $name              = trim($_POST['product-name'] ?? '');
         $description       = trim($_POST['product-description'] ?? '');
-        $category          = $_POST['product-category'] ?? '';
+        $category          = (int)($_POST['product-category'] ?? 0);
         $keyword           = trim($_POST['keyword'] ?? '');
-        $size1             = trim($_POST['size1'] ?? '');
-        $size2             = trim($_POST['size2'] ?? '');
-        $taxrate           = $_POST['taxt-rate'] ?? '';
-        $price             = $_POST['price'] ?? '';
-        $taxIncludedPrice  = $_POST['tax-included-price'] ?? '';
-        $cost              = trim($_POST['cost'] ?? '');
-        $exprationdateMin1 = $_POST['expirationdate-min1'] ?? '';
-        $exprationdateMax1 = $_POST['expirationdate-max1'] ?? '';
-        $exprationdateMin2 = $_POST['expirationdate-min2'] ?? '';
-        $exprationdateMax2 = $_POST['expirationdate-max2'] ?? '';
-        $thumbnail         = $_FILES['thumbnail'] ?? null;
-        $file1             = $_FILES['file1'] ?? null;
-        $file2             = $_FILES['file2'] ?? null;
-        $file3             = $_FILES['file3'] ?? null;
-        $file4             = $_FILES['file4'] ?? null;
-        $file5             = $_FILES['file5'] ?? null;
+        $size1             = (int)($_POST['size1'] ?? 0);
+        $size2             = (int)($_POST['size2'] ?? 0);
+        $taxrate           = (float)($_POST['tax-rate'] ?? 0.1);
+        $price             = (int)($_POST['price'] ?? 0);
+        $taxIncludedPrice  = (int)($_POST['tax-included-price'] ?? 0);
+        $cost              = (int)($_POST['cost'] ?? 0);
+        $exprationdateMin1 = (int)($_POST['expirationdate-min1'] ?? 0);
+        $exprationdateMax1 = (int)($_POST['expirationdate-max1'] ?? 0);
+        $exprationdateMin2 = (int)($_POST['expirationdate-min2'] ?? 0);
+        $exprationdateMax2 = (int)($_POST['expirationdate-max2'] ?? 0);
+        // $thumbnail         = $_FILES['thumbnail']['name'] ?? null;
+        // $file1             = $_FILES['file1']['name'] ?? null;
+        // $file2             = $_FILES['file2']['name'] ?? null;
+        // $file3             = $_FILES['file3']['name'] ?? null;
+        // $file4             = $_FILES['file4']['name'] ?? null;
+        // $file5             = $_FILES['file5']['name'] ?? null;
+
+        // $files             = [$file1, $file2, $file3, $file4, $file5];
 
         // 各入力バリデーション
-        //商品名
+        // 商品名
         if(empty($name)) {
             $errors[] = '商品名が入力されていません。';
         }
@@ -53,18 +57,23 @@
             $errors[] = 'カテゴリーが選択されていません。';
         }
         
-        // サイズ
-        if($size1 === 0 || $size2 === 0) {
-            $errors[] = 'サイズは0より大きい数値を入力してください。';
+        // サイズ1
+        if(!is_numeric($size1) || $size1 <= 0) {
+            $errors[] = 'サイズ1には0より大きい数値を入力してください。';
+        }
+
+        // サイズ2
+        if(!is_numeric($size2) || $size2 <= 0) {
+            $errors[] = 'サイズ2には0より大きい数値を入力してください。';
         }
 
         // 値段
-        if($price === 0) {
+        if(!is_numeric($price) || $price <= 0) {
             $errors[] = '値段には0より大きい数値を入力してください。';
         }
 
         // 原価
-        if($cost === 0) {
+        if(!is_numeric($cost) || $cost <= 0) {
             $errors[] = '原価には0より大きい数値を入力してください。';
         }
 
@@ -78,22 +87,64 @@
             $errors[] = '消費期限(解凍後)の大小関係が不正です。';
         }
 
+        /******************** ↓ 画像の保存前処理 ↓ ********************/
+        // アップロードディレクトリ設定
+        $uploadDir = 'uploads/';
+
+        // フォルダが無ければ作成
+        if(!is_dir($uploadDir)) {
+            mkdir('$uploadDir', 777, true);
+        }
+
+        // メイン画像
+        if($thumbnail && $thumbnail['error'] !== UPLOAD_ERR_OK) {
+            $errors[] = 'メイン画像のアップロードに失敗しました。';
+        }
+
+        // サブ画像
+        foreach($files as $file) {
+            if($files[$file]['error'] !== UPLOAD_ERR_OK) {
+                $errors[] = '画像のアップロードに失敗しました。';
+            }
+        }
+
+        // ファイル情報
+        $thumbnailName = basename($thumbnail);
+        $fileExt       = strtolower(pathinfo($thumbnailName, PATHINFO_EXTENTION));
+        $allowedExt    = ["jpg", "jped", "png", "gif"];
+
+        // 拡張子チェック
+        if(!in_array($fileExt, $allowedExt)) {
+            $errrors[] = '許可されていないファイル形式です。';
+        }
+
+        // ファイル名をランダムな値に
+        $newThumbnailName = uniqid().'.'.$fileExt;
+        $oploadFilePath   = $uploadDir.$newThumbnailName;
+
+        // ファイル移動
+        if(!move_uploaded_file($thumbnail, $uploadFilePath)) {
+            $errors[] = 'ファイルの保存に失敗しました。';
+        }
+        /******************** ↑ 画像の保存前処理 ↑ ********************/
+
         // エラーあったらフォームへリダイレクト
         if(!empty($errors)) {
+            $_SESSION['errors'] = $errors;
             header('Location: itemAdd.php');
             exit;
         }
 
         // 商品詳細登録処理
-        $stmt = $pdo -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2, created_at, updated_at)
-                                               values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2, now(), now())');
+        $stmt = $pdo -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2)
+                                               values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2)');
         $stmt -> bindValue(':name',                $name,              PDO::PARAM_STR);
         $stmt -> bindValue(':description',         $description,       PDO::PARAM_STR);
         $stmt -> bindValue(':category_id',         $category,          PDO::PARAM_INT);
         $stmt -> bindValue(':keyword',             $keyword,           PDO::PARAM_STR);
         $stmt -> bindValue(':size1',               $size1,             PDO::PARAM_INT);
         $stmt -> bindValue(':size2',               $size2,             PDO::PARAM_INT);
-        $stmt -> bindValue(':tax_rate',            $taxrate,           PDO::PARAM_INT);
+        $stmt -> bindValue(':tax_rate',            $taxrate,           PDO::PARAM_STR);
         $stmt -> bindValue(':price',               $price,             PDO::PARAM_INT);
         $stmt -> bindValue(':tax_included_price',  $taxIncludedPrice,  PDO::PARAM_INT);
         $stmt -> bindValue(':cost',                $cost,              PDO::PARAM_INT);
@@ -104,6 +155,17 @@
         $stmt -> execute();
 
         // 商品画像登録処理
+        // $stmt -> $pdo = prepare('insert into product_image ()');
+        /* 
+        
+        
+        */
+
+        // セッション固定攻撃対策
+        session_regenerate_id(true);
+
+        header('Location: itemAdd.php');
+        exit;
     }
 
 ?>
@@ -161,7 +223,7 @@
                         <div class="block">
                             <label for="product-category" class="label">商品カテゴリー</label>
                             <select class="product-category" name="product-category" id="product-category">
-                                <option value="" selected>選択してください。</option>
+                                <option value="0" selected>選択してください。</option>
                                 <option value="1">人気商品</option>
                                 <option value="2">チーズケーキサンド</option>
                                 <option value="3">アンジェロチーズ</option>
@@ -209,7 +271,10 @@
                             <!-- 税込み価格（自動計算） -->
                             <div class="block">
                                 <label for="tax-included-price" class="label">税込み価格</label>
-                                <input type="text" class="tax-included-price" id="tax-included-price" name="tax-included-price" readonly value="¥0">
+                                <!-- 表示用（ユーザーが編集できない） -->
+                                <input type="text" class="tax-included-price" id="tax-included-price-display" readonly value="¥0">
+                                <!-- データ送信用（hidden） -->
+                                <input type="hidden" id="tax-included-price" name="tax-included-price" value="0">
                             </div>
 
                             <!-- 原価 -->

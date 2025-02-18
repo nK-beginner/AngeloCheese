@@ -41,16 +41,22 @@ const calculateTaxIncludedPrice = () => {
     const price   = parseFloat(document.querySelector('.price').value) || 0;
     const taxRate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value) || 0.1;
 
-    // 税込み価格を計算してフォーマット
+    // 税込み価格を計算
     const taxIncludedPrice = (price * (1 + taxRate)).toFixed(0);
-    document.querySelector('.tax-included-price').value = `¥${parseFloat(taxIncludedPrice).toLocaleString()}`;
+
+    // 表示用フィールドの更新
+    document.querySelector('.tax-included-price').value = `¥${parseInt(taxIncludedPrice).toLocaleString()}`;
+
+    // 送信用 hidden フィールドの更新
+    document.querySelector('#tax-included-price').value = taxIncludedPrice;
 };
 
-// 値段欄と税率選択時に自動計算
+// イベントリスナー追加
 document.querySelector('.price').addEventListener('input', calculateTaxIncludedPrice);
 document.querySelectorAll('input[name="tax-rate"]').forEach(radio => {
     radio.addEventListener('change', calculateTaxIncludedPrice);
 });
+
 
 
 
