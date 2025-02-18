@@ -8,6 +8,8 @@
     require_once __DIR__ . '/backend/connection.php';
     require_once __DIR__ . '/backend/csrf_token.php';
 
+    $errors = $_SESSION['errors'] ?? [];       // $_SESSION['errors']が存在しない or Nullの場合は空の配列[]が入る
+
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
         if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -19,22 +21,62 @@
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // 各name属性取得
-        $name
-        $description
-        $category
-        $keyword
-        $size1
-        $size2
-        $taxrate
-        $price
-        $taxIncludedPrice
-        $cost
-        $exprationdateMin1
-        $exprationdateMax1
-        $exprationdateMin2
-        $exprationdateMax2
-        
+        $name              = trim($_POST['product-name'] ?? '');
+        $description       = trim($_POST['product-description'] ?? '');
+        $category          = $_POST['product-category'] ?? '';
+        $keyword           = trim($_POST['keyword'] ?? '');
+        $size1             = trim($_POST['size1'] ?? '');
+        $size2             = trim($_POST['size2'] ?? '');
+        $taxrate           = $_POST['taxt-rate'] ?? '';
+        $price             = $_POST['price'] ?? '';
+        $taxIncludedPrice  = $_POST['tax-included-price'] ?? '';
+        $cost              = trim($_POST['cost'] ?? '');
+        $exprationdateMin1 = $_POST['expirationdate-min1'] ?? '';
+        $exprationdateMax1 = $_POST['expirationdate-max1'] ?? '';
+        $exprationdateMin2 = $_POST['expirationdate-min2'] ?? '';
+        $exprationdateMax2 = $_POST['expirationdate-max2'] ?? '';
+        $thumbnail         = $_FILES['thumbnail'] ?? null;
+        $file1             = $_FILES['file1'] ?? null;
+        $file2             = $_FILES['file2'] ?? null;
+        $file3             = $_FILES['file3'] ?? null;
+        $file4             = $_FILES['file4'] ?? null;
+        $file5             = $_FILES['file5'] ?? null;
 
+        // 各入力バリデーション
+        //商品名
+        if(empty($name)) {
+            $errors[] = '商品名が入力されていません。';
+        }
+
+        // カテゴリー
+        if(empty($category)) {
+            $errors[] = 'カテゴリーが選択されていません。';
+        }
+        
+        // サイズ
+        if($size1 === 0 || $size2 === 0) {
+            $errors[] = 'サイズは0より大きい数値を入力してください。';
+        }
+
+        // 値段
+        if($price === 0) {
+            $errors[] = '値段には0より大きい数値を入力してください。';
+        }
+
+        // 原価
+        if($cost === 0) {
+            $errors[] = '原価には0より大きい数値を入力してください。';
+        }
+
+        // 消費期限1
+        if($exprationdateMin1 > $exprationdateMax1) {
+            $errors[] = '消費期限の大小関係が不正です。';
+        }
+
+        // 消費期限2
+        if($exprationdateMin2 > $exprationdateMax2) {
+            $errors[] = '消費期限(解凍後)の大小関係が不正です。';
+        }
     }
 
 ?>
@@ -64,6 +106,18 @@
                 <div class="product-info">
                     <!-- 商品名など -->
                     <div class="form-block">
+                        <!-- CSRFトークン -->
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        
+                        <!-- エラーメッセージ -->
+                        <?php if(!empty($errors)): ?>
+                            <div class="error-msg">
+                                <?php foreach($errors as $error): ?>
+                                    <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- 商品名 -->
                         <div class="block">
                             <label for="product-name">商品名</label>
@@ -100,11 +154,11 @@
                         </div>
                         <div class="flex-block size-block">
                             <div class="block">
-                                <input type="text" class="size" id="size1" name="size1" inputmode="numeric" placeholder="例：15" maxlength="3">
+                                <input type="text" class="size" id="size1" name="size1" inputmode="numeric" placeholder="例：15" maxlength="3" required>
                             </div>
                             <p>✖</p>
                             <div class="block">
-                                <input type="text" class="size" id="size2" name="size2" inputmode="numeric" placeholder="例：10" maxlength="3">                        
+                                <input type="text" class="size" id="size2" name="size2" inputmode="numeric" placeholder="例：10" maxlength="3" required>                        
                             </div> 
                         </div>
                     </div>
@@ -122,19 +176,19 @@
                             <!-- 値段 -->
                             <div class="block">
                                 <label for="price" class="label">値段</label>
-                                <input type="text" pattern="\d*" class="price" id="price" name="price" inputmode="numeric" maxlength="5">                        
+                                <input type="text" pattern="\d*" class="price" id="price" name="price" inputmode="numeric" maxlength="5" required>                        
                             </div>
 
                             <!-- 税込み価格（自動計算） -->
                             <div class="block">
                                 <label for="tax-included-price" class="label">税込み価格</label>
-                                <input type="text" class="tax-included-price" id="tax-included-price" name="tax-included-price" readonly value="¥0">                        
+                                <input type="text" class="tax-included-price" id="tax-included-price" name="tax-included-price" readonly value="¥0">
                             </div>
 
                             <!-- 原価 -->
                             <div class="block">
                                 <label for="cost" class="label">原価</label>
-                                <input type="text" pattern="\d*" class="cost" id="cost" name="cost" inputmode="numeric" maxlength="5">                        
+                                <input type="text" pattern="\d*" class="cost" id="cost" name="cost" inputmode="numeric" maxlength="5" required>                        
                             </div>
                         </div>
                     </div>

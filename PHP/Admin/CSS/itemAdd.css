@@ -29,6 +29,18 @@ main .form-block .block {
     margin-bottom: 3px;
 }
 
+main .form-block .error-msg {
+    border: 1px solid #FF4141;
+    background: #f8b2b2;
+    padding: 20px;
+}
+
+main .form-block .error-msg p {
+    color: #ff2121;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 main .form-block .size-title {
     display: block;
     margin-top: 15px;
@@ -53,9 +65,10 @@ select {
 main .form-block .block textarea {
     height: 220px;
     width: 100%;
-    padding: 4px;
+    padding: 5px;
     resize: vertical;
-    border-radius: 7px;
+    border-radius: 5px;
+    font-size: 1.7rem;
 }
 
 main .form-block .flex-block {
@@ -72,6 +85,10 @@ main .form-block .size-block {
 main .form-block .tax-rate {
     display: flex;
     gap: 12px;
+}
+
+main .form-block .tax-included-price {
+    background: rgb(202, 202, 202);
 }
 
 main .form-block .price-block {
