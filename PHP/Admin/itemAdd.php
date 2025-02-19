@@ -23,143 +23,132 @@
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // フォームデータ取得とサニタイズ
-        $name              = trim($_POST['product-name'] ?? '');
-        $description       = trim($_POST['product-description'] ?? '');
-        $category          = (int)($_POST['product-category'] ?? 0);
-        $keyword           = trim($_POST['keyword'] ?? '');
-        $size1             = (int)($_POST['size1'] ?? 0);
-        $size2             = (int)($_POST['size2'] ?? 0);
-        $taxrate           = (float)($_POST['tax-rate'] ?? 0.1);
-        $price             = (int)($_POST['price'] ?? 0);
-        $taxIncludedPrice  = (int)($_POST['tax-included-price'] ?? 0);
-        $cost              = (int)($_POST['cost'] ?? 0);
-        $exprationdateMin1 = (int)($_POST['expirationdate-min1'] ?? 0);
-        $exprationdateMax1 = (int)($_POST['expirationdate-max1'] ?? 0);
-        $exprationdateMin2 = (int)($_POST['expirationdate-min2'] ?? 0);
-        $exprationdateMax2 = (int)($_POST['expirationdate-max2'] ?? 0);
-        // $thumbnail         = $_FILES['thumbnail']['name'] ?? null;
-        // $file1             = $_FILES['file1']['name'] ?? null;
-        // $file2             = $_FILES['file2']['name'] ?? null;
-        // $file3             = $_FILES['file3']['name'] ?? null;
-        // $file4             = $_FILES['file4']['name'] ?? null;
-        // $file5             = $_FILES['file5']['name'] ?? null;
+        // 詳細
+        $name               = trim($_POST['product-name'] ?? '');
+        $description        = trim($_POST['product-description'] ?? '');
+        $category           = (int)($_POST['product-category'] ?? 0);
+        $keyword            = trim($_POST['keyword'] ?? '');
+        $size1              = (int)($_POST['size1'] ?? 0);
+        $size2              = (int)($_POST['size2'] ?? 0);
+        $taxrate            = (float)($_POST['tax-rate'] ?? 0.1);
+        $price              = (int)($_POST['price'] ?? 0);
+        $taxIncludedPrice   = (int)($_POST['tax-included-price'] ?? 0);
+        $cost               = (int)($_POST['cost'] ?? 0);
+        $expirationdateMin1 = (int)($_POST['expirationdate-min1'] ?? 0);
+        $expirationdateMax1 = (int)($_POST['expirationdate-max1'] ?? 0);
+        $expirationdateMin2 = (int)($_POST['expirationdate-min2'] ?? 0);
+        $expirationdateMax2 = (int)($_POST['expirationdate-max2'] ?? 0);
 
-        // $files             = [$file1, $file2, $file3, $file4, $file5];
+        // 画像
+        $thumbnail = $_FILES['thumbnail'] ?? null;
+        $files     = [
+            $_FILES['file1'] ?? null,
+            $_FILES['file2'] ?? null,
+            $_FILES['file3'] ?? null,
+            $_FILES['file4'] ?? null,
+            $_FILES['file5'] ?? null,
+        ];
 
         // 各入力バリデーション
-        // 商品名
-        if(empty($name)) {
-            $errors[] = '商品名が入力されていません。';
-        }
-
-        // カテゴリー
-        if(empty($category)) {
-            $errors[] = 'カテゴリーが選択されていません。';
-        }
-        
-        // サイズ1
-        if(!is_numeric($size1) || $size1 <= 0) {
-            $errors[] = 'サイズ1には0より大きい数値を入力してください。';
-        }
-
-        // サイズ2
-        if(!is_numeric($size2) || $size2 <= 0) {
-            $errors[] = 'サイズ2には0より大きい数値を入力してください。';
-        }
-
-        // 値段
-        if(!is_numeric($price) || $price <= 0) {
-            $errors[] = '値段には0より大きい数値を入力してください。';
-        }
-
-        // 原価
-        if(!is_numeric($cost) || $cost <= 0) {
-            $errors[] = '原価には0より大きい数値を入力してください。';
-        }
-
-        // 消費期限1
-        if($exprationdateMin1 > $exprationdateMax1) {
-            $errors[] = '消費期限の大小関係が不正です。';
-        }
-
-        // 消費期限2
-        if($exprationdateMin2 > $exprationdateMax2) {
-            $errors[] = '消費期限(解凍後)の大小関係が不正です。';
-        }
+        if(empty($name))     {  $errors[] = '商品名が入力されていません。'; }
+        if(empty($category)) {  $errors[] = 'カテゴリーが選択されていません。'; }
+        if(!is_numeric($size1) || $size1 <= 0) {  $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
+        if(!is_numeric($size2) || $size2 <= 0) {  $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
+        if(!is_numeric($price) || $price <= 0) {  $errors[] = '値段には0より大きい数値を入力してください。';  }
+        if(!is_numeric($cost) || $cost <= 0)   {  $errors[] = '原価には0より大きい数値を入力してください。';  }
+        if($expirationdateMin1 > $expirationdateMax1) {  $errors[] = '消費期限の大小関係が不正です。';  }
+        if($expirationdateMin2 > $expirationdateMax2) {  $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
 
         /******************** ↓ 画像の保存前処理 ↓ ********************/
-        // アップロードディレクトリ設定
+        // アップロードディレクトリ設定(無ければ作成)
         $uploadDir = 'uploads/';
-
-        // フォルダが無ければ作成
         if(!is_dir($uploadDir)) {
-            mkdir('$uploadDir', 777, true);
+            mkdir($uploadDir, 755, true);
         }
 
-        // メイン画像
-        if($thumbnail && $thumbnail['error'] !== UPLOAD_ERR_OK) {
-            $errors[] = 'メイン画像のアップロードに失敗しました。';
-        }
+        // 許可する拡張子
+        $allowedExt = ["jpg", "jpeg", "png"];
+        $uploadedPaths = [];
 
-        // サブ画像
-        foreach($files as $file) {
-            if($files[$file]['error'] !== UPLOAD_ERR_OK) {
-                $errors[] = '画像のアップロードに失敗しました。';
+        // 保存トランザクション
+        try {
+            $pdo2 -> beginTransaction();
+
+            // productsテーブルに保存
+            $stmt = $pdo2 -> prepare('insert into products ( name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2)
+                                                   values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2)');
+            $stmt -> execute([
+                ':name'                => $name,
+                ':description'         => $description,
+                ':category_id'         => $category,
+                ':keyword'             => $keyword,
+                ':size1'               => $size1,
+                ':size2'               => $size2,
+                ':tax_rate'            => $taxrate,
+                ':price'               => $price,
+                ':tax_included_price'  => $taxIncludedPrice,
+                ':cost'                => $cost,
+                ':expirationdate_min1' => $expirationdateMin1,
+                ':expirationdate_max1' => $expirationdateMax1,
+                ':expirationdate_min2' => $expirationdateMin2,
+                ':expirationdate_max2' => $expirationdateMax2,
+            ]);
+
+            // 保存した商品のIDを取得
+            $product_id = $pdo2 -> lastInsertId();
+
+            // 画像保存の関数
+            function fncSaveImage($file, $is_main, $uploadDir, $allowedExt, &$errors, $pdo2, $product_id) {
+                if($file && $file['error'] === UPLOAD_ERR_OK) {
+                    // 拡張子を取得＆チェック
+                    $fineName = basename($file['name']);
+                    $fileExt = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
+
+                    if(!in_array($fileExt, $allowedExt)) {
+                        $errors[] = '許可されていないファイル形式です。';
+                        return;
+                    }
+
+                    // ファイル名のユニーク化
+                    $newFileName = uniqid().bin2hex(random_bytes(32)).'.'.$fileExt;
+                    $uploadFilePath = $uploadDir.$newFileName;
+
+                    // 画像を保存
+                    if(move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                        $stmt = $pdo2 -> prepare('insert into product_images ( product_id,  image_path, is_main)
+                                                                     values (:product_id, :image_path, :is_main)');
+                        $stmt -> execute([
+                            ':product_id' => $product_id,
+                            ':image_path' => $uploadFilePath,
+                            ':is_main'    => $is_main,
+                        ]);
+                    } else {
+                        $errors[] = '画像の保存に失敗しました。';
+                    }
+                }
             }
+            // メイン画像保存(is_main = 1)
+            fncSaveImage($thumbnail, 1, $uploadDir, $allowedExt, $errors, $pdo2, $product_id);
+
+            // サブ画像の保存(is_main = null)
+            foreach($files as $file) {
+                fncSaveImage($file, null, $uploadDir, $allowedExt, $errors, $pdo2, $product_id);
+            }
+
+            // エラー無ければコミット、あればロールバック
+            if(empty($errors)) {
+                $pdo2 -> commit();
+                $_SESSION['success'] = '商品が登録されました。';
+
+            } else {
+                $pdo2 -> rollback();
+                $_SESSION['errors'] = $errors;
+            }
+
+        } catch(Exception $e) {
+            $pdo2 -> rollback();
+            $errors[] = 'データベースエラー'.$e->getMessage();
         }
-
-        // ファイル情報
-        $thumbnailName = basename($thumbnail);
-        $fileExt       = strtolower(pathinfo($thumbnailName, PATHINFO_EXTENTION));
-        $allowedExt    = ["jpg", "jped", "png", "gif"];
-
-        // 拡張子チェック
-        if(!in_array($fileExt, $allowedExt)) {
-            $errrors[] = '許可されていないファイル形式です。';
-        }
-
-        // ファイル名をランダムな値に
-        $newThumbnailName = uniqid().'.'.$fileExt;
-        $oploadFilePath   = $uploadDir.$newThumbnailName;
-
-        // ファイル移動
-        if(!move_uploaded_file($thumbnail, $uploadFilePath)) {
-            $errors[] = 'ファイルの保存に失敗しました。';
-        }
-        /******************** ↑ 画像の保存前処理 ↑ ********************/
-
-        // エラーあったらフォームへリダイレクト
-        if(!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            header('Location: itemAdd.php');
-            exit;
-        }
-
-        // 商品詳細登録処理
-        $stmt = $pdo -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2)
-                                               values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2)');
-        $stmt -> bindValue(':name',                $name,              PDO::PARAM_STR);
-        $stmt -> bindValue(':description',         $description,       PDO::PARAM_STR);
-        $stmt -> bindValue(':category_id',         $category,          PDO::PARAM_INT);
-        $stmt -> bindValue(':keyword',             $keyword,           PDO::PARAM_STR);
-        $stmt -> bindValue(':size1',               $size1,             PDO::PARAM_INT);
-        $stmt -> bindValue(':size2',               $size2,             PDO::PARAM_INT);
-        $stmt -> bindValue(':tax_rate',            $taxrate,           PDO::PARAM_STR);
-        $stmt -> bindValue(':price',               $price,             PDO::PARAM_INT);
-        $stmt -> bindValue(':tax_included_price',  $taxIncludedPrice,  PDO::PARAM_INT);
-        $stmt -> bindValue(':cost',                $cost,              PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationdate_min1', $exprationdateMin1, PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationdate_max1', $exprationdateMax1, PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationdate_min2', $exprationdateMin2, PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationdate_max2', $exprationdateMax2, PDO::PARAM_INT);
-        $stmt -> execute();
-
-        // 商品画像登録処理
-        // $stmt -> $pdo = prepare('insert into product_image ()');
-        /* 
-        
-        
-        */
 
         // セッション固定攻撃対策
         session_regenerate_id(true);
