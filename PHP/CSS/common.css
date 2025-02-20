@@ -78,6 +78,11 @@ header .header-container {
     padding-top: 4px;
 }
 
+header .header-container h1 {
+    position: relative;
+    right: 16px;
+}
+
 header .header-title a {
     color: white;
     font-size: 3.4rem;

@@ -10,7 +10,7 @@ form {
 /********** 全体をgridに指定 **********/
 .grid-container {
     display: grid;
-    grid-template-columns: 215px 1.7fr 1fr !important; /* サイドバー、詳細書き込み欄、画像ドラッグアンドドロップ欄 */
+    grid-template-columns: 215px 1.5fr 1fr !important; /* サイドバー、詳細書き込み欄、画像ドラッグアンドドロップ欄 */
     height: 100%;
 }
 

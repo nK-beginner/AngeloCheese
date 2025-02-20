@@ -54,12 +54,14 @@
         <!-- <p>自己紹介文</p> -->
     </div>
 
-    <main>
-        <div class="main-container">
+    <div class="products">
+        <div class="products-container">
             <?php if(!empty($categorizedProducts)): ?>
                 <?php foreach($categorizedProducts as $category => $items): ?>
                     <div class="category-section">
-                        <h2><?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></h2>
+                        <div class="category-title">
+                            <h2><?php echo htmlspecialchars($category, ENT_QUOTES, 'UTF-8') ?></h2>
+                        </div>
                         <div class="product-container">
                             <?php foreach($items as $item): ?>
                                 <div class="product">
@@ -73,7 +75,7 @@
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-    </main>
+    </div>
 
     <?php include __DIR__.'/../common/footer.php'; ?>
 </body>

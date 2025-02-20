@@ -35,8 +35,8 @@
                     <ul class="submenu">
                         <a href="itemAdd.php"><li>商品追加</li></a>
                         <a href="itemDelete.php"><li>商品削除</li></a>
-                        <li><a href="#">商品編集</a></li>
-                        <li><a href="#">商品一覧</a></li>
+                        <!-- <li><a href="#">商品編集</a></li>
+                        <li><a href="#">商品一覧</a></li> -->
                     </ul>
                 </li>
 
@@ -46,10 +46,10 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <ul class="submenu">
-                        <li>商品追加</li>
+                        <!-- <li>商品追加</li>
                         <li>商品削除</li>
                         <li>商品編集</li>
-                        <li>商品一覧</li>
+                        <li>商品一覧</li> -->
                     </ul>
                 </li>
 
@@ -59,10 +59,10 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <ul class="submenu">
-                        <li>商品追加</li>
+                        <!-- <li>商品追加</li>
                         <li>商品削除</li>
                         <li>商品編集</li>
-                        <li>商品一覧</li>
+                        <li>商品一覧</li> -->
                     </ul>
                 </li>
 
@@ -72,10 +72,10 @@
                         <i class="fa-solid fa-angle-down"></i>
                     </div>
                     <ul class="submenu">
-                        <li>商品追加</li>
+                        <!-- <li>商品追加</li>
                         <li>商品削除</li>
                         <li>商品編集</li>
-                        <li>商品一覧</li>
+                        <li>商品一覧</li> -->
                     </ul>
                 </li>
             </ul>  
