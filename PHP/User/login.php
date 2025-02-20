@@ -106,7 +106,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#242424">
     <title>ログイン</title>
+
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
+
     <!-- ログイン用CSS -->
     <link rel="stylesheet" href="../css/login.css?v=<?php echo time(); ?>">
 </head>

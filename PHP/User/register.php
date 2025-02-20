@@ -101,6 +101,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録</title>
+
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
+
     <!-- 登録用CSS -->
     <link rel="stylesheet" href="../css/register.css?v=<?php echo time(); ?>">
 </head>

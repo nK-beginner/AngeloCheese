@@ -9,6 +9,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>メール送信完了</title>
+
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
+
     <!-- メール送信用CSS -->
     <link rel="stylesheet" href="../css/mailSent.css?v=<?php echo time(); ?>">
 </head>

@@ -9,6 +9,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レビューを投稿する</title>
+
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
+
     <!-- レビュー用 -->
     <link rel="stylesheet" href="../css/review.css?v=<?php echo time(); ?>">
 </head>

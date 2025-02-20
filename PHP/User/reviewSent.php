@@ -8,10 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>レビュー投稿が完了</title>
+    <title>レビュー投稿完了</title>
+
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
+
+    <!-- レビュー投稿完了用CSS -->
     <link rel="stylesheet" href="../css/reviewSent.css?v=<?php echo time(); ?>">
     
-    <script src="https://kit.fontawesome.com/5d315d0cb7.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <?php include __DIR__.'/../common/header.php'; ?>
