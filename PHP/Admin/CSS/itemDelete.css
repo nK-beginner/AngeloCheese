@@ -3,3 +3,63 @@
 
 
 
+.table-records {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 72vh;
+}
+
+table {
+    width: 140%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    /* table-layout: auto; */
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    font-size: 1em;
+    position: relative;
+    word-wrap: break-word;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+td {
+    background-color: #fff;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+/* 最初の列を固定 */
+th:first-child, td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    z-index: 2;
+}
+
+.delete-btn {
+    padding: 14px 43px;
+    border-radius: 7px;
+    border: none;
+    background: #fd6060;
+    color: #fff;
+    display: block;
+    margin: 32px auto 0 auto;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #ff7f7f;
+}

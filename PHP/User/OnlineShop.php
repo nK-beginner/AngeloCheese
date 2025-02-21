@@ -52,14 +52,14 @@
     <?php include __DIR__.'/../common/header.php'; ?>
 
     <div class="top-container">
-        <img src="../images/trimmedTop.jpg" alt="top image">
+        <img src="../images/trimmedTop2.jpg" alt="top image">
         <h1><span>大</span>切な人に届けたい<span>。</span></h1>
         <h2><span>誰</span>にでも愛されるチーズケーキ<span>。</span></h2>
         <!-- <p>自己紹介文</p> -->
     </div>
 
     <div class="products">
-        <div class="products-container">
+        <div class="container">
             <?php if(!empty($categorizedProducts)): ?>
                 <?php foreach($categorizedProducts as $category => $items): ?>
                     <div class="category-section">

@@ -30,14 +30,14 @@
         $keyword            = trim($_POST['keyword'] ?? '');
         $size1              = (int)($_POST['size1'] ?? 0);
         $size2              = (int)($_POST['size2'] ?? 0);
-        $taxrate            = (float)($_POST['tax-rate'] ?? 0.1);
+        $taxRate            = (float)($_POST['tax-rate'] ?? 0.1);
         $price              = (int)($_POST['price'] ?? 0);
         $taxIncludedPrice   = (int)($_POST['tax-included-price'] ?? 0);
         $cost               = (int)($_POST['cost'] ?? 0);
-        $expirationdateMin1 = (int)($_POST['expirationdate-min1'] ?? 0);
-        $expirationdateMax1 = (int)($_POST['expirationdate-max1'] ?? 0);
-        $expirationdateMin2 = (int)($_POST['expirationdate-min2'] ?? 0);
-        $expirationdateMax2 = (int)($_POST['expirationdate-max2'] ?? 0);
+        $expirationDateMin1 = (int)($_POST['expirationDate-min1'] ?? 0);
+        $expirationDateMax1 = (int)($_POST['expirationDate-max1'] ?? 0);
+        $expirationDateMin2 = (int)($_POST['expirationDate-min2'] ?? 0);
+        $expirationDateMax2 = (int)($_POST['expirationDate-max2'] ?? 0);
 
         // 画像
         $thumbnail = $_FILES['thumbnail'] ?? null;
@@ -56,8 +56,8 @@
         if(!is_numeric($size2) || $size2 <= 0) {  $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
         if(!is_numeric($price) || $price <= 0) {  $errors[] = '値段には0より大きい数値を入力してください。';  }
         if(!is_numeric($cost) || $cost <= 0)   {  $errors[] = '原価には0より大きい数値を入力してください。';  }
-        if($expirationdateMin1 > $expirationdateMax1) {  $errors[] = '消費期限の大小関係が不正です。';  }
-        if($expirationdateMin2 > $expirationdateMax2) {  $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
+        if($expirationDateMin1 > $expirationDateMax1) {  $errors[] = '消費期限の大小関係が不正です。';  }
+        if($expirationDateMin2 > $expirationDateMax2) {  $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
 
         /******************** ↓ 画像の保存前処理 ↓ ********************/
         // アップロードディレクトリ設定(無ければ作成)
@@ -75,24 +75,23 @@
             $pdo2 -> beginTransaction();
 
             // productsテーブルに保存
-            $stmt = $pdo2 -> prepare('insert into products ( name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationdate_min1,  expirationdate_max1,  expirationdate_min2,  expirationdate_max2)
-                                                   values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationdate_min1, :expirationdate_max1, :expirationdate_min2, :expirationdate_max2)');
-            $stmt -> execute([
-                ':name'                => $name,
-                ':description'         => $description,
-                ':category_id'         => $category,
-                ':keyword'             => $keyword,
-                ':size1'               => $size1,
-                ':size2'               => $size2,
-                ':tax_rate'            => $taxrate,
-                ':price'               => $price,
-                ':tax_included_price'  => $taxIncludedPrice,
-                ':cost'                => $cost,
-                ':expirationdate_min1' => $expirationdateMin1,
-                ':expirationdate_max1' => $expirationdateMax1,
-                ':expirationdate_min2' => $expirationdateMin2,
-                ':expirationdate_max2' => $expirationdateMax2,
-            ]);
+            $stmt = $pdo2 -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
+                                                   values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
+            $stmt -> bindValue(':name'               , $name,               PDO::PARAM_STR);
+            $stmt -> bindValue(':description'        , $description,        PDO::PARAM_STR);
+            $stmt -> bindValue(':category_id'        , $category,           PDO::PARAM_INT);
+            $stmt -> bindValue(':keyword'            , $keyword,            PDO::PARAM_STR);
+            $stmt -> bindValue(':size1'              , $size1,              PDO::PARAM_INT);
+            $stmt -> bindValue(':size2'              , $size2,              PDO::PARAM_INT);
+            $stmt -> bindValue(':tax_rate'           , $taxRate,            PDO::PARAM_STR);
+            $stmt -> bindValue(':price'              , $price,              PDO::PARAM_INT);
+            $stmt -> bindValue(':tax_included_price' , $taxIncludedPrice,   PDO::PARAM_INT);
+            $stmt -> bindValue(':cost'               , $cost,               PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_min1', $expirationDateMin1, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_max1', $expirationDateMax1, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_min2', $expirationDateMin2, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_max2', $expirationDateMax2, PDO::PARAM_INT);
+            $stmt -> execute();
 
             // 保存した商品のIDを取得
             $product_id = $pdo2 -> lastInsertId();
@@ -115,13 +114,12 @@
 
                     // 画像を保存
                     if(move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
-                        $stmt = $pdo2 -> prepare('insert into product_images ( product_id,  image_path, is_main)
-                                                                     values (:product_id, :image_path, :is_main)');
-                        $stmt -> execute([
-                            ':product_id' => $product_id,
-                            ':image_path' => $uploadFilePath,
-                            ':is_main'    => $is_main,
-                        ]);
+                        $stmt = $pdo2 -> prepare('insert into product_images (product_id,  image_path,  is_main)
+                                                                      values (:product_id, :image_path, :is_main)');
+                        $stmt -> bindValue(':product_id', $product_id,     PDO::PARAM_INT);
+                        $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
+                        $stmt -> bindValue(':is_main',    $is_main,        PDO::PARAM_INT);
+                        $stmt -> execute();
                     } else {
                         $errors[] = '画像の保存に失敗しました。';
                     }
@@ -163,9 +161,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ヘッダータグ -->
+    <?php include 'headTags.php' ?>
+
     <title>商品追加</title>
+    
     <!-- 商品追加用CSS -->
     <link rel="stylesheet" href="CSS/itemAdd.css?v=<?php echo time(); ?>">
 </head>
@@ -176,6 +176,7 @@
 
         <div class="grid-container">
 
+            <!-- サイドバー -->
             <?php include 'sidebar.php'; ?>
 
             <!-- 商品詳細エリア -->
@@ -278,26 +279,26 @@
                     <div class="form-block expiration">
                         <!-- 消費期限解凍前 -->
                         <div class="before">
-                            <label for="expirationdate">消費期限</label>
+                            <label for="expirationDate">消費期限</label>
                             <div class="flex-block date-block">
                                 <div class="firstdate">
-                                    <input type="text" name="expirationdate-min1"  maxlength="3" inputmode="numeric"><p>～</p>
+                                    <input type="text" name="expirationDate-min1"  maxlength="3" inputmode="numeric"><p>～</p>
                                 </div>
                                 <div class="lastdate">
-                                    <input type="text" name="expirationdate-max1" maxlength="3" inputmode="numeric"><p>日間</p>
+                                    <input type="text" name="expirationDate-max1" maxlength="3" inputmode="numeric"><p>日間</p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- 消費期限解凍後 -->
                         <div class="after">
-                            <label for="expirationdate">消費期限(解凍後)</label>
+                            <label for="expirationDate">消費期限(解凍後)</label>
                             <div class="flex-block date-block">
                                 <div class="firstdate">
-                                    <input type="text" name="expirationdate-min2" maxlength="3" inputmode="numeric"><p>～</p>
+                                    <input type="text" name="expirationDate-min2" maxlength="3" inputmode="numeric"><p>～</p>
                                 </div>
                                 <div class="lastdate">
-                                    <input type="text" name="expirationdate-max2" maxlength="3" inputmode="numeric"><p>日間</p>
+                                    <input type="text" name="expirationDate-max2" maxlength="3" inputmode="numeric"><p>日間</p>
                                 </div>
                             </div>
                         </div>

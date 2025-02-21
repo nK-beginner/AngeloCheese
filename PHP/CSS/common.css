@@ -25,10 +25,10 @@
 * {
     padding: 0;
     margin: 0;
-    /* font-family: '游明朝','Yu Mincho',YuMincho,'Hiragino Mincho Pro',serif; */
-    font-family: "Playfair Display", serif;
+    font-family: '游明朝','Yu Mincho',YuMincho,'Hiragino Mincho Pro',serif;
+    /* font-family: "Playfair Display", serif;
     font-optical-sizing: auto;
-    font-style: normal;
+    font-style: normal; */
 }
 
 html {
@@ -270,6 +270,8 @@ footer .footer-container p {
 
     header .header-title a {
         font-size: 1.5rem;
+        position: relative;
+        left: 16.2px;
     }
 
     header .header-nav {
