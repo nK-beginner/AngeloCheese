@@ -12,8 +12,8 @@
                 <ul class="submenu">
                     <a href="itemAdd.php"><li>商品追加</li></a>
                     <a href="itemDelete.php"><li>商品削除</li></a>
-                    <!-- <li><a href="#">商品編集</a></li>
-                    <li><a href="#">商品一覧</a></li> -->
+                    <a href="itemEdit.php"><li>商品編集</li></a>
+                    <a href="allItems.php"><li>商品一覧</li></a>
                 </ul>
             </li>
 

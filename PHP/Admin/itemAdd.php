@@ -15,18 +15,28 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
         if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
+            $errors[] = 'CSRFトークン不一致エラー';
+
+        } else {
+            // CSRFトークン再生成
+            unset($_SESSION['csrf_token']);
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));            
         }
 
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
 
         // フォームデータ取得とサニタイズ
         // 詳細
         $name               = trim($_POST['product-name'] ?? '');
         $description        = trim($_POST['product-description'] ?? '');
-        $category           = (int)($_POST['product-category'] ?? 0);
+        $category_id        = (int)($_POST['product-category'] ?? 0);
+        $category_map       = [
+            1 => '人気商品',
+            2 => 'チーズケーキサンド',
+            3 => 'アンジェロチーズ',
+            99 => 'その他',
+        ];
+        $category_name = $category_map[$category_id];
         $keyword            = trim($_POST['keyword'] ?? '');
         $size1              = (int)($_POST['size1'] ?? 0);
         $size2              = (int)($_POST['size2'] ?? 0);
@@ -51,7 +61,7 @@
 
         // 各入力バリデーション
         if(empty($name))     {  $errors[] = '商品名が入力されていません。'; }
-        if(empty($category)) {  $errors[] = 'カテゴリーが選択されていません。'; }
+        if(empty($category_id)) {  $errors[] = 'カテゴリーが選択されていません。'; }
         if(!is_numeric($size1) || $size1 <= 0) {  $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
         if(!is_numeric($size2) || $size2 <= 0) {  $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
         if(!is_numeric($price) || $price <= 0) {  $errors[] = '値段には0より大きい数値を入力してください。';  }
@@ -75,11 +85,12 @@
             $pdo2 -> beginTransaction();
 
             // productsテーブルに保存
-            $stmt = $pdo2 -> prepare('insert into products (name,  description,  category_id,  keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
-                                                   values (:name, :description, :category_id, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
+            $stmt = $pdo2 -> prepare('insert into products (name,  description,  category_id, category_name,   keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
+                                                   values (:name, :description, :category_id, :category_name, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
             $stmt -> bindValue(':name'               , $name,               PDO::PARAM_STR);
             $stmt -> bindValue(':description'        , $description,        PDO::PARAM_STR);
-            $stmt -> bindValue(':category_id'        , $category,           PDO::PARAM_INT);
+            $stmt -> bindValue(':category_id'        , $category_id,        PDO::PARAM_INT);
+            $stmt -> bindValue(':category_name'      , $category_name,      PDO::PARAM_STR);
             $stmt -> bindValue(':keyword'            , $keyword,            PDO::PARAM_STR);
             $stmt -> bindValue(':size1'              , $size1,              PDO::PARAM_INT);
             $stmt -> bindValue(':size2'              , $size2,              PDO::PARAM_INT);
@@ -114,8 +125,8 @@
 
                     // 画像を保存
                     if(move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
-                        $stmt = $pdo2 -> prepare('insert into product_images (product_id,  image_path,  is_main)
-                                                                      values (:product_id, :image_path, :is_main)');
+                        $stmt = $pdo2 -> prepare("INSERT INTO product_images (product_id,  image_path,  is_main)
+                                                                      VALUES (:product_id, :image_path, :is_main)");
                         $stmt -> bindValue(':product_id', $product_id,     PDO::PARAM_INT);
                         $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
                         $stmt -> bindValue(':is_main',    $is_main,        PDO::PARAM_INT);
@@ -145,7 +156,8 @@
 
         } catch(Exception $e) {
             $pdo2 -> rollback();
-            $errors[] = 'データベースエラー'.$e->getMessage();
+            error_log('データベース接続エラー:' . $e -> getMessage());
+            $errors[] = 'データベース接続エラーが発生しました。管理者にお問い合わせください';
         }
 
         // セッション固定攻撃対策
@@ -360,6 +372,7 @@
             </aside>
         </div>
     </form>
-    <script type="text/javascript" src="script.js"></script>
+    <script src="JS/sidebar.js"></script> <!-- サイドバー -->
+    <script src="JS/itemAdd.js"></script> <!-- 追加画面用 -->
 </body>
 </html>

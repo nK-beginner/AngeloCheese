@@ -8,35 +8,27 @@
     require_once __DIR__.'/../backend/csrf_token.php';
     require_once __DIR__.'/../Admin/Backend/connection.php';
 
-    // カテゴリー名
-    $categoryNames = [
-        1 => '人気商品',
-        2 => 'チーズケーキサンド',
-        3 => 'アンジェロチーズ',
-        99 => 'その他',
-    ];
-
     // 画像データ取得
-    $stmt = $pdo2 -> prepare('
-        select pi.image_path, p.name, p.tax_included_price, p.category_id
-        from product_images as pi
-        join products as p on pi.product_id = p.id
-        where pi.is_main = 1
-        order by p.id
-    ');
+    $stmt = $pdo2 -> prepare("SELECT pi.image_path, p.name, p.tax_included_price, p.category_id, p.category_name
+        FROM product_images AS pi
+        JOIN products AS p ON pi.product_id = p.id
+        WHERE pi.is_main = 1
+        AND  hidden_at IS NULL
+        ORDER BY p.id
+    ");
     $stmt -> execute();
     $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
     // カテゴリーごとに商品分割
     $categorizedProducts = [];
     foreach($products as $product) {
-        $category = $categoryNames[$product['category_id']];
+        $category = $product['category_name'];
         $categorizedProducts[$category][] = $product;
     }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="jp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
