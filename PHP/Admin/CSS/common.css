@@ -60,7 +60,7 @@ i {
 /********** 全体をgridに指定 **********/
 .grid-container {
     display: grid;
-    grid-template-columns: 215px 1fr; /* サイドバー、詳細書き込み欄、画像ドラッグアンドドロップ欄 */
+    grid-template-columns: 215px 1fr; /* サイドバー、詳細書き込み欄 */
     height: 100%;
 }
 

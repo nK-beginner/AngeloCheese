@@ -373,6 +373,6 @@
         </div>
     </form>
     <script src="JS/sidebar.js"></script> <!-- サイドバー -->
-    <script src="JS/itemAdd.js"></script> <!-- 追加画面用 -->
+    <script src="JS/allItems.js"></script> <!-- 追加一覧用 -->
 </body>
 </html>

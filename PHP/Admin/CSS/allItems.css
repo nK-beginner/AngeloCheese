@@ -3,6 +3,29 @@
 
 
 
+.csv-btn {
+    padding: 23px 25px;
+    background: rgb(155, 255, 155);
+    border: none;
+    position: absolute;
+    bottom: 17px;
+    right: 30px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: filter 0.2s;
+    z-index: 100;
+}
+
+.csv-btn .fa-file-csv {
+    font-size: 25px;
+}
+
+.csv-btn:hover {
+    filter: brightness(130%);
+}
+
 .products {
     display: flex;
     justify-content: center;
@@ -23,10 +46,10 @@
 
 .products .category-section h2 {
     color: #000;
-    font-size: 3.0rem;
+    font-size: 2.6rem;
     position: relative;
     display: inline-block;
-    margin-bottom: 20px;
+    margin-bottom: 13px;
 }
 
 .products .product-container {
@@ -37,7 +60,8 @@
 }
 
 .products .product {
-    width: calc((100% - 40px) / 3);
+    width: calc((100% - 80px) / 3);
+    cursor: pointer;
 }
 
 .products .product img {
@@ -45,20 +69,84 @@
     aspect-ratio: 330 / 380;
     object-fit: cover;
     display: block;
+    transition: opacity 0.2s;
+}
+
+.products .product img:hover {
+    opacity: 0.6;
 }
 
 .products .product h3 {
-    font-size: 2.0rem;
+    font-size: 1.35vw;
     color: #000;
     font-weight: bolder;
 }
 
 .products .product p {
-    font-size: 1.8rem;
+    font-size: 1.25vw;
     color: #000;
+    position: relative;
 }
 
 .products span2 {
     font-size: 1.5rem;
     margin-left: 5px;
+}
+
+.products strong {
+    color: rgb(255, 0, 0); 
+    float: right;
+    position: absolute;
+    right: 0;
+    background: rgb(253, 211, 211);
+    padding: 0 12px;
+}
+
+dialog {
+    /* display: block; */
+    margin: auto;
+    padding: 58px;
+    border: 3px solid var(--gold);
+    border-radius: 12px;
+    width: 400px;
+}
+
+dialog h3 {
+    font-size: 2.4rem;
+    text-align: center;
+}
+
+dialog .btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+}
+
+dialog button {
+    cursor: pointer;
+    border: none;
+    margin-top: 12px;
+    border-radius: 7px;
+    background: none;
+}
+
+dialog .cancel {
+    padding: 15px 15px;
+    border: 2px solid var(--gold);
+    transition: background-color 0.2s;
+}
+
+dialog .cancel:hover {
+    background: rgb(228, 228, 228);
+}
+
+dialog .confirm {
+    padding: 15px 36px;
+    background: var(--hoveredGold);
+    transition: filter 0.2s;
+}
+
+dialog .confirm:hover {
+    filter: brightness(115%);
 }
