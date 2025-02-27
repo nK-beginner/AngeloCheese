@@ -9,7 +9,6 @@
     require_once __DIR__ . '/Backend/csrf_token.php';
 
     $errors = $_SESSION['errors'] ?? [];
-
     unset($_SESSION['errors']);
 
     // データ取得・表示

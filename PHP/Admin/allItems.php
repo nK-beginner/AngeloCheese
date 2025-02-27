@@ -113,14 +113,24 @@
                                 </div>
                                 <div class="product-container">
                                     <?php foreach($items as $item): ?>
-                                        <div class="product" data-id="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <form action="itemEdit.php" method="POST" class="product">
+                                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                             <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
                                             <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                             <p>
                                                 ¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2>
                                                 <?php echo !is_null($item['hidden_at']) ? '<strong>非表示中</strong>' : ''; ?>
                                             </p>
-                                        </div>
+                                            <dialog>
+                                                <div class="dialog-container">
+                                                    <h3>商品を編集しますか？</h3>
+                                                    <div class="btns">
+                                                        <button class="cancel">キャンセル</button>
+                                                        <button class="confirm">はい</button>
+                                                    </div>
+                                                </div>
+                                            </dialog>
+                                        </form>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
@@ -128,16 +138,6 @@
                     <?php endif; ?>
                 </div>
             </div>
-
-            <dialog>
-                <div class="dialog-container">
-                    <h3>商品を編集しますか？</h3>
-                    <div class="btns">
-                        <button class="cancel">キャンセル</button>
-                        <button class="confirm">はい</button>
-                    </div>
-                </div>
-            </dialog>
         </main>
     </div>
     <script src="JS/sidebar.js"></script> <!-- サイドバー -->

@@ -1,0 +1,13 @@
+
+
+
+
+
+tr:not(:first-of-type):hover {
+    filter: brightness(80%) !important;
+}
+
+.choose-data {
+    margin-top: 30px;
+    margin-bottom: -20px;
+}
