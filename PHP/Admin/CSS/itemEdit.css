@@ -55,6 +55,11 @@ main a {
     font-weight: bolder;
 }
 
+.form-block .sub-block {
+    display: flex;
+    flex-direction: column;
+}
+
 .product-pics .product-image {
     width: 400px;
     aspect-ratio: 330/380;

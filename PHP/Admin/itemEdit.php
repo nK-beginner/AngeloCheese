@@ -99,12 +99,20 @@
                                 <p>×</p>
                                 <input class="user-input" type="text" value="<?php echo htmlspecialchars($editItem['size2'], ENT_QUOTES, 'UTF-8'); ?>">                                
                             </div>
-
                         </div>
 
                         <!-- 金額など -->
                         <div class="form-block">
-                            
+                            <div class="block">
+                                <div class="sub-block">
+                                    <h3>価格</h3>
+                                    <input class="user-input" type="text" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
+                                </div>
+                                <div class="sub-block">
+                                    <h3>税込み価格</h3>
+                                    <input class="user-input" type="text" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>                                
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 消費期限 -->
