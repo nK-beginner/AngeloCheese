@@ -3,11 +3,76 @@
 
 
 
+main a {
+    font-size: 2.0rem;
+    border-bottom: 1px solid #000;
+}
+
+.edit-grid-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+}
+
+.form-block {
+    margin-top: 15px;
+    border: 1px solid #888888;
+    border-radius: 2px;
+    padding: 9px 9px 13px 9px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-block .user-input {
+    padding: 7px;
+    font-size: 1.4rem !important;
+    border-radius: 4px;
+    border: 0.4px solid #000;
+}
+
+.form-block h3 {
+    font-size: 1.9rem;
+}
+
+.form-block h3:not(:first-of-type) {
+    margin-top: 17px;
+}
+
+.form-block textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.form-block .block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 22px;
+}
+
+.form-block .block p {
+    font-size: 3.0rem;
+    font-weight: bolder;
+}
+
+.product-pics .product-image {
+    width: 400px;
+    aspect-ratio: 330/380;
+    object-fit: cover;
+}
+
+/* 一覧 */
 tr:not(:first-of-type):hover {
     filter: brightness(80%) !important;
 }
 
+tr .product-image {
+    width: 50px;
+    aspect-ratio: 350/350;
+    object-fit: cover;
+}
+
 .choose-data {
-    margin-top: 30px;
-    margin-bottom: -20px;
+    margin: 30px 0 0 3px;
+    font-size: 1.7rem;
 }

@@ -3,6 +3,10 @@
 
 
 
+main h1 {
+    margin-bottom: 20px;
+}
+
 .table-records {
     overflow-x: auto;
     overflow-y: auto;
@@ -12,7 +16,6 @@
 table {
     width: 140%;
     border-collapse: collapse;
-    margin: 20px 0;
 }
 
 th,

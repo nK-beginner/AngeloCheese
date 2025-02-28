@@ -112,9 +112,8 @@
                             <th>更新日</th>   
                             <th>商品表示状態</th>
                         </tr>
-                        <?php 
-                            $productCnt = count($products);
-                            for($i = 0; $i < $productCnt; $i++):
+                        <?php
+                            for($i = 0; $i < count($products); $i++):
                                 $isHidden = !is_null($products[$i]['hidden_at']); // hidden_at が null でなければ true
                         ?>
                         <tr style="color: <?php echo $isHidden ? 'red' : 'inherit'; ?>;">
