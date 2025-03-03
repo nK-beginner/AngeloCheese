@@ -23,6 +23,10 @@ main a {
     flex-direction: column;
 }
 
+.form-block input[readonly] {
+    background: rgb(204, 204, 204);
+}
+
 .form-block .user-input {
     padding: 7px;
     font-size: 1.4rem !important;
@@ -43,21 +47,42 @@ main a {
     min-height: 150px;
 }
 
-.form-block .block {
+.form-block .h-block {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 22px;
 }
 
-.form-block .block p {
-    font-size: 3.0rem;
+.form-block .h-block .number {
+    width: 45px;
+    text-align: center;
+}
+
+.form-block .h-block p {
+    font-size: 2.0rem;
     font-weight: bolder;
 }
 
-.form-block .sub-block {
+.form-block .v-block {
     display: flex;
     flex-direction: column;
+}
+
+.form-block .radio {
+    font-size: 2.0rem !important;
+}
+
+.form-block .price-block {
+    margin-top: 17px;
+}
+
+.form-block .v-block .cost {
+    margin-top: 17px;
+}
+
+.form-block .v-block .cost-input {
+    width: 185px;
 }
 
 .product-pics .product-image {

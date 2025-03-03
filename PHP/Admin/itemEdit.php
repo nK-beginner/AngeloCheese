@@ -42,6 +42,32 @@
             $errors[] = 'データベース接続エラー:' . $e -> getMessage();
         }
     }
+
+    // 商品情報更新
+    // $flag
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
+        }
+    
+        // CSRFトークン再生成
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+        try {
+            $pdo2 -> beginTransaction();
+
+            $newProductName = $_POST['product-name'];
+            
+
+        } catch(PDOException $e){
+            $pdo2 -> rollback();
+            error_log('データベース接続エラー:' . $e -> getMessage());
+        }
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -70,19 +96,26 @@
             <?php if($editItem): ?>
                 <a href="itemEdit.php">一覧へ</a>
                 <!-- 商品編集画面 -->
-                <div class="edit-grid-container">
+                <form class="edit-grid-container" action="itemEdit.php" method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">  
                     <!-- 商品詳細 -->
                     <div class="product-info">
                         <!-- 商品名など -->
                         <div class="form-block">
+                            <h3>商品表示状態</h3>
+                            <div class="v-block">
+                                <label class="radio"><input type="radio" value="on"  id="on"  name="display" <?php if($editItem['hidden_at'] == NULL) echo 'checked'; ?> >表示</label>
+                                <label class="radio"><input type="radio" value="off" id="off" name="display" <?php if($editItem['hidden_at'] != NULL) echo 'checked'; ?> >非表示</label>
+                            </div>
+
                             <h3>商品名</h3>
-                            <input class="user-input" type="text" value="<?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input class="user-input" type="text" name="product-name" value="<?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?>">
 
                             <h3>商品説明</h3>
-                            <textarea class="user-input" type="text"><?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                            <textarea class="user-input" type="text" name="product-description"><?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?></textarea>
 
                             <h3>カテゴリー名</h3>
-                            <select class="user-input">
+                            <select class="user-input" name="product-category">
                                 <option value="0" selected>選択してください。</option>
                                 <option value="1">人気商品</option>
                                 <option value="2">チーズケーキサンド</option>
@@ -91,33 +124,61 @@
                             </select>
 
                             <h3>キーワード</h3>
-                            <input class="user-input" type="text" value="<?php echo htmlspecialchars($editItem['keyword'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input class="user-input" type="text" name="keyword" value="<?php echo htmlspecialchars($editItem['keyword'], ENT_QUOTES, 'UTF-8'); ?>">
 
                             <h3>サイズ(cm)</h3>
-                            <div class="block">
-                                <input class="user-input" type="text" value="<?php echo htmlspecialchars($editItem['size1'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <div class="h-block">
+                                <input class="user-input number" type="text" inputmode="numeric" maxlength="3" name="size1" value="<?php echo htmlspecialchars($editItem['size1'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <p>×</p>
-                                <input class="user-input" type="text" value="<?php echo htmlspecialchars($editItem['size2'], ENT_QUOTES, 'UTF-8'); ?>">                                
+                                <input class="user-input number" type="text" inputmode="numeric" maxlength="3" name="size2" value="<?php echo htmlspecialchars($editItem['size2'], ENT_QUOTES, 'UTF-8'); ?>">                                
                             </div>
                         </div>
 
                         <!-- 金額など -->
                         <div class="form-block">
-                            <div class="block">
-                                <div class="sub-block">
+                            <h3>税率</h3>
+                            <div class="v-block tax-rate">
+                                <label class="radio"><input type="radio" value="0.1"  pattern="\d*" id="tax10" name="tax-rate" <?php if($editItem['tax_rate'] == '0.10') echo 'checked'; ?> >10%</label>
+                                <label class="radio"><input type="radio" value="0.08" pattern="\d*" id="tax8"  name="tax-rate" <?php if($editItem['tax_rate'] == '0.08') echo 'checked'; ?> >8%</label>
+                            </div>
+                            
+                            <div class="h-block price-block">
+                                <div class="v-block">
                                     <h3>価格</h3>
-                                    <input class="user-input" type="text" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input class="price user-input" type="text" inputmode="numeric" id="price" name="price" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
-                                <div class="sub-block">
+
+                                <div class="v-block">
                                     <h3>税込み価格</h3>
-                                    <input class="user-input" type="text" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>                                
+                                    <input class="user-input tax-included-price-display" id="tax-included-price-display" type="text" inputmode="numeric" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>    
+                                    <!-- データ送信用（hidden） -->
+                                    <input type="hidden" id="tax-included-price-hidden" name="tax-included-price" value="0">                          
                                 </div>
+                            </div>
+
+                            <div class="v-block">
+                                <h3 class="cost">原価</h3>
+                                <input class="user-input cost-input" type="text" name="cost" inputmode="numeric" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['cost']), ENT_QUOTES, 'UTF-8'); ?>">                                
                             </div>
                         </div>
 
                         <!-- 消費期限 -->
                         <div class="form-block">
-                            
+                            <h3>消費期限</h3>
+                            <div class="h-block">
+                                <input class="user-input number" type="text" name="expirationDate-min1" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['expirationdate_min1']), ENT_QUOTES, 'UTF-8'); ?>" maxlength="3">
+                                <p>～</p>
+                                <input class="user-input number" type="text" name="expirationDate-max1" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['expirationdate_max1']), ENT_QUOTES, 'UTF-8'); ?>" maxlength="3">
+                                <p>日間</p>
+                            </div>
+
+                            <h3>消費期限(解凍後)</h3>
+                            <div class="h-block">
+                                <input class="user-input number" type="text" name="expirationDate-min2" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['expirationdate_min2']), ENT_QUOTES, 'UTF-8'); ?>" maxlength="3">
+                                <p>～</p>
+                                <input class="user-input number" type="text" name="expirationDate-max2" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['expirationdate_max2']), ENT_QUOTES, 'UTF-8'); ?>" maxlength="3">
+                                <p>日間</p>
+                            </div>
                         </div>
                     </div>
 
@@ -126,7 +187,7 @@
                         <img class="product-image" src="<?php echo htmlspecialchars($editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
                     </div>
                     
-                </div>
+            </form>
 
             <?php else: ?>
                 <!-- 商品一覧表示 -->
@@ -193,6 +254,6 @@
         </main>
     </div>
     <script src="JS/sidebar.js"></script> <!-- サイドバー -->
-    <script src="JS/itemEdit.js"></script> <!-- サイドバー -->
+    <script src="JS/itemEdit.js"></script> <!-- 編集用 -->
 </body>
 </html>

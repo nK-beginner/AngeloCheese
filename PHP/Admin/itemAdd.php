@@ -266,7 +266,7 @@
                         <div class="flex-block price-block">
                             <!-- 値段 -->
                             <div class="block">
-                                <label for="price" class="label">値段</label>
+                                <label for="price" class="label">価格</label>
                                 <input type="text" pattern="\d*" class="price" id="price" name="price" inputmode="numeric" maxlength="5" required>                        
                             </div>
 
@@ -373,6 +373,6 @@
         </div>
     </form>
     <script src="JS/sidebar.js"></script> <!-- サイドバー -->
-    <script src="JS/allItems.js"></script> <!-- 追加一覧用 -->
+    <script src="JS/itemAdd.js"></script> <!-- 追加一覧用 -->
 </body>
 </html>
