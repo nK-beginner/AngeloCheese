@@ -44,8 +44,6 @@
     }
 
     // 商品情報更新
-    // $flag
-
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
         if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
@@ -59,14 +57,76 @@
         try {
             $pdo2 -> beginTransaction();
 
-            $newProductName = $_POST['product-name'];
-            
+            $itemId             = (int)$_POST['item_id'];
+            $name               = $_POST['product-name'];
+            $description        = $_POST['product-description'];
+            $categoryId         = (int)$_POST['product-category'];
+            $categoryMap       = [
+                1 => '人気商品',
+                2 => 'チーズケーキサンド',
+                3 => 'アンジェロチーズ',
+                99 => 'その他',
+            ];
+            $categoryName       = $categoryMap[$categoryId];
+            $keyword            = $_POST['keyword'];
+            $size1              = (int)$_POST['size1'];
+            $size2              = (int)$_POST['size2'];
+            $taxRate            = (float)$_POST['tax-rate'];
+            $price              = (int)$_POST['price'];
+            $taxIncludedPrice   = (int)$_POST['tax-included-price'];
+            $cost               = (int)$_POST['cost'];
+            $expirationDateMin1 = (int)$_POST['expirationDate-min1'];
+            $expirationDateMax1 = (int)$_POST['expirationDate-max1'];
+            $expirationDateMin2 = (int)$_POST['expirationDate-min2'];
+            $expirationDateMax2 = (int)$_POST['expirationDate-max2'];
+            $hiddenAt           = NULL;
+            if( $_POST['display'] === 'off' ) {
+                $hiddenAt = "NOW()";
+            }
+
+            $stmt = $pdo2 -> prepare("UPDATE products SET 
+                                                name = :name, 
+                                                description = :description,
+                                                category_id = :category_id, 
+                                                category_name = :category_name, 
+                                                keyword = :keyword, 
+                                                size1 = :size1, 
+                                                size2 = :size2, 
+                                                tax_rate = :tax_rate, 
+                                                price = :price, 
+                                                tax_included_price = :tax_included_price,
+                                                cost = :cost, 
+                                                expirationdate_min1 = :expirationDate_min1, 
+                                                expirationdate_max1 = :expirationDate_max1,
+                                                expirationdate_min2 = :expirationDate_min2,
+                                                expirationdate_max2 = :expirationDate_max2, 
+                                                hidden_at = " . ($hiddenAt ? "NOW()" : "NULL") . " 
+                                                WHERE id = :id");
+            $stmt -> bindValue(':name'               , $name,               PDO::PARAM_STR);
+            $stmt -> bindValue(':description'        , $description,        PDO::PARAM_STR);
+            $stmt -> bindValue(':category_id'        , $categoryId,         PDO::PARAM_INT);
+            $stmt -> bindValue(':category_name'      , $categoryName,       PDO::PARAM_STR);
+            $stmt -> bindValue(':keyword'            , $keyword,            PDO::PARAM_STR);
+            $stmt -> bindValue(':size1'              , $size1,              PDO::PARAM_INT);
+            $stmt -> bindValue(':size2'              , $size2,              PDO::PARAM_INT);
+            $stmt -> bindValue(':tax_rate'           , $taxRate,            PDO::PARAM_STR);
+            $stmt -> bindValue(':price'              , $price,              PDO::PARAM_INT);
+            $stmt -> bindValue(':tax_included_price' , $taxIncludedPrice,   PDO::PARAM_INT);
+            $stmt -> bindValue(':cost'               , $cost,               PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_min1', $expirationDateMin1, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_max1', $expirationDateMax1, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_min2', $expirationDateMin2, PDO::PARAM_INT);
+            $stmt -> bindValue(':expirationDate_max2', $expirationDateMax2, PDO::PARAM_INT);
+            $stmt -> bindValue(':id'                 , $itemId,             PDO::PARAM_INT);
+            $stmt -> execute();
+
+            $pdo2 -> commit();
+            header('Location: itemEdit.php');
 
         } catch(PDOException $e){
             $pdo2 -> rollback();
             error_log('データベース接続エラー:' . $e -> getMessage());
         }
-
     }
 ?>
 
@@ -98,29 +158,30 @@
                 <!-- 商品編集画面 -->
                 <form class="edit-grid-container" action="itemEdit.php" method="POST">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">  
+                    <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($editItem['id'], ENT_QUOTES, 'UTF-8'); ?>">
                     <!-- 商品詳細 -->
                     <div class="product-info">
                         <!-- 商品名など -->
                         <div class="form-block">
                             <h3>商品表示状態</h3>
                             <div class="v-block">
-                                <label class="radio"><input type="radio" value="on"  id="on"  name="display" <?php if($editItem['hidden_at'] == NULL) echo 'checked'; ?> >表示</label>
-                                <label class="radio"><input type="radio" value="off" id="off" name="display" <?php if($editItem['hidden_at'] != NULL) echo 'checked'; ?> >非表示</label>
+                                <label class="radio"><input type="radio" value="on"  id="on"  name="display" <?php if($editItem['hidden_at'] === NULL) echo 'checked'; ?> >表示</label>
+                                <label class="radio"><input type="radio" value="off" id="off" name="display" <?php if($editItem['hidden_at'] !== NULL) echo 'checked'; ?> >非表示</label>
                             </div>
 
                             <h3>商品名</h3>
                             <input class="user-input" type="text" name="product-name" value="<?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?>">
 
                             <h3>商品説明</h3>
-                            <textarea class="user-input" type="text" name="product-description"><?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                            <textarea class="user-input" type="text" name="product-description"><?php echo htmlspecialchars($editItem['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
 
                             <h3>カテゴリー名</h3>
                             <select class="user-input" name="product-category">
-                                <option value="0" selected>選択してください。</option>
-                                <option value="1">人気商品</option>
-                                <option value="2">チーズケーキサンド</option>
-                                <option value="3">アンジェロチーズ</option>
-                                <option value="99">その他</option>
+                                <option value="0"  <?php if($editItem['category_id'] == 0) echo 'selected'; ?>>選択してください。</option>
+                                <option value="1"  <?php if($editItem['category_id'] == 1) echo 'selected'; ?>>人気商品</option>
+                                <option value="2"  <?php if($editItem['category_id'] == 2) echo 'selected'; ?>>チーズケーキサンド</option>
+                                <option value="3"  <?php if($editItem['category_id'] == 3) echo 'selected'; ?>>アンジェロチーズ</option>
+                                <option value="99" <?php if($editItem['category_id'] ==99) echo 'selected'; ?>>その他</option>
                             </select>
 
                             <h3>キーワード</h3>
@@ -138,27 +199,27 @@
                         <div class="form-block">
                             <h3>税率</h3>
                             <div class="v-block tax-rate">
-                                <label class="radio"><input type="radio" value="0.1"  pattern="\d*" id="tax10" name="tax-rate" <?php if($editItem['tax_rate'] == '0.10') echo 'checked'; ?> >10%</label>
-                                <label class="radio"><input type="radio" value="0.08" pattern="\d*" id="tax8"  name="tax-rate" <?php if($editItem['tax_rate'] == '0.08') echo 'checked'; ?> >8%</label>
+                                <label class="radio" for="tax10"><input type="radio" value="0.1"  pattern="\d*" id="tax10" name="tax-rate" <?php if($editItem['tax_rate'] == '0.10') echo 'checked'; ?> >10%</label>
+                                <label class="radio" for="tax8" ><input type="radio" value="0.08" pattern="\d*" id="tax8"  name="tax-rate" <?php if($editItem['tax_rate'] == '0.08') echo 'checked'; ?> >8%</label>
                             </div>
                             
                             <div class="h-block price-block">
                                 <div class="v-block">
                                     <h3>価格</h3>
-                                    <input class="price user-input" type="text" inputmode="numeric" id="price" name="price" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input class="price user-input" type="text" inputmode="numeric" id="price" name="price" value="<?php echo htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
                                 </div>
 
                                 <div class="v-block">
                                     <h3>税込み価格</h3>
-                                    <input class="user-input tax-included-price-display" id="tax-included-price-display" type="text" inputmode="numeric" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>    
+                                    <input class="user-input tax-included-price-display" id="tax-included-price-display" type="text" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>    
                                     <!-- データ送信用（hidden） -->
-                                    <input type="hidden" id="tax-included-price-hidden" name="tax-included-price" value="0">                          
+                                    <input type="hidden" id="tax-included-price-hidden" name="tax-included-price" value="">
                                 </div>
                             </div>
 
                             <div class="v-block">
                                 <h3 class="cost">原価</h3>
-                                <input class="user-input cost-input" type="text" name="cost" inputmode="numeric" value="<?php echo '¥' . htmlspecialchars(number_format($editItem['cost']), ENT_QUOTES, 'UTF-8'); ?>">                                
+                                <input class="user-input cost-input" type="text" name="cost" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['cost']), ENT_QUOTES, 'UTF-8'); ?>">                                
                             </div>
                         </div>
 
@@ -180,6 +241,7 @@
                                 <p>日間</p>
                             </div>
                         </div>
+                        <input type="submit">
                     </div>
 
                     <!-- 商品画像 -->
@@ -212,8 +274,8 @@
                             <th>消費期限2</th>
                             <th>消費期限(解凍後)1</th>
                             <th>消費期限(解凍後)2</th>
-                            <th>作成日</th>
-                            <th>更新日</th>   
+                            <!-- <th>作成日</th>
+                            <th>更新日</th>    -->
                             <th>商品表示状態</th>
                         </tr>
                         <?php 
@@ -237,8 +299,8 @@
                             <td><?php echo htmlspecialchars($products[$i]['expirationdate_max1'], ENT_QUOTES, 'UTF-8'); ?>日</td>
                             <td><?php echo htmlspecialchars($products[$i]['expirationdate_min2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
                             <td><?php echo htmlspecialchars($products[$i]['expirationdate_max2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
-                            <td><?php echo htmlspecialchars($products[$i]['created_at'], ENT_QUOTES, 'UTF-8'); ?></td>
-                            <td><?php echo htmlspecialchars($products[$i]['updated_at'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <!-- <td><?php // echo htmlspecialchars($products[$i]['created_at'], ENT_QUOTES, 'UTF-8'); ?></td> -->
+                            <!-- <td><?php // echo htmlspecialchars($products[$i]['updated_at'], ENT_QUOTES, 'UTF-8'); ?></td> -->
                             <td><?php echo $isHidden ? '非表示中' : ''; ?></td>
                         </tr>
                         <?php endfor; ?>

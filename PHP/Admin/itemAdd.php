@@ -23,8 +23,6 @@
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));            
         }
 
-
-
         // フォームデータ取得とサニタイズ
         // 詳細
         $name               = trim($_POST['product-name'] ?? '');
@@ -36,7 +34,7 @@
             3 => 'アンジェロチーズ',
             99 => 'その他',
         ];
-        $category_name = $category_map[$category_id];
+        $category_name      = $category_map[$category_id];
         $keyword            = trim($_POST['keyword'] ?? '');
         $size1              = (int)($_POST['size1'] ?? 0);
         $size2              = (int)($_POST['size2'] ?? 0);

@@ -37,16 +37,47 @@ const taxIncludedHidden = document.getElementById("tax-included-price-hidden");
 const taxRadios         = document.querySelectorAll("input[name='tax-rate']");
 
 const calculateTaxIncludedPrice = () => {
-    let price            = parseFloat(priceInput.value.replace(/[^0-9.]/g, "")) || 0;
-    let taxRate          = document.querySelector("input[name='tax-rate']:checked").value;
-    let taxIncludedPrice = Math.floor(price * (1 + parseFloat(taxRate)));
+    let price = priceInput.value.replace(/[^0-9.]/g, "");
+    price = price ? parseFloat(price) : 0;
+
+    let taxRateElement = document.querySelector("input[name='tax-rate']:checked");
+    let taxRate = taxRateElement ? parseFloat(taxRateElement.value) : 0.0;
+
+    let taxIncludedPrice = Math.floor(price * (1 + taxRate));
 
     taxIncludedInput.value  = `¥${taxIncludedPrice.toLocaleString()}`;
-    taxIncludedHidden.value = taxIncludedPrice.toFixed(0);
+    taxIncludedHidden.value = taxIncludedPrice;
 }
 
+// イベントリスナーを追加
 priceInput.addEventListener("input", calculateTaxIncludedPrice);
 taxRadios.forEach(radio => radio.addEventListener("change", calculateTaxIncludedPrice));
+
+
+
+
+const inputs = document.querySelectorAll('.user-input');
+inputs.forEach(input => {
+    input.addEventListener('input', () => {
+        console.log('changed:', input.value);
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
