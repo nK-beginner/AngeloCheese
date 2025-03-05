@@ -31,41 +31,26 @@ numInputs.forEach(numInput => {
 
 
 /********** 税込み価格自動計算 **********/
-const priceInput        = document.querySelector(".user-input.price");
-const taxIncludedInput  = document.querySelector(".tax-included-price-display");
-const taxIncludedHidden = document.getElementById("tax-included-price-hidden");
-const taxRadios         = document.querySelectorAll("input[name='tax-rate']");
-
 const calculateTaxIncludedPrice = () => {
-    let price = priceInput.value.replace(/[^0-9.]/g, "");
-    price = price ? parseFloat(price) : 0;
+    const price   = parseFloat(document.getElementById('price').value) || 0;
+    const taxRate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value) || 0.1;
 
-    let taxRateElement = document.querySelector("input[name='tax-rate']:checked");
-    let taxRate = taxRateElement ? parseFloat(taxRateElement.value) : 0.0;
+    // 税込み価格を計算
+    const taxIncludedPrice = (price * (1 + taxRate)).toFixed(0);
 
-    let taxIncludedPrice = Math.floor(price * (1 + taxRate));
+    // 表示用フィールドの更新
+    document.getElementById('tax-included-price-show').value = `¥${parseInt(taxIncludedPrice).toLocaleString()}`;
 
-    taxIncludedInput.value  = `¥${taxIncludedPrice.toLocaleString()}`;
-    taxIncludedHidden.value = taxIncludedPrice;
-}
+    // 送信用 hidden フィールドの更新
+    document.getElementById('tax-included-price-hidden').value = taxIncludedPrice;
+};
 
-// イベントリスナーを追加
-priceInput.addEventListener("input", calculateTaxIncludedPrice);
-taxRadios.forEach(radio => radio.addEventListener("change", calculateTaxIncludedPrice));
-
-
-
-
-const inputs = document.querySelectorAll('.user-input');
-inputs.forEach(input => {
-    input.addEventListener('input', () => {
-        console.log('changed:', input.value);
-    });
+// イベントリスナー追加
+document.getElementById('price').addEventListener('input', calculateTaxIncludedPrice);
+document.querySelectorAll('input[name="tax-rate"]').forEach(radio => {
+    radio.addEventListener('change', calculateTaxIncludedPrice);
 });
-
-
-
-
+document.addEventListener('DOMContentLoaded', calculateTaxIncludedPrice);
 
 
 

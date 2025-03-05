@@ -19,20 +19,17 @@
 
             <li class="item">
                 <div class="item-title">
-                    <h3>注文管理</h3>
+                    <h3>顧客管理</h3>
                     <i class="fa-solid fa-angle-down"></i>
                 </div>
                 <ul class="submenu">
-                    <!-- <li>商品追加</li>
-                    <li>商品削除</li>
-                    <li>商品編集</li>
-                    <li>商品一覧</li> -->
+                    <a href="allUsers.php"><li>顧客一覧</li></a>
                 </ul>
             </li>
 
             <li class="item">
                 <div class="item-title">
-                    <h3>顧客管理</h3>
+                    <h3>注文管理</h3>
                     <i class="fa-solid fa-angle-down"></i>
                 </div>
                 <ul class="submenu">

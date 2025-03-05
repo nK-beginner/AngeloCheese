@@ -262,7 +262,7 @@
                             </div>
                         </div>
                         <div class="flex-block price-block">
-                            <!-- 値段 -->
+                            <!-- 価格 -->
                             <div class="block">
                                 <label for="price" class="label">価格</label>
                                 <input type="text" pattern="\d*" class="price" id="price" name="price" inputmode="numeric" maxlength="5" required>                        

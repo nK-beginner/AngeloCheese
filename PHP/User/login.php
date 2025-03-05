@@ -54,7 +54,7 @@
             $stmt = $pdo -> prepare('select * from test_users where email = :email limit 1');
             $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
             $stmt -> execute();
-            $user = $stmt->fetch();
+            $user = $stmt -> fetch();
 
             // ユーザーが存在し、ハッシュ化パスワードと等しければ通す
             if($user && password_verify($password, $user['password'])) {

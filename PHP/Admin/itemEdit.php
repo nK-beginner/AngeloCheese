@@ -211,9 +211,9 @@
 
                                 <div class="v-block">
                                     <h3>税込み価格</h3>
-                                    <input class="user-input tax-included-price-display" id="tax-included-price-display" type="text" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>" readonly>    
+                                    <input type="text" class="user-input" id="tax-included-price-show" readonly value="¥0">
                                     <!-- データ送信用（hidden） -->
-                                    <input type="hidden" id="tax-included-price-hidden" name="tax-included-price" value="">
+                                    <input type="hidden" id="tax-included-price-hidden" name="tax-included-price" value="0">
                                 </div>
                             </div>
 
@@ -272,8 +272,8 @@
                             <th>原価</th>
                             <th>消費期限1</th>
                             <th>消費期限2</th>
-                            <th>消費期限(解凍後)1</th>
-                            <th>消費期限(解凍後)2</th>
+                            <th>消費期限1<br>(解凍後)</th>
+                            <th>消費期限2<br>(解凍後)</th>
                             <!-- <th>作成日</th>
                             <th>更新日</th>    -->
                             <th>商品表示状態</th>
