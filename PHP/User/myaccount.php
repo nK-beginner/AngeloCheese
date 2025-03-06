@@ -2,6 +2,14 @@
 
 
 
+<?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    require_once __DIR__.'/../backend/connection.php';
+    require_once __DIR__.'/../backend/csrf_token.php';
+?>
+
 
 <!DOCTYPE html>
 <html lang="jp">
@@ -14,10 +22,10 @@
     <?php include __DIR__.'/../common/headTags.php'; ?>
 
     <!-- アカウント情報用CSS -->
-    <link rel="stylesheet" href="../css/myaccount.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../css/myAccount.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+<?php include __DIR__.'/../common/header.php'; ?>
 
     <main>
         <div class="main-container">
@@ -27,8 +35,7 @@
                 <div class="profile-item">
                     <p>ユーザー名</p>
                     <div class="content">
-                        <h3>山田 太郎</h3>
-                        <a href="#">変更</a>
+                        <h3><?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 
@@ -36,8 +43,7 @@
                 <div class="profile-item">
                     <p>メールアドレス</p>
                     <div class="content">
-                        <h3>t.yamada@example.com</h3>
-                        <a href="#">変更</a>
+                        <h3><?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 
@@ -46,12 +52,15 @@
                     <p>パスワード</p>
                     <div class="content">
                         <h3 style="letter-spacing: 2px;">************</h3>
-                        <a href="#">変更</a>
                     </div>
                 </div>
 
                 <!-- 削除ボタン -->
-                <a href="#" class="delete-account">退会する</a>
+                <div class="h-block">
+                    <a href="#" class="edit">編集</a>
+                    <a href="unsubscribe.php" class="delete-account">退会</a>
+                </div>
+                
             </div>
             <!-- ログアウト -->
             <div class="logout-container">
@@ -66,7 +75,7 @@
             <p>ログアウトします。よろしいですか？</p>
             <div class="logout-btns">
                 <button class="cancel logout-btn">キャンセル</button>
-                <button class="confirm logout-btn">OK</button>                    
+                <button class="confirm logout-btn">ログアウト</button>
             </div>
         </div>
     </div>

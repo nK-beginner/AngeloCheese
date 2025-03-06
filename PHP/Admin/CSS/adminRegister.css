@@ -18,19 +18,23 @@
     --bgblack3: #272727;    /* インプット内、フッター背景色 */
 }
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Times New Roman', Times, serif;
     display: flex;
     flex-direction: column;
-    height: 100vh;
 }
 
-main {
+.main-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 675px;
-    width: 1080px;
+    max-width: 1080px;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -45,6 +49,7 @@ form {
     padding: 22px;
     background: #fcfcfc;
     box-shadow: 10px 14px 16px rgba(0, 0, 0, 0.3);
+    margin: 70px 0;
 }
 
 form h1 {
@@ -55,11 +60,21 @@ form img {
     width: 70px;
 }
 
+form .name-block {
+    display: flex;
+    flex-direction: row;
+}
+
+form .name-block input {
+    width: 80% !important;
+}
+
 form .block {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    margin-top: 32px;
 }
 
 form .block h3 {
@@ -68,25 +83,38 @@ form .block h3 {
 
 form .block input {
     width: 90%;
-    border-radius: 7px;
+    border-radius: 12px;
     height: 30px;
-    border: 1px solid #000;
+    border: 1px solid #8d8d8d;
     padding: 5px 12px;
     margin: 0 auto;
     font-size: 1.3rem;
     background: #fcfcfc;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 form .submit-btn {
-    padding: 17px 39px;
-    margin-top: 23px;
+    padding: 17px 49px;
+    margin-top: 19px;
     background: var(--gold);
+    font-size: 1rem;
     border: none;
-    border-radius: 7px;
+    border-radius: 9px;
     cursor: pointer;
     transition: background-color 0.2s;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 form .submit-btn:hover {
     background: var(--hoveredGold);
+}
+
+.error-container {
+    background: rgb(255, 194, 194);
+    width: 93%;
+}
+
+.error-container p {
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
 }

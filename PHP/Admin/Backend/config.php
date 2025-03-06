@@ -1,11 +1,12 @@
 <?php
-    // セッションが無いときだけ開始
+    // セッションが無ければ開始
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
-    };
+    }
 
-    // if(!isset($_SESSION['admin'])) {
-
-    // }
-
+    // ログイン状態なければログイン画面へ強制移動
+    if(!isset($_SESSION['adminId'])) {
+        header('Location: adminLogin.php');
+        exit;
+    }
 ?>

@@ -12,6 +12,7 @@ mailInputs.forEach(mailInput =>{
     });
 });
 
+
 /********** レビュー画面 **********/
 // 星数
 const stars = document.querySelectorAll('.star');
@@ -59,7 +60,7 @@ logoutBtn.addEventListener('click', (e) => {
 });
 
 confirmBtn.addEventListener('click', () => {
-    window.location.href = 'logout.html';
+    window.location.href = 'logout.php';
 });
 
 cancelBtn.addEventListener('click', () => {

@@ -1,1 +1,1 @@
-select * from products;
+select * from admin

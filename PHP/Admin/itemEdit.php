@@ -7,6 +7,7 @@
     session_start();
     require_once __DIR__.'/../Admin/Backend/connection.php';
     require_once __DIR__.'/../Admin/Backend/csrf_token.php';
+    require_once __DIR__.'/../Admin/Backend/config.php';
 
     $errors = $_SESSION['errors'] ?? [];
     unset($_SESSION['errors']);

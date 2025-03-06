@@ -1,31 +1,36 @@
+
+
+
+
+
 <?php
-require_once __DIR__ . '/backend/connection.php';
+    require_once __DIR__ . '/backend/connection.php';
+    require_once __DIR__.'/../Admin/Backend/config.php';
 
-// カテゴリーIDに対応するカテゴリー名
-$categoryNames = [
-    1 => '人気商品',
-    2 => 'チーズケーキサンド',
-    3 => 'チーズケーキ',
-    99 => 'その他'
-];
+    // カテゴリーIDに対応するカテゴリー名
+    $categoryNames = [
+        1 => '人気商品',
+        2 => 'チーズケーキサンド',
+        3 => 'チーズケーキ',
+        99 => 'その他'
+    ];
 
-// データベースから商品情報を取得（メイン画像のみ）
-$stmt = $pdo2->prepare("
-    SELECT pi.image_path, p.name, p.category_id
-    FROM product_images pi
-    JOIN products p ON pi.product_id = p.id
-    WHERE pi.is_main = 1
-    ORDER BY p.category_id, p.id
-");
-$stmt->execute();
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // データベースから商品情報を取得（メイン画像のみ）
+    $stmt = $pdo2->prepare("SELECT pi.image_path, p.name, p.category_id
+        FROM product_images pi
+        JOIN products p ON pi.product_id = p.id
+        WHERE pi.is_main = 1
+        ORDER BY p.category_id, p.id
+    ");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// カテゴリーごとに商品を分類
-$categorizedProducts = [];
-foreach ($products as $product) {
-    $category = $categoryNames[$product['category_id']] ?? '不明';
-    $categorizedProducts[$category][] = $product;
-}
+    // カテゴリーごとに商品を分類
+    $categorizedProducts = [];
+    foreach ($products as $product) {
+        $category = $categoryNames[$product['category_id']] ?? '不明';
+        $categorizedProducts[$category][] = $product;
+    }
 ?>
 
 <!DOCTYPE html>

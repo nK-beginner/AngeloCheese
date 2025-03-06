@@ -51,6 +51,7 @@ a {
 i {
     color: white;
     font-size: 2.8rem;
+    margin-top: 14px;
 }
 
 span {
@@ -96,6 +97,14 @@ header .header-logo {
 header .header-nav {
     display: flex;
     gap: 17px;
+}
+
+header .header-nav .v-block {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    align-items: center;
+    font-size: 1.2rem;
 }
 
 /********** main **********/

@@ -52,11 +52,13 @@
                     <li>商品一覧</li> -->
                 </ul>
             </li>
+
         </ul>  
     </div>
 
     <div class="user-info">
         <i class="fa-regular fa-circle-user"></i>
-        <p>ゲストさん</p>
+        <p><?php echo isset($_SESSION['adminName']) ? htmlspecialchars($_SESSION['adminName'], ENT_QUOTES, 'UTF-8') : 'ゲストさん'; ?></p>
     </div>
 </aside>
+

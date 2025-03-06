@@ -1,6 +1,8 @@
 <!-- 共通CSS -->
     <link rel="stylesheet" href="../css/common.css?v=<?php echo time(); ?>">
 
+    <link rel="icon" href="../Admin/images/AngeloCheese_face.png">
+
     <!-- フォントオーサム -->
     <script src="https://kit.fontawesome.com/5d315d0cb7.js" crossorigin="anonymous"></script>
 

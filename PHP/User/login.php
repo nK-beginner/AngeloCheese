@@ -54,15 +54,17 @@
             $stmt = $pdo -> prepare('select * from test_users where email = :email limit 1');
             $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
             $stmt -> execute();
-            $user = $stmt -> fetch();
+            $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
             // ユーザーが存在し、ハッシュ化パスワードと等しければ通す
             if($user && password_verify($password, $user['password'])) {
                 // セッション固定攻撃対策
                 session_regenerate_id(true);
 
-                $_SESSION['user_id'] = $user['id'];
+                // セッション各情報にDBからのデータを格納
+                $_SESSION['user_id']  = $user['id'];
                 $_SESSION['username'] = $user['username'];
+                $_SESSION['email']    = $user['email'];
 
                 // クッキー設定：チェックがついてれば設定する
                 if(isset($_POST['remember'])) {
@@ -71,13 +73,13 @@
                     setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
 
                     // クッキー用のトークンを生成
-                    $stmt = $pdo -> prepare('update test_users set remember_token = :token where id = :id');
-                    $stmt->bindValue(':token', $token, PDO::PARAM_STR);
-                    $stmt->bindValue(':id', $user['id'], PDO::PARAM_INT);
-                    $stmt->execute();
+                    $stmt = $pdo -> prepare("UPDATE test_users SET remember_token = :token WHERE id = :id");
+                    $stmt -> bindValue(':token', $token, PDO::PARAM_STR);
+                    $stmt -> bindValue(':id', $user['id'], PDO::PARAM_INT);
+                    $stmt -> execute();
                 }
 
-                header('Location: ../test.php');
+                header('Location: onlineShop.php');
                 exit;
 
             } else {

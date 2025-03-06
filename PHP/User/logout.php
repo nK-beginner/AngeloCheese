@@ -4,21 +4,26 @@
 
 
 <?php
-    session_start();
-    $_SESSION = [];
-    session_destroy();
-    setcookie('remember_token', '', time() - 3600, '/', '', false, true);
-?>
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ログアウト</title>
-</head>
-<body>
-    <h1>ログアウトしました。</h1>
-    <a href="login.php">ログインページへ戻る</a>
-</body>
-</html>
+    // セッション変数クリア
+    $_SESSION = [];
+    session_unset();
+
+    // セッション破棄
+    session_destroy();
+
+    // セッションクッキーを削除
+    if(isset($_COOKIE[session_name()])) {
+        setcookie(session_name(), '', time() - 3600, '/');
+    }
+
+    // remember meクッキー削除
+    setcookie('remember_token', '', time() - 3600, '/', '', false, true);
+
+    // ログインページへリダイレクト
+    header("Location: login.php");
+    exit;
+?>
