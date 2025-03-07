@@ -111,6 +111,8 @@
     <main>
         <div class="main-container">
             <form action="register.php" method="POST">
+                <h2><span>R</span>egister<span>.</span></h2>
+
                 <!-- エラーメッセージ -->
                 <?php if(!empty($errors)): ?>
                     <div class="error-msg">
@@ -121,9 +123,27 @@
                 <?php endif; ?>
 
                 <div class="r-block">
-                    <h4>姓</h4><link rel="stylesheet" href="../css/login.css?v=<?php echo time(); ?>">
+                    <div class="first-name">
+                        <h4>姓</h4>
+                        <input type="text" id="firstName" name="firstName" value="<?php /*echo htmlspecialchars($fistName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="姓" maxlength="15" required>
+                    </div>
+                    <div class="last-name">
+                        <h4>姓</h4>
+                        <input type="text" id="lastName" name="lastName" value="<?php /*echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="姓" maxlength="15" required>
+                    </div>
                 </div>
+
+                <h4>メールアドレス</h4>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
+
+                <h4>パスワード</h4>
+                <input type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
+
+                <input type="submit" id="register" name="register" value="登録">
             </form>
+            <!-- アカウント登録画面へ -->
+            <p>アカウントをお持ちですか？</p>
+            <a href="login.php">ログイン</a> 
         </div>
     </main>
 </body>
