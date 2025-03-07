@@ -61,6 +61,7 @@
 
                 if (!$admin) {
                     $errors[] = '存在しないメールアドレスです。';
+
                 } else if (!password_verify($password, $admin['password'])) {
                     $errors[] = 'パスワードが間違っています。';
                 }
@@ -78,6 +79,19 @@
                 // セッションに id, firstName, lastName を保存
                 $_SESSION['adminId'] = $admin['id'];
                 $_SESSION['adminName'] = $admin['firstName'] . ' ' . $admin['lastName']; // フルネームを保存
+
+                // クッキー設定：チェックがついてれば設定する
+                // if(isset($_POST['remember'])) {
+                //     $token = bin2hex(random_bytes(32));
+                //     $expire = time() + (7 * 24 * 60 * 60);
+                //     setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
+
+                //     // クッキー用のトークンを生成
+                //     $stmt = $pdo -> prepare("UPDATE admin SET remember_token = :token WHERE id = :id");
+                //     $stmt -> bindValue(':token', $token, PDO::PARAM_STR);
+                //     $stmt -> bindValue(':id', $user['id'], PDO::PARAM_INT);
+                //     $stmt -> execute();
+                // }
 
                 header('Location: itemAdd.php');
                 exit;
@@ -98,6 +112,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理者用ログイン画面</title>
+
+    <!-- ページアイコン -->
+    <link rel="icon" href="../Admin/images/AngeloCheese_face.png">
 
     <!-- 管理者ログイン用CSS -->
     <link rel="stylesheet" href="CSS/adminLogin.css?v=<?php echo time(); ?>">

@@ -81,7 +81,7 @@ header .header-container {
 
 header .header-container h1 {
     position: relative;
-    right: 16px;
+    top: 2px;
 }
 
 header .header-title a {
@@ -91,7 +91,7 @@ header .header-title a {
 }
 
 header .header-logo {
-    width: 125px;
+    width: 95px;
 }
 
 header .header-nav {
@@ -152,7 +152,7 @@ main .main-container .form {
     position: relative;
 }
 
-main .main-container .form label {
+main .main-container .form h4, label {
     margin-left: 7.5%;
     color: #fff;
     display: block;

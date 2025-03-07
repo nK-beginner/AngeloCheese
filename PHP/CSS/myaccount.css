@@ -68,6 +68,7 @@ main .form .h-block {
     justify-content: center;
     gap: 37px;
     margin-top: 24px;
+    margin-bottom: 14px;
 }
 
 main .form .h-block a {
@@ -85,9 +86,17 @@ main .form .h-block .edit {
     transition: background-color 0.2s ease;
 }
 
+main .form .h-block .edit:hover {
+    background: var(--gold);
+}
+
 main .form .h-block .delete-account {
     background: #FB5B5B;
     transition: background-color 0.2s;
+}
+
+main .form .h-block .delete-account:hover {
+    background: #ff8787;
 }
 
 /********** ログアウトダイアログ **********/

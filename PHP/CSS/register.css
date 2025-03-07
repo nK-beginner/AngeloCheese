@@ -8,6 +8,10 @@ main .main-container .form .help-link {
     text-align: center;
 }
 
+main .main-container .form .h-block .input {
+    width: 100%;
+}
+
 main .main-container .form .help-link a {
     color: #96d7ff;
     font-size: 1.5rem;
@@ -22,6 +26,10 @@ main .main-container .already-have-acc {
     text-align: center;
     color: #fff;
     font-size: 1.5rem;
+}
+
+main #register {
+    margin-bottom: 12px;    
 }
 
 /***** PHPより生成のエラーメッセージ *****/

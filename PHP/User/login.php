@@ -61,7 +61,7 @@
                 // セッション固定攻撃対策
                 session_regenerate_id(true);
 
-                // セッション各情報にDBからのデータを格納
+                // セッション各情報へデータ格納
                 $_SESSION['user_id']  = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['email']    = $user['email'];
@@ -137,12 +137,12 @@
                 <?php endif; ?>
 
                 <!-- メールアドレス -->
-                <label for="email">メールアドレス</label>
-                <input type="email" class="input email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="メールアドレスを入力してください。" required>
+                <h4>メールアドレス</h4>
+                <input type="email" class="input email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="メールアドレス" required>
 
                 <!-- パスワード -->
-                <label for="password">パスワード</label>
-                <input type="password" class="input password" id="password" name="password" placeholder="8文字以上の英数記号で入力してください。">
+                <h4>パスワード</h4>
+                <input type="password" class="input password" id="password" name="password" placeholder="パスワード(8文字以上)">
 
                 <!-- COOKIE許可・拒否 -->
                 <label class="cookie"><input type="checkbox" name="remember"> ログイン情報を記憶</label><br>
@@ -154,7 +154,7 @@
                 <a href="forgotPassword.php" class="help-link forgot-password">パスワードをお忘れですか？</a> 
             </form>
             <!-- アカウント登録画面へ -->
-            <p class="help-link not-registered-yet">アカウントの登録がお済みでない方はこちら。</p>
+            <p class="help-link not-registered-yet">アカウントをお持ちでない方はこちら。</p>
             <a href="register.php" class="register-login-btn">新規会員登録</a>
         </div>
     </main>

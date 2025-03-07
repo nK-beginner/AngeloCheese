@@ -1,6 +1,7 @@
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- ページアイコン -->
     <link rel="icon" href="../Admin/images/AngeloCheese_face.png">
 
     <!-- 共通CSS -->

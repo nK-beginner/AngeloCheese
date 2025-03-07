@@ -93,6 +93,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理者用アカウント登録画面</title>
 
+    <!-- ページアイコン -->
+    <link rel="icon" href="../Admin/images/AngeloCheese_face.png">
+
     <!-- 管理者登録用CSS -->
     <link rel="stylesheet" href="CSS/adminRegister.css?v=<?php echo time(); ?>">
 </head>
