@@ -36,8 +36,6 @@ main .profile-item .content h3 {
     color: #fff;
 }
 
-
-
 main .logout-container {
     display: block;
     margin: 0 auto;
@@ -51,6 +49,7 @@ main .logout-button {
     font-size: 1.6rem;
     cursor: pointer;
     float: right;
+    margin-right: 3.2%;
 }
 
 main .logout-button:hover {
@@ -59,6 +58,14 @@ main .logout-button:hover {
 
 main .logout-button:active {
     color: #0199f8;
+}
+
+main .form {
+    background: var(--bgblack2);
+    border: 1px solid #fff;
+    padding: 17px 0;
+    width: 55%;
+    position: relative;
 }
 
 main .form .h-block {
@@ -144,6 +151,7 @@ main .form .h-block .delete-account:hover {
 .logout-dialog p {
     font-size: 1.6rem;
     margin-top: 15px;
+    color: #000;
 }
 
 .logout-dialog .close-btn {

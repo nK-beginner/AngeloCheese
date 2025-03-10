@@ -29,8 +29,12 @@
 
     <main>
         <div class="main-container">
-            <form action="#" class="form">
-                <h2><span>R</span>eset <span>P</span>assword<span>.</span></h2>
+            <form action="#" method="POST">
+                <!-- CSRFトークン -->
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
+                <h2 class="page-title"><span>R</span>eset <span>P</span>assword<span>.</span></h2>
+
                 <div class="description">
                     <h4>
                         入力されたメールアドレス宛に<br>
@@ -38,15 +42,12 @@
                     </h4>
                 </div>
 
-                <!-- メールアドレス -->
-                <label for="email">メールアドレス</label>
-                <input type="email" class="input email" id="email" name="email" placeholder="メールアドレスを入力してください。" required>
+                <h4>メールアドレス</h4>
+                <input class="user-input" type="email" id="email" name="email" value="<?php ?>" placeholder="angelo@example.com" required>
 
-                <!-- 送信ボタン -->
-                <input type="submit" class="input btn" id="resetPw" name="resetPw" value="メールを送る">
+                <input class="submit-btn" type="submit" id="login" name="login" value="メールを送信">
 
-                <!-- ログイン画面へ -->
-                <a href="login.php" class="back-to-login">ログイン画面へ戻る</a>
+                <a class="back-to-login" href="login.php">ログイン画面へ戻る</a>
             </form>
         </div>
     </main>

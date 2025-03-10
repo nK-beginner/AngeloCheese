@@ -2,20 +2,11 @@
 
 
 
+
 /********** 開発用メモ **********/
 /* 文章などは1.5remで固定
 /* 
 /* ユーザーが入力する項目に関しては1.6rem
-/* 
-/* 縦並び：c-block, 横並び：r-block
-/* 
-/* 
-/* 
-/* 
-/* 
-/* 
-/* 
-/* 
 /* 
 /* 
 /* 
@@ -25,7 +16,7 @@
     --gold: #C2A26A;        /* メインの金色 */
     --hoveredGold: #dabc89; /* ホバー時の金色 */
     --bgblack: #242424;     /* 全体背景色 */
-    --bgblack2: #242424;    /* フォーム内背景色 */
+    --bgblack2: #303030;    /* フォーム内背景色 */
     --bgblack3: #272727;    /* インプット内、フッター背景色 */
     --width: 1040px;          /* 全体幅 */
 }
@@ -46,7 +37,6 @@ html {
 
 body {
     background: var(--bgblack);
-    color: #fff;
 }
 
 ul {
@@ -64,16 +54,11 @@ i {
     margin-top: 14px;
 }
 
-input {
-    color: #fff;
-    font-size: 1.7rem;
-}
-
 span {
     color: var(--gold);
 }
 
-/********** header**********/
+/********** header **********/
 header {
     border-bottom: 0.37px solid #FFFFFF;
     position: fixed;
@@ -114,7 +99,7 @@ header .header-nav {
     gap: 17px;
 }
 
-header .header-nav .c-block {
+header .header-nav .v-block {
     display: flex;
     flex-direction: column;
     color: #fff;
@@ -124,48 +109,21 @@ header .header-nav .c-block {
 
 /********** main **********/
 main {
-    max-width: 1030px;
-    width: 100%;
-    margin: 147px auto 0 auto;
-}
-
-main .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-main .welcome-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-main .welcome-container .sub-container {
-    
-}
-
-main .welcome-container img {
-    width: 430px;
-    height: auto;
+    margin-top: 147px;
 }
 
 main .main-container {
+    max-width: 970px;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0 auto; /* 中央に配置 */
 }
 
-main .main-container form {
-    background: var(--bgblack2);
-    border: 1px solid #fff;
-    padding: 17px 0;
-    width: 100%;
-    position: relative;
-}
-
-main .main-container .page-title {
+main .main-container h2 {
+    color: #fff;
     font-size: 3.4rem;
     position: relative;
     text-align: center;
@@ -174,7 +132,7 @@ main .main-container .page-title {
     font-weight: 600;
 }
 
-main .main-container .page-title::after {
+main .main-container h2::after {
     content: '';
     width: 57px;
     height: 2px;
@@ -186,37 +144,36 @@ main .main-container .page-title::after {
     right: 0;
 }
 
-main .main-container form .error-msg {
-    margin-top: 15px;
+main .main-container .form {
+    background: var(--bgblack2);
+    border: 1px solid #fff;
+    padding: 17px 0;
+    width: 60%;
+    position: relative;
 }
 
-main .main-container form .error-msg p {
-    color: #ff5a5a;
-    font-size: 1.5rem;
-    margin-left: 7.2%;
-}
-
-main .main-container form h4 {
-    margin-left: 7.2%;
+main .main-container .form h4, label {
+    margin-left: 7.5%;
     color: #fff;
     display: block;
     margin-top: 22px;
     font-size: 1.5rem;
 }
 
-main .main-container form .user-input {
+main .main-container .form .input {
     display: block;
     margin: 0 auto;
-    padding: 6px 0;
-    width: 86%;
+    padding: 6px 8px;
+    width: 83%;
     height: 24px;
-    background: var(--bgblack2);
-    border: none;
-    outline: none;
-    border-bottom: 1.72px solid #9E9E9E;
+    background: var(--bgblack3);
+    border: 1.72px solid #9E9E9E;
+    border-radius: 7px;
+    color: #fff;
+    font-size: 1.7rem;
 }
 
-main .main-container form .submit-btn {
+main .main-container .form .btn {
     margin-top: 20px;
     padding: 0;
     width: 86%;
@@ -227,23 +184,14 @@ main .main-container form .submit-btn {
     background: var(--gold);
     cursor: pointer;
     transition: background-color 0.2s;
-    margin: 23px auto 0 auto;
-    border-radius: 7px;
 }
 
-main .main-container form .submit-btn:hover {
+main .main-container .form .btn:hover {
     background-color: var(--hoveredGold);
 }
 
-main .main-container .info {
-    margin: 32px 0 -12px 0;
-    text-align: center;
-    color: #fff;
-    font-size: 1.5rem;
-}
-
-main .main-container .log-reg-btn {
-    width: 80%;
+main .main-container .register-login-btn {
+    width: 49%;
     display: block;
     text-align: center;
     margin: 0 auto 0 auto;
@@ -258,7 +206,7 @@ main .main-container .log-reg-btn {
     transition: background-color 0.2s, color 0.2s;
 }
 
-main .main-container .log-reg-btn:hover {
+main .main-container .register-login-btn:hover {
     background: var(--gold);
     color: #fff;
 }
@@ -332,40 +280,35 @@ footer .footer-container p {
     header .header-title a {
         font-size: 1.5rem;
         position: relative;
-        left: 5.2px;
+        left: 16.2px;
     }
 
     header .header-nav {
         gap: 20px;
         position: relative;
-        right: 20px;
+        right: 30px;
     }
-
-    /* header .header-nav .v-block p {
-        position: absolute;
-        right: -10px;
-    } */
 
     /********** main **********/
     main {
         margin-top: 46px;
     }
 
-    main .main-container form {
+    main .main-container .form {
         border: none;
         width: 100%;
     }
 
-    main .main-container form .page-title {
+    main .main-container h2 {
         padding-top: 12px;
     }
 
-    main .main-container form .submit-btn {
+    main .main-container .form .btn {
         width: 88%;
     }
 
-    main .main-container .log-reg-btn {
-        width: 82%;
+    main .main-container .register-login-btn {
+        width: 80%;
     }
 
     /********** footer **********/

@@ -30,12 +30,20 @@
     <main>
         <div class="main-container">
             <div class="form">
-                <h2><span>A</span>ccount<span>.</span></h2>
-                <!-- ユーザー名 -->
+                <h2 class="page-title"><span>A</span>ccount<span>.</span></h2>
+                <!-- 姓 -->
                 <div class="profile-item">
-                    <p>ユーザー名</p>
+                    <p>姓</p>
                     <div class="content">
-                        <h3><?php echo htmlspecialchars($_SESSION['username'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                        <h3><?php echo htmlspecialchars($_SESSION['firstName'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                    </div>
+                </div>
+
+                <!-- 名 -->
+                <div class="profile-item">
+                    <p>名</p>
+                    <div class="content">
+                        <h3><?php echo htmlspecialchars($_SESSION['lastName'], ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 

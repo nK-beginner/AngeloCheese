@@ -11,10 +11,11 @@
     require_once __DIR__.'/../backend/csrf_token.php'; // CSRFトークン生成
     
     $errors   = $_SESSION['errors'] ?? [];       // $_SESSION['errors']が存在しない or Nullの場合は空の配列[]が入る
-    $fistName = $_SESSION['old_fistName'] ?? ''; // エラー時にユーザー名を保持
+    $firstName = $_SESSION['old_firstName'] ?? ''; // エラー時に姓を保持
+    $lastName  = $_SESSION['old_lastName'] ?? ''; // エラー時に名を保持
     $email    = $_SESSION['old_email'] ?? '';    // エラー時にメアドを保持
     
-    unset($_SESSION['errors'], $_SESSION['old_fistName'], $_SESSION['old_email']); // 一度表示したら削除
+    unset($_SESSION['errors'], $_SESSION['old_firstName'], $_SESSION['old_lastName'], $_SESSION['old_email']); // 一度表示したら削除
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors = []; // 入力エラー用配列
@@ -29,7 +30,8 @@
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // フォームデータ取得とサニタイズ
-        $fistName = trim($_POST['fistName'] ?? '');
+        $firstName = trim($_POST['firstName'] ?? '');
+        $lastName  = trim($_POST['lastName'] ?? '');
         $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
@@ -67,9 +69,10 @@
         // エラーあったら特定の情報を残しつつ、フォームへ戻る
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            $_SESSION['old_fistName'] = $fistName;
+            $_SESSION['old_firstName'] = $firstName;
+            $_SESSION['old_lastName'] = $lastName;
             $_SESSION['old_email'] = $email;
-            header('Location: register.php');
+            header('Location: Register.php');
             exit;
         }
         
@@ -77,9 +80,10 @@
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // ユーザー登録処理
-        $stmt = $pdo -> prepare('insert into test_users (fistName, email, password, created_at, updated_at)
-                                                 values(:fistName, :email, :password, now(), now())');
-        $stmt -> bindValue(':fistName', $fistName, PDO::PARAM_STR);
+        $stmt = $pdo -> prepare('insert into test_users (firstName, lastName, email, password, created_at, updated_at)
+                                                 values(:firstName, :lastName, :email, :password, now(), now())');
+        $stmt -> bindValue(':firstName', $firstName, PDO::PARAM_STR);
+        $stmt -> bindValue(':lastName', $lastName, PDO::PARAM_STR);
         $stmt -> bindValue(':email',    $email,    PDO::PARAM_STR);
         $stmt -> bindValue(':password', $hashed_password, PDO::PARAM_STR);
         $stmt -> execute();
@@ -88,10 +92,12 @@
         session_regenerate_id(true);
 
         // 登録後に自動ログイン
-        $_SESSION['user_id'] = $pdo -> lastInsertId();
-        $_SESSION['fistName'] = $fistName;
+        $_SESSION['user_id']   = $pdo -> lastInsertId();
+        $_SESSION['firstName'] = $firstName;
+        $_SESSION['lastName']  = $lastName;
+        $_SESSION['email']     = $email;
 
-        header('Location: login.php');
+        header('Location: onlineShop.php');
         exit;
     }
 ?>
@@ -104,57 +110,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録</title>
 
+    <!-- 新規登録用 -->
+    <link rel="stylesheet" href="../css/register.css?v=<?php echo time(); ?>">
+
     <!-- headタグ -->
     <?php include __DIR__.'/../common/headTags.php'; ?>
-
-    <!-- 登録用CSS -->
-    <link rel="stylesheet" href="../css/register.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <?php include __DIR__.'/../common/header.php'; ?>
 
     <main>
-        <div class="main-container">
-            <form action="register.php" method="POST" class="form">
-                <h2><span>R</span>egister<span>.</span></h2>
-                <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        <div class="grid-container">
+            <div class="welcome-container">
+                <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="アンジェロロゴ">
+                <div class="sub-container">
+                    <h1>大切な人に届けたい。</h1>
+                </div>
+                
+            </div>
 
-                <!-- エラーメッセージ -->
-                <?php if(!empty($errors)): ?>
-                    <div class="error-msg">
-                        <?php foreach($errors as $error): ?>
-                            <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
-                        <?php endforeach; ?>
+            <div class="main-container">
+                <form action="Register.php" method="POST">
+                    <!-- CSRFトークン -->
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
+                    <!-- ページタイトル -->
+                    <h2 class="page-title"><span>R</span>egister<span>.</span></h2>
+
+                    <!-- エラーメッセージ -->
+                    <?php if(!empty($errors)): ?>
+                        <div class="error-msg">
+                            <?php foreach($errors as $error): ?>
+                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="r-block">
+                        <div class="first-name">
+                            <h4>姓</h4>
+                            <input class="user-input" type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="山田" maxlength="15" required>
+                        </div>
+                        <div class="last-name">
+                            <h4>姓</h4>
+                            <input class="user-input" type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="花子" maxlength="15" required>
+                        </div>
                     </div>
-                <?php endif; ?>
 
-                <!-- 姓 -->
-                <h4 for="fistName">姓</h4>
-                <input type="text" class="input" id="fistName" name="fistName" value="<?php echo htmlspecialchars($fistName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="姓" maxlength="15" required>                               
+                    <h4>メールアドレス</h4>
+                    <input class="user-input" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
 
-                <h4 for="lastName">名</h4>
-                <input type="text" class="input" id="lastName" name="lastName" value="<?php /*echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="名" maxlength="15" required>                          
+                    <h4>パスワード</h4>
+                    <input class="user-input" type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
 
-                <!-- メールアドレス -->
-                <h4 for="email">メールアドレス</h4>
-                <input type="email" class="input email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
-
-                <!-- パスワード -->
-                <h4 for="password">パスワード</h4>
-                <input type="password" class="input password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
-
-                <!-- 登録ボタン -->
-                <input type="submit" class="input btn" id="register" name="register" value="登録">
-            </form>
-            <!-- アカウント登録画面へ -->
-            <p class="help-link already-have-acc">アカウントをお持ちですか？</p>
-            <a href="login.php" class="register-login-btn">ログイン</a> 
+                    <input class="submit-btn" type="submit" id="register" name="register" value="登録">
+                </form>
+                <!-- アカウント登録画面へ -->
+                <p class="info">アカウントをお持ちですか？</p>
+                <a class="log-reg-btn" href="Login.php">ログイン</a> 
+            </div>
         </div>
+
     </main>
 
     <?php include __DIR__.'/../common/footer.php'; ?>
-
-    <script src="JS/script.js"></script>
 </body>
 </html>

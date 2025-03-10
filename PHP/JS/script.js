@@ -56,6 +56,7 @@ const closeBtn   = document.querySelector('.close-btn');
 
 logoutBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    console.log('here');
     logoutDlg.style.display = 'flex';
 });
 

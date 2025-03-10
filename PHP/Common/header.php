@@ -1,4 +1,5 @@
 <header>
+        <?php include __DIR__.'/../Backend/autoLogin.php'; ?>
         <div class="header-container">
             <a href="#">
                 <picture>
@@ -14,7 +15,7 @@
             <ul class="header-nav">
                 <!-- <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>        お気に入り画面へ -->
                 <li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>  <!-- カート内画面へ -->
-                <div class="v-block">
+                <div class="c-block">
                     <li>
                         <?php if(isset($_SESSION['user_id'])): ?>
                             <!-- ログインしてればカウント詳細画面へ -->

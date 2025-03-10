@@ -104,14 +104,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規登録</title>
 
-    <link rel="stylesheet" href="../css/newRegister.css?v=<?php echo time(); ?>">
+    <!-- headタグ -->
+    <?php include __DIR__.'/../common/headTags.php'; ?>
 
+    <!-- 登録用CSS -->
+    <link rel="stylesheet" href="../css/register.css?v=<?php echo time(); ?>">
 </head>
 <body>
+    <?php include __DIR__.'/../common/header.php'; ?>
+
     <main>
         <div class="main-container">
-            <form action="register.php" method="POST">
+            <form action="register.php" method="POST" class="form">
                 <h2><span>R</span>egister<span>.</span></h2>
+                <!-- CSRFトークン -->
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 <!-- エラーメッセージ -->
                 <?php if(!empty($errors)): ?>
@@ -122,29 +129,32 @@
                     </div>
                 <?php endif; ?>
 
-                <div class="r-block">
-                    <div class="first-name">
-                        <h4>姓</h4>
-                        <input type="text" id="firstName" name="firstName" value="<?php /*echo htmlspecialchars($fistName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="姓" maxlength="15" required>
-                    </div>
-                    <div class="last-name">
-                        <h4>姓</h4>
-                        <input type="text" id="lastName" name="lastName" value="<?php /*echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="姓" maxlength="15" required>
-                    </div>
-                </div>
+                <!-- 姓 -->
+                <h4 for="fistName">姓</h4>
+                <input type="text" class="input" id="fistName" name="fistName" value="<?php echo htmlspecialchars($fistName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="姓" maxlength="15" required>                               
 
-                <h4>メールアドレス</h4>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
+                <h4 for="lastName">名</h4>
+                <input type="text" class="input" id="lastName" name="lastName" value="<?php /*echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8');*/ ?>" placeholder="名" maxlength="15" required>                          
 
-                <h4>パスワード</h4>
-                <input type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
+                <!-- メールアドレス -->
+                <h4 for="email">メールアドレス</h4>
+                <input type="email" class="input email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
 
-                <input type="submit" id="register" name="register" value="登録">
+                <!-- パスワード -->
+                <h4 for="password">パスワード</h4>
+                <input type="password" class="input password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
+
+                <!-- 登録ボタン -->
+                <input type="submit" class="input btn" id="register" name="register" value="登録">
             </form>
             <!-- アカウント登録画面へ -->
-            <p>アカウントをお持ちですか？</p>
-            <a href="login.php">ログイン</a> 
+            <p class="help-link already-have-acc">アカウントをお持ちですか？</p>
+            <a href="login.php" class="register-login-btn">ログイン</a> 
         </div>
     </main>
+
+    <?php include __DIR__.'/../common/footer.php'; ?>
+
+    <script src="JS/script.js"></script>
 </body>
 </html>

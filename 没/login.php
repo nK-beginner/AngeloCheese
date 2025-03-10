@@ -51,7 +51,7 @@
         
         // エラーがなければSQL確認
         if(empty($errors)) {
-            $stmt = $pdo -> prepare("SELECT * FROM test_users WHERE email = :email LIMIT 1");
+            $stmt = $pdo -> prepare('select * from test_users where email = :email limit 1');
             $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
             $stmt -> execute();
             $user = $stmt -> fetch(PDO::FETCH_ASSOC);
@@ -62,10 +62,9 @@
                 session_regenerate_id(true);
 
                 // セッション各情報へデータ格納
-                $_SESSION['user_id']   = $user['id'];
-                $_SESSION['firstName'] = $user['firstName'];
-                $_SESSION['lastName']  = $user['lastName'];
-                $_SESSION['email']     = $user['email'];
+                $_SESSION['user_id']  = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['email']    = $user['email'];
 
                 // クッキー設定：チェックがついてれば設定する
                 if(isset($_POST['remember'])) {
@@ -98,7 +97,7 @@
             $_SESSION['errors'] = $errors;
             $_SESSION['old_email']  = $email;
 
-            header('Location: Login.php');
+            header('Location: login.php');
             exit;
         }
     }
@@ -116,18 +115,17 @@
     <?php include __DIR__.'/../common/headTags.php'; ?>
 
     <!-- ログイン用CSS -->
-    <link rel="stylesheet" href="../css/Login.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../css/login.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <?php include __DIR__.'/../common/header.php'; ?>
 
     <main>
         <div class="main-container">
-            <form action="login.php" method="POST">
+            <form action="login.php" method="POST" class="form">
+                <h2><span>L</span>ogin<span>.</span></h2>
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-
-                <h2 class="page-title"><span>L</span>ogin<span>.</span></h2>
 
                 <!-- エラーメッセージ -->
                 <?php if(!empty($errors)): ?>
@@ -138,21 +136,26 @@
                     </div>
                 <?php endif; ?>
 
+                <!-- メールアドレス -->
                 <h4>メールアドレス</h4>
-                <input class="user-input" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
+                <input type="email" class="input email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="メールアドレス" required>
 
+                <!-- パスワード -->
                 <h4>パスワード</h4>
-                <input class="user-input" type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
+                <input type="password" class="input password" id="password" name="password" placeholder="パスワード(8文字以上)">
 
                 <!-- COOKIE許可・拒否 -->
                 <label class="cookie"><input type="checkbox" name="remember"> ログイン情報を記憶</label><br>
 
-                <input class="submit-btn" type="submit" id="login" name="login" value="ログイン">
+                <!-- ログインボタン -->
+                <input type="submit" class="input btn" id="login" name="login" value="ログイン">
 
-                <a class="forgot-pw" href="forgotPassword.php">パスワードをお忘れですか？</a> 
+                <!-- パスワードリセット画面へ -->
+                <a href="forgotPassword.php" class="help-link forgot-password">パスワードをお忘れですか？</a> 
             </form>
-            <p class="info">アカウントをお持ちでない方はこちら。</p>
-            <a class="log-reg-btn" href="Register.php">新規会員登録</a>
+            <!-- アカウント登録画面へ -->
+            <p class="help-link not-registered-yet">アカウントをお持ちでない方はこちら。</p>
+            <a href="register.php" class="register-login-btn">新規会員登録</a>
         </div>
     </main>
 

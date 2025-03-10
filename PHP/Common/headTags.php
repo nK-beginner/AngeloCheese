@@ -1,5 +1,5 @@
 <!-- 共通CSS -->
-    <link rel="stylesheet" href="../css/common.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../css/Common.css?v=<?php echo time(); ?>">
 
     <link rel="icon" href="../Admin/images/AngeloCheese_face.png">
 
