@@ -9,6 +9,13 @@
     }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
+
+    if(!isset($_SESSION['user_id'])  
+    //|| !isset($_COOKIE['remember_token'])
+    ) {
+        header('Location: onlineShop.php');
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -29,48 +36,44 @@
 
     <main>
         <div class="main-container">
-            <form action="confirmUnsubscribe.html" method="POST" class="form">
-                <h2><span>U</span>nsubscribe<span>.</span></h2>
+            <form action="confirmUnsubscribe.php" method="POST">
+                <h2 class="page-title"><span>U</span>nsubscribe<span>.</span></h2>
                 <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 <!-- 注意書き -->
                 <div class="warning-container">
                     <p>アカウント退会を行います。</p>
-                    <p>退会すると購入履歴などの閲覧ができなくなります。</p>
+                    <p>※退会すると購入履歴などの閲覧ができなくなります。</p>
                 </div>
 
                 <!-- 退会理由 -->
                 <div class="unsubscribe-reasons-container">
                     <div class="reasons">
-                        <h3>退会理由</h3>
+                        <h2>退会理由</h2>
 
                         <!-- 理由1 -->
                         <div class="reason">
-                            <input type="radio" id="reason1" value="reason1" name="reason">   
-                            <label for="reason1">理由1</label>
+                            <label for="reason1"><input class="reason-btn" type="radio" id="reason1" value="1" name="reason" required> 理由1</label>
                         </div>
 
                         <!-- 理由2 -->
                         <div class="reason">
-                            <input type="radio" id="reason2" value="reason2" name="reason">   
-                            <label for="reason2">理由2</label>
+                            <label for="reason2"><input class="reason-btn" type="radio" id="reason2" value="2" name="reason" required> 理由2</label>
                         </div>
 
                         <!-- 理由3 -->
                         <div class="reason">
-                            <input type="radio" id="reason3" value="reason3" name="reason">   
-                            <label for="reason3">理由3</label>
+                            <label for="reason3"><input class="reason-btn" type="radio" id="reason3" value="3" name="reason" required> 理由3</label>
                         </div>
 
                         <!-- その他 -->
                         <div class="reason">
-                            <input type="radio" id="other" value="other" name="reason">   
-                            <label for="other">その他</label>
+                            <label for="other"><input type="radio" id="other" value="99" name="reason"> その他</label> 
                         </div>
 
                         <!-- 理由記入(その他選択の時のみ解放) -->
-                        <textarea id="" name="reason" placeholder="理由をお聞かせください。"></textarea>
+                        <textarea id="reasonDetail" name="reasonDetail" placeholder="その他を選択された方は理由をお聞かせください。" maxlength="170"></textarea>
                     </div>
                     <input type="submit" value="確認画面へ" class="to-confirm">
                 </div>
@@ -80,6 +83,26 @@
 
     <?php include __DIR__.'/../common/footer.php'; ?>
 
-    <script src="../JS/script.js"></script>
+    <script>
+        // textareaの有効化・無効化
+        const btns     = document.querySelectorAll('.reason-btn');
+        const otherBtn = document.getElementById('other');
+        const textArea = document.getElementById('reasonDetail');
+
+        btns.forEach(btn => {
+            btn.addEventListener('change', () => {
+                if(!otherBtn.checked) {
+                    textArea.style.display = "none";
+                    textArea.required = false;
+                }
+            });
+        });
+        
+        otherBtn.addEventListener('change', () => {
+            textArea.style.display = "block";
+            textArea.required = true;
+        });
+
+    </script>
 </body>
 </html>

@@ -14,7 +14,7 @@ main .warning-container {
 main .warning-container p {
     color: #ff2121;
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: bolder;
 }
 
 main .unsubscribe-reasons-container {
@@ -22,7 +22,7 @@ main .unsubscribe-reasons-container {
     margin: 23px auto 0 auto;
 }
 
-main .unsubscribe-reasons-container h3 {
+main .unsubscribe-reasons-container h2 {
     font-size: 2.2rem;
     color: #fff;
     margin-bottom: 4px;
@@ -47,6 +47,7 @@ main .unsubscribe-reasons-container textarea {
     color: #fff;
     padding: 2px 6px;
     font-size: 1.6rem;
+    display: none;
 }
 
 main .unsubscribe-reasons-container .to-confirm {
@@ -66,3 +67,4 @@ main .unsubscribe-reasons-container .to-confirm:hover {
     background: var(--gold);
     color: #fff;
 }
+

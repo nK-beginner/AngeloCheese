@@ -6,9 +6,9 @@
                     <!-- スマホ -->
                     <source media="(max-width: 510px)" srcset="../images/AngeloCheese_face.png">
                     <!-- タブレット -->
-                    <source media="(max-width: 768px)" srcset="../images/AngeloCheese_logo2.png">
+                    <source media="(max-width: 768px)" srcset="../images/AngeloCheese_face.png">
                     <!-- PC -->
-                    <img src="../images/AngeloCheese_logo2.png" alt="logo" class="header-logo">
+                    <img src="../images/AngeloCheese_face.png" alt="logo" class="header-logo">
                 </picture>
             </a>
             <h1 class="header-title"><a href="onlineShop.php">ONLINE SHOP<span>.</span></a></h1> <!-- オンラインショップ画面へ -->

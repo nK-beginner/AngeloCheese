@@ -3,6 +3,41 @@
 
 
 
+main .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+main .welcome-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 180px;
+}
+
+main .welcome-container .sub-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+main .welcome-container .sub-container h1 {
+    font-size: 3.0rem;
+}
+
+main .welcome-container img {
+    width: 430px;
+    height: auto;
+}
+
+main .main-container form {
+    width: 100% !important;
+}
+
+main .main-container .log-reg-btn {
+    width: 80% !important;
+}
+
 main .main-container form .cookie {
     margin-left: 7.2%;
     font-size: 1.5rem;
@@ -19,4 +54,14 @@ main .main-container form .forgot-pw {
 
 main .main-container form .forgot-pw:hover {
     text-decoration: underline;
+}
+
+@media screen and (max-width: 510px) {
+    main .grid-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    main .welcome-container {
+        display: none !important;
+    }
 }

@@ -4,9 +4,16 @@
 
 
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
+
+    // if(!isset($_SESSION['user_id']) || !isset($_COOKIE['remember_token'])) {
+    //     header('Location: onlineShop.php');
+    //     exit;
+    // }
 
     $errors = $_SESSION['errors'] ?? [];
     $email = $_SESSION['old_email'] ?? '';
@@ -44,6 +51,7 @@
         if(isset($_SESSION[$failed_login_key]) && $_SESSION[$failed_login_key]['count'] >= 5) {
             if(time() - $_SESSION[$failed_login_key]['last_attempt'] < 900) {
                 $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
+
             } else {
                 unset($_SESSION[$failed_login_key]);
             }
@@ -56,8 +64,10 @@
             $stmt -> execute();
             $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-            // ユーザーが存在し、ハッシュ化パスワードと等しければ通す
-            if($user && password_verify($password, $user['password'])) {
+            if($user['deleted_at'] !== NULL) {
+                $errors[] = '存在しないユーザーです。';
+                
+            } elseif($user && password_verify($password, $user['password'])) {
                 // セッション固定攻撃対策
                 session_regenerate_id(true);
 
@@ -122,38 +132,47 @@
     <?php include __DIR__.'/../common/header.php'; ?>
 
     <main>
-        <div class="main-container">
-            <form action="login.php" method="POST">
-                <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+        <div class="grid-container">
+            <div class="welcome-container">
+            <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="ロゴ">
+                <div class="sub-container">
+                    <h1>おかえりなさいませ。</h1>
+                </div>
+            </div>
 
-                <h2 class="page-title"><span>L</span>ogin<span>.</span></h2>
+            <div class="main-container">
+                <form action="login.php" method="POST">
+                    <!-- CSRFトークン -->
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
-                <!-- エラーメッセージ -->
-                <?php if(!empty($errors)): ?>
-                    <div class="error-msg">
-                        <?php foreach($errors as $error): ?>
-                            <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                    <h2 class="page-title"><span>L</span>ogin<span>.</span></h2>
 
-                <h4>メールアドレス</h4>
-                <input class="user-input" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
+                    <?php if(!empty($errors)): ?>
+                        <div class="error-msg">
+                            <?php foreach($errors as $error): ?>
+                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
 
-                <h4>パスワード</h4>
-                <input class="user-input" type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
+                    <h4>メールアドレス</h4>
+                    <input class="user-input" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>
 
-                <!-- COOKIE許可・拒否 -->
-                <label class="cookie"><input type="checkbox" name="remember"> ログイン情報を記憶</label><br>
+                    <h4>パスワード</h4>
+                    <input class="user-input" type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
 
-                <input class="submit-btn" type="submit" id="login" name="login" value="ログイン">
+                    <!-- COOKIE許可・拒否 -->
+                    <label class="cookie"><input type="checkbox" name="remember"> ログイン情報を記憶</label><br>
 
-                <a class="forgot-pw" href="forgotPassword.php">パスワードをお忘れですか？</a> 
-            </form>
-            <p class="info">アカウントをお持ちでない方はこちら。</p>
-            <a class="log-reg-btn" href="Register.php">新規会員登録</a>
+                    <input class="submit-btn" type="submit" id="login" name="login" value="ログイン">
+
+                    <a class="forgot-pw" href="forgotPassword.php">パスワードをお忘れですか？</a> 
+                </form>
+                <p class="info">アカウントをお持ちでない方はこちら。</p>
+                <a class="log-reg-btn" href="Register.php">新規会員登録</a>
+            </div>            
         </div>
+
     </main>
 
     <?php include __DIR__.'/../common/footer.php'; ?>

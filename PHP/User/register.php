@@ -7,13 +7,18 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    require_once __DIR__.'/../backend/connection.php'; // データベース接続
-    require_once __DIR__.'/../backend/csrf_token.php'; // CSRFトークン生成
+    require_once __DIR__.'/../backend/connection.php';
+    require_once __DIR__.'/../backend/csrf_token.php';
+
+    if(isset($_SESSION['user_id']) || isset($_COOKIE['remember_token'])) {
+        header('Location: onlineShop.php');
+        exit;
+    }
     
-    $errors   = $_SESSION['errors'] ?? [];       // $_SESSION['errors']が存在しない or Nullの場合は空の配列[]が入る
-    $firstName = $_SESSION['old_firstName'] ?? ''; // エラー時に姓を保持
-    $lastName  = $_SESSION['old_lastName'] ?? ''; // エラー時に名を保持
-    $email    = $_SESSION['old_email'] ?? '';    // エラー時にメアドを保持
+    $errors   = $_SESSION['errors'] ?? [];
+    $firstName = $_SESSION['old_firstName'] ?? '';
+    $lastName  = $_SESSION['old_lastName'] ?? '';
+    $email    = $_SESSION['old_email'] ?? '';
     
     unset($_SESSION['errors'], $_SESSION['old_firstName'], $_SESSION['old_lastName'], $_SESSION['old_email']); // 一度表示したら削除
 
@@ -25,7 +30,7 @@
             $errors[] = 'CSRFトークン不一致エラー';
         }
 
-        // CSRFトークン再生成：既存のトークンを無効化し再生成 ⇒ 使い回しを防ぐ
+        // CSRFトークン再生成
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
@@ -46,7 +51,7 @@
         }
 
         // メアド重複チェック
-        $stmt = $pdo -> prepare('select id from test_users where email = :email limit 1');
+        $stmt = $pdo -> prepare("SELECT id FROM test_users WHERE email = :email LIMIT 1");
         $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
         $stmt -> execute();
         $user = $stmt -> fetch();
@@ -77,15 +82,15 @@
         }
         
         // パスワードをハッシュ化
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // ユーザー登録処理
-        $stmt = $pdo -> prepare('insert into test_users (firstName, lastName, email, password, created_at, updated_at)
-                                                 values(:firstName, :lastName, :email, :password, now(), now())');
+        $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password, created_at, updated_at)
+                                                 VALUES(:firstName, :lastName, :email, :password, now(), now())");
         $stmt -> bindValue(':firstName', $firstName, PDO::PARAM_STR);
-        $stmt -> bindValue(':lastName', $lastName, PDO::PARAM_STR);
-        $stmt -> bindValue(':email',    $email,    PDO::PARAM_STR);
-        $stmt -> bindValue(':password', $hashed_password, PDO::PARAM_STR);
+        $stmt -> bindValue(':lastName',  $lastName,  PDO::PARAM_STR);
+        $stmt -> bindValue(':email',     $email,     PDO::PARAM_STR);
+        $stmt -> bindValue(':password',  $hashedPassword, PDO::PARAM_STR);
         $stmt -> execute();
 
         // セッション固定攻撃対策
@@ -122,11 +127,10 @@
     <main>
         <div class="grid-container">
             <div class="welcome-container">
-                <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="アンジェロロゴ">
+                <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="ロゴ">
                 <div class="sub-container">
-                    <h1>大切な人に届けたい。</h1>
+                    <h1>ようこそ。</h1>
                 </div>
-                
             </div>
 
             <div class="main-container">
@@ -134,10 +138,8 @@
                     <!-- CSRFトークン -->
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
-                    <!-- ページタイトル -->
                     <h2 class="page-title"><span>R</span>egister<span>.</span></h2>
 
-                    <!-- エラーメッセージ -->
                     <?php if(!empty($errors)): ?>
                         <div class="error-msg">
                             <?php foreach($errors as $error): ?>
@@ -146,16 +148,11 @@
                         </div>
                     <?php endif; ?>
 
-                    <div class="r-block">
-                        <div class="first-name">
-                            <h4>姓</h4>
-                            <input class="user-input" type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="山田" maxlength="15" required>
-                        </div>
-                        <div class="last-name">
-                            <h4>姓</h4>
-                            <input class="user-input" type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="花子" maxlength="15" required>
-                        </div>
-                    </div>
+                    <h4>姓</h4>
+                    <input class="user-input" type="text" id="firstName" name="firstName" value="<?php echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="山田" maxlength="15" required>
+
+                    <h4>姓</h4>
+                    <input class="user-input" type="text" id="lastName" name="lastName" value="<?php echo htmlspecialchars($lastName, ENT_QUOTES, 'UTF-8'); ?>" placeholder="花子" maxlength="15" required>
 
                     <h4>メールアドレス</h4>
                     <input class="user-input" type="email" id="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="angelo@example.com" required>

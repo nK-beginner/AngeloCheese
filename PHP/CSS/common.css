@@ -90,13 +90,14 @@ header .header-container {
     align-items: center;
     max-width: var(--width);
     width: 100%;
-    margin: 0 auto; /* 中央に配置 */
+    margin: 0 auto;
     padding-top: 4px;
 }
 
 header .header-container h1 {
     position: relative;
     top: 2px;
+    left: 32px;
 }
 
 header .header-title a {
@@ -106,7 +107,7 @@ header .header-title a {
 }
 
 header .header-logo {
-    width: 95px;
+    width: 55px;
 }
 
 header .header-nav {
@@ -129,26 +130,6 @@ main {
     margin: 147px auto 0 auto;
 }
 
-main .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-main .welcome-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-main .welcome-container .sub-container {
-    
-}
-
-main .welcome-container img {
-    width: 430px;
-    height: auto;
-}
-
 main .main-container {
     width: 100%;
     display: flex;
@@ -161,7 +142,7 @@ main .main-container form {
     background: var(--bgblack2);
     border: 1px solid #fff;
     padding: 17px 0;
-    width: 100%;
+    width: 55%;
     position: relative;
 }
 
@@ -243,7 +224,7 @@ main .main-container .info {
 }
 
 main .main-container .log-reg-btn {
-    width: 80%;
+    width: 45%;
     display: block;
     text-align: center;
     margin: 0 auto 0 auto;

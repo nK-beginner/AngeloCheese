@@ -3,42 +3,47 @@
 
 
 
-main .main-container .form .help-link {
-    margin: 22px 0 7px 0;
-    text-align: center;
+main .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
-main .main-container .form .h-block .input {
+main .welcome-container {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 180px;
 }
 
-main .main-container .form .help-link a {
-    color: #96d7ff;
-    font-size: 1.5rem;
+main .welcome-container .sub-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-main .main-container .form .help-link a:hover {
-    text-decoration: underline;
+main .welcome-container .sub-container h1 {
+    font-size: 3.0rem;
 }
 
-main .main-container .already-have-acc {
-    margin: 32px 0 -12px 0;
-    text-align: center;
-    color: #fff;
-    font-size: 1.5rem;
+main .welcome-container img {
+    width: 430px;
+    height: auto;
 }
 
-main #register {
-    margin-bottom: 12px;    
+main .main-container form {
+    width: 100% !important;
 }
 
-/***** PHPより生成のエラーメッセージ *****/
-main .main-container .form .error-msg {
-    margin-top: 15px;
-    text-align: center;
+main .main-container .log-reg-btn {
+    width: 80% !important;
 }
 
-main .main-container .form .error-msg p {
-    color: #ff5a5a;
-    font-size: 1.5rem;
+@media screen and (max-width: 510px) {
+    main .grid-container {
+        grid-template-columns: 1fr !important;
+    }
+
+    main .welcome-container {
+        display: none !important;
+    }
 }
