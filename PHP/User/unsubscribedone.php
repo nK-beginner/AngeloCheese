@@ -36,8 +36,8 @@
             <!-- 商品一覧画面へ -->
             <a href="#" class="to-top">商品一覧へ</a>
         
-            <div class="reccomended-container">
-                <h2><span>R</span>ccomended<span>.</span></h2>
+            <div class="recommended-container">
+                <h2 class="page-title"><span>R</span>ccomended<span>.</span></h2>
             </div>
         </div>
     </main>

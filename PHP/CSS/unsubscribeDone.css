@@ -30,7 +30,7 @@ main .to-top {
     background: var(--gold);
 }
 
-main .reccomended-container {
+main .recommended-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +39,7 @@ main .reccomended-container {
     width: 100%;
 }
 
-main .reccomended-container h2 {
+main .recommended-container h2 {
     color: #fff;
     font-size: 3.23rem;
     position: relative;
@@ -48,7 +48,7 @@ main .reccomended-container h2 {
     margin-bottom: 100px;
 }
 
-main .reccomended-container h2::after {
+main .recommended-container h2::after {
     content: '';
     position: absolute;
     bottom: 0;

@@ -8,11 +8,8 @@
         session_start();
     }
     require_once __DIR__.'/../backend/connection.php';
-    require_once __DIR__.'/../backend/csrf_token.php';
-
-    if(!isset($_SESSION['user_id'])  
-    //|| !isset($_COOKIE['remember_token'])
-    ) {
+    
+    if(!isset($_SESSION['user_id'])) {
         header('Location: onlineShop.php');
         exit;
     }
@@ -30,16 +27,6 @@
         // CSRFトークン再生成
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
-        // 退会理由受け取り
-        $_SESSION['reason'] = $_POST['reason'] ?? '';
-
-        if($_SESSION['reason'] == 99) {
-            $_SESSION['reasonDetail'] = $_POST['reasonDetail'] ?? '';
-
-        } else {
-            $_SESSION['reasonDetail'] = NULL;
-        }
 
         $password   = $_POST['password'] ?? '';
         $rePassword = $_POST['rePassword'] ?? '';
@@ -63,13 +50,9 @@
 
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            $_SESSION
             header('Location: confirmUnsubscribe.php');
             exit;
         }
-
-        header('Location: confirmUnsubscribe.php');
-        exit;
 
         try {
             $pdo -> beginTransaction();
@@ -132,6 +115,14 @@
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 
+                <?php if(!empty($errors)): ?>
+                    <div class="error-msg">
+                        <?php foreach($errors as $error): ?>
+                            <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
                 <h4>お名前</h4>
                 <input class="user-input" type="text" value="<?php echo htmlspecialchars($_SESSION['firstName'] . ' ' . $_SESSION['lastName'] . ' ' . '様', ENT_QUOTES, 'UTF-8'); ?>" readonly>
 

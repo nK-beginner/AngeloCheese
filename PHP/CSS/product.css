@@ -1,0 +1,123 @@
+
+
+
+
+
+main .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+}
+
+main .grid-container .item-img-container {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+}
+
+main .grid-container .item-img-container img {
+    width: 100%;
+    aspect-ratio: 330 / 380;
+    object-fit: cover;
+}
+
+main .grid-container .item-img-subcontainer {
+    width: 100%;
+    margin-top: 23px;
+    display: flex;
+    flex-direction: row;
+    gap: 20.25px;
+    flex-wrap: wrap;
+}
+
+main .grid-container .item-img-subcontainer img {
+    width: calc(100% / 6);
+    aspect-ratio: 330 / 380;
+}
+
+main .grid-container form {
+    width: 100%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5%;
+    position: relative;
+}
+
+main .grid-container form .product-name {
+    margin-top: 37px;
+    font-size: 3.0rem;
+}
+
+main .grid-container form .price {
+    font-size: 2.5rem;
+    font-weight: bolder;
+    letter-spacing: 1.25px;
+}
+
+main .grid-container form p {
+    margin-top: 70px;
+    font-size: 1.7rem;
+    color: rgb(214, 214, 214);
+}
+
+main .grid-container form .btn-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 274px;
+}
+
+main .grid-container form button {
+    border: none;
+    background: none;
+    font-size: 1.7rem;
+}
+
+main .grid-container form .quantity-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    border: 1.65px solid var(--gold);
+}
+
+main .grid-container form .quantity-container .quantity {
+    width: 30px;
+    border: none;
+    background: none;
+    text-align: center;
+}
+
+main .grid-container form .quantity-container .plus,
+main .grid-container form .quantity-container .minus {
+    padding: 10px 24px;
+    font-size: 1.7rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+main .grid-container form .into-cart {
+    padding: 7px 57px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--gold);
+    border: none;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+main .grid-container form .into-cart:hover {
+    filter: brightness(130%);
+}
+
+main .grid-container form button i {
+    font-size: 22px;
+    margin-bottom: 14px;
+    color: #000;
+}

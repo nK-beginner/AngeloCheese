@@ -11,23 +11,20 @@
                     <img src="../images/AngeloCheese_face.png" alt="logo" class="header-logo">
                 </picture>
             </a>
-            <h1 class="header-title"><a href="onlineShop.php">ONLINE SHOP<span>.</span></a></h1> <!-- オンラインショップ画面へ -->
-            <ul class="header-nav">
-                <!-- <li><a href="#"><i class="fa-regular fa-heart"></i></a></li>        お気に入り画面へ -->
-                <li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>  <!-- カート内画面へ -->
-                <div class="c-block">
-                    <li>
-                        <?php if(isset($_SESSION['user_id'])): ?>
-                            <!-- ログインしてればカウント詳細画面へ -->
-                            <a href="myAccount.php"><i class="fa-regular fa-circle-user"></i></a>
+            <!-- オンラインショップ画面へ -->
+            <h1 class="header-title"><a href="onlineShop.php">ONLINE SHOP<span>.</span></a></h1>
 
-                        <?php else: ?>
-                            <!-- ログインしてなければログアウト画面へ -->
-                            <a href="login.php"><i class="fa-regular fa-circle-user"></i></a>
-                        <?php endif; ?>
-                    </li>
-                    <p><?php echo isset($_SESSION['user_id']) ? 'アカウント詳細' : 'ログイン'; ?></p>
-                </div>
+            <ul class="header-nav">
+
+                <!-- カート内画面へ -->
+                <li><a href="cart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+
+                <!-- ログインしてればアカウント詳細画面、なければログイン画面へ -->
+                <li>
+                    <a class="c-block" href="<?php echo isset($_SESSION['user_id']) ? "myAccount.php" : "login.php" ; ?>">
+                        <i class="fa-regular fa-circle-user"></i>
+                    </a>
+                <li>
                 
             </ul>
         </div>

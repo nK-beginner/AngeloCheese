@@ -10,10 +10,10 @@
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
 
-    // if(!isset($_SESSION['user_id']) || !isset($_COOKIE['remember_token'])) {
-    //     header('Location: onlineShop.php');
-    //     exit;
-    // }
+    if(isset($_SESSION['user_id']) || isset($_COOKIE['remember_token'])) {
+        header('Location: onlineShop.php');
+        exit;
+    }
 
     $errors = $_SESSION['errors'] ?? [];
     $email = $_SESSION['old_email'] ?? '';
@@ -58,51 +58,58 @@
         }
         
         // エラーがなければSQL確認
-        if(empty($errors)) {
-            $stmt = $pdo -> prepare("SELECT * FROM test_users WHERE email = :email LIMIT 1");
-            $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt -> execute();
-            $user = $stmt -> fetch(PDO::FETCH_ASSOC);
+        try {
+            if(empty($errors)) {
+                $stmt = $pdo -> prepare("SELECT * FROM test_users WHERE email = :email LIMIT 1");
+                $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
+                $stmt -> execute();
+                $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-            if($user['deleted_at'] !== NULL) {
-                $errors[] = '存在しないユーザーです。';
-                
-            } elseif($user && password_verify($password, $user['password'])) {
-                // セッション固定攻撃対策
-                session_regenerate_id(true);
+                if($user['deleted_at'] !== NULL) {
+                    $errors[] = '存在しないユーザーか、削除されたユーザーです。';
+                    
+                } elseif($user && password_verify($password, $user['password'])) {
+                    // セッション固定攻撃対策
+                    session_regenerate_id(true);
 
-                // セッション各情報へデータ格納
-                $_SESSION['user_id']   = $user['id'];
-                $_SESSION['firstName'] = $user['firstName'];
-                $_SESSION['lastName']  = $user['lastName'];
-                $_SESSION['email']     = $user['email'];
+                    // セッション各情報へデータ格納
+                    $_SESSION['user_id']   = $user['id'];
+                    $_SESSION['firstName'] = $user['firstName'];
+                    $_SESSION['lastName']  = $user['lastName'];
+                    $_SESSION['email']     = $user['email'];
 
-                // クッキー設定：チェックがついてれば設定する
-                if(isset($_POST['remember'])) {
-                    $token = bin2hex(random_bytes(32));
-                    $expire = time() + (7 * 24 * 60 * 60);
-                    setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
+                    // クッキー設定：チェックがついてれば設定する
+                    if(isset($_POST['remember'])) {
+                        $token = bin2hex(random_bytes(32));
+                        $expire = time() + (7 * 24 * 60 * 60);
+                        setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
 
-                    // クッキー用のトークンを生成
-                    $stmt = $pdo -> prepare("UPDATE test_users SET remember_token = :token WHERE id = :id");
-                    $stmt -> bindValue(':token', $token, PDO::PARAM_STR);
-                    $stmt -> bindValue(':id', $user['id'], PDO::PARAM_INT);
-                    $stmt -> execute();
+                        // クッキー用のトークンを生成
+                        $stmt = $pdo -> prepare("UPDATE test_users SET remember_token = :token WHERE id = :id");
+                        $stmt -> bindValue(':token', $token,      PDO::PARAM_STR);
+                        $stmt -> bindValue(':id',    $user['id'], PDO::PARAM_INT);
+                        $stmt -> execute();
+                    }
+
+                    header('Location: onlineShop.php');
+                    exit;
+
+                } else {
+                    // ログイン失敗回数を記録
+                    $_SESSION[$failed_login_key]['count'] = ($_SESSION[$failed_login_key]['count'] ?? 0) + 1; 
+
+                    // 最後にログイン失敗した時刻を保存
+                    $_SESSION[$failed_login_key]['last_attempt'] = time(); 
+                    
+                    $errors[] = 'メールアドレスまたはパスワードが間違っています。';
                 }
-
-                header('Location: onlineShop.php');
-                exit;
-
-            } else {
-                // ログイン失敗回数を記録
-                $_SESSION[$failed_login_key]['count'] = ($_SESSION[$failed_login_key]['count'] ?? 0) + 1; 
-
-                // 最後にログイン失敗した時刻を保存
-                $_SESSION[$failed_login_key]['last_attempt'] = time(); 
-                
-                $errors[] = 'メールアドレスまたはパスワードが間違っています。';
             }
+
+        } catch(PDOException $e) {
+            error_log('データベース接続エラー：' . $e -> getMessage());
+            $error[] = 'データベース接続エラー';
         }
+
 
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;

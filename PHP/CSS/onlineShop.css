@@ -3,7 +3,7 @@
 
 
 
- .top-container {
+.top-container {
     width: 100%;
     color: #fff;
 }
@@ -73,22 +73,36 @@
     width: calc((100% - 40px) / 3);
 }
 
+.products .product button {
+    border: none;
+    cursor: pointer;
+}
+
 .products .product img {
     width: 100%;
     aspect-ratio: 330 / 380;
     object-fit: cover;
     display: block;
+    transition: filter 0.2s;
+}
+
+.products .product img:hover {
+    filter: brightness(108%);
 }
 
 .products .product h3 {
     font-size: 2.0rem;
     color: #fff;
     font-weight: bolder;
+    background: var(--bgblack2);
+    text-align: left;
 }
 
 .products .product p {
     font-size: 1.8rem;
     color: #fff;
+    background: var(--bgblack2);
+    text-align: left;
 }
 
 .products span2 {

@@ -10,10 +10,32 @@
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
 
-    if(!isset($_SESSION['user_id'])  
-    //|| !isset($_COOKIE['remember_token'])
-    ) {
+    if(!isset($_SESSION['user_id'])) {
         header('Location: onlineShop.php');
+        exit;
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
+        }
+    
+        // CSRFトークン再生成
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+        // 退会理由受け取り
+        $_SESSION['reason'] = $_POST['reason'] ?? '';
+
+        if($_SESSION['reason'] == 99) {
+            $_SESSION['reasonDetail'] = $_POST['reasonDetail'] ?? '';
+
+        } else {
+            $_SESSION['reasonDetail'] = NULL;
+        }
+
+        header('Location: confirmUnsubscribe.php');
         exit;
     }
 ?>
@@ -36,7 +58,7 @@
 
     <main>
         <div class="main-container">
-            <form action="confirmUnsubscribe.php" method="POST">
+            <form action="unsubscribe.php" method="POST">
                 <h2 class="page-title"><span>U</span>nsubscribe<span>.</span></h2>
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
