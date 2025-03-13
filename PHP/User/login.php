@@ -60,7 +60,7 @@
         // エラーがなければSQL確認
         try {
             if(empty($errors)) {
-                $stmt = $pdo -> prepare("SELECT * FROM test_users WHERE email = :email LIMIT 1");
+                $stmt = $pdo -> prepare("SELECT id, firstName, lastName, email FROM test_users WHERE email = :email LIMIT 1");
                 $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
                 $stmt -> execute();
                 $user = $stmt -> fetch(PDO::FETCH_ASSOC);

@@ -85,8 +85,8 @@
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // ユーザー登録処理
-        $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password, created_at, updated_at)
-                                                 VALUES(:firstName, :lastName, :email, :password, now(), now())");
+        $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password)
+                                                 VALUES(:firstName, :lastName, :email, :password");
         $stmt -> bindValue(':firstName', $firstName, PDO::PARAM_STR);
         $stmt -> bindValue(':lastName',  $lastName,  PDO::PARAM_STR);
         $stmt -> bindValue(':email',     $email,     PDO::PARAM_STR);

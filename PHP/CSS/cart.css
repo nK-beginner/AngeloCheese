@@ -18,11 +18,14 @@ main .cart .product {
 
 main .cart .product:not(:first-child) {
     margin-top: 24px;
-    padding-bottom: 0;
 }
 
 main .cart .product:not(:last-child) {
     border-bottom: 1px solid #999999;
+}
+
+main .cart .product:last-child {
+    padding-bottom: 0;
 }
 
 main .cart .product img {
@@ -39,11 +42,11 @@ main .cart .product-info {
 }
 
 main .cart .product-info .product-name {
-    font-size: 2.3rem;
+    font-size: 2.1rem;
 }
 
 main .cart .product-info .price {
-    font-size: 2.0rem;
+    font-size: 1.8rem;
 }
 
 main .quantity-container {
@@ -89,4 +92,13 @@ main .quantity-delete .trash-bin {
     color: rgb(161, 161, 161);
     font-size: 3.0rem;
     cursor: pointer;
+}
+
+main .total-price {
+    margin-top: 120px;
+    text-align: center;
+}
+
+main .total-price span2 {
+    font-size: 5.0rem;
 }

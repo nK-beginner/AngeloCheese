@@ -1,4 +1,9 @@
 /**/
+-- use angelo_cheese_management
+
+select * from products
+
+
 CREATE TABLE products (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,

@@ -18,7 +18,7 @@
     $product = $stmt -> fetch(PDO::FETCH_ASSOC);
 
     // サブ画像
-    $stmt = $pdo2 -> prepare("SELECT * FROM product_images WHERE product_id = :id AND is_main != 1");
+    $stmt = $pdo2 -> prepare("SELECT  FROM product_images WHERE product_id = :id AND is_main != 1");
     $stmt -> bindValue(":id", $_SESSION['productId'], PDO::PARAM_INT);
     $stmt -> execute();
     $subImg = $stmt -> fetch(PDO::FETCH_ASSOC);
@@ -32,24 +32,25 @@
         // CSRFトークン再生成
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
-        $productId = (int)$_POST['productId'];
-        $quantity = (int)$_POST['quantity'];
     
+        $productId = (int)$_POST['productId'];
+        $quantity  = (int)$_POST['quantity'];
+
         if ($quantity > 0) {
-            // カートが未定義の場合、初期化
+            // セッション用カート定義
             if (!isset($_SESSION['cart'])) {
                 $_SESSION['cart'] = [];
             }
     
-            // すでにカートにある場合は数量を追加、それ以外は新規追加
+            // すでにカートにあれば数量追加、それ以外は新規追加
             if (isset($_SESSION['cart'][$productId])) {
                 $_SESSION['cart'][$productId] += $quantity;
+
             } else {
                 $_SESSION['cart'][$productId] = $quantity;
             }
         }
-
+    
         header('Location: cart.php');
         exit;
     }
@@ -91,20 +92,20 @@
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 
-                <input type="hidden" name="productId" value="<?echo htmlspecialchars($_SESSION['productId'], ENT_QUOTES, 'UTF-8');?>">
+                <input type="hidden" name="productId" value="<?php echo htmlspecialchars($_SESSION['productId'], ENT_QUOTES, 'UTF-8');?>">
 
                 <div class="info-container">
                     <h1 class="product-name"><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h1>
-                    <h3 class="price"><span>¥</span><?php echo htmlspecialchars(number_format($product['price']), ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <h3 class="price"><span>¥</span><?php echo htmlspecialchars(number_format($product['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?></h3>
                     <p><?php echo htmlspecialchars(($product['description']), ENT_QUOTES, 'UTF-8'); ?></p>  
                 </div>
 
                 <div class="btn-container">
                     <div class="quantity-container">
-                        <button><i class="minus fa-solid fa-minus"></i></button>
-                        <input type="text" class="quantity" value="0" maxlength="2" disabled>
+                        <button type="button"><i class="minus fa-solid fa-minus"></i></button>
+                        <input type="text" class="quantity" value="1" maxlength="2" disabled>
                         <input type="hidden" class="hidden-quantity" name="quantity">
-                        <button><i class="plus fa-solid fa-plus"></i></button>
+                        <button type="button"><i class="plus fa-solid fa-plus"></i></button>
                     </div>
                     
                     <button type="submit" class="into-cart">カートに入れる<i class="fa-solid fa-cart-plus"></i></button>
@@ -120,12 +121,9 @@
         const plus     = document.querySelector('.plus');
         const minus    = document.querySelector('.minus');
         const quantity = document.querySelector('.quantity');
-        const hiddenQuantity    = document.querySelector('.hidden-quantity');
-        const quantityContainer = document.querySelector('.quantity-container');
+        const hiddenQuantity = document.querySelector('.hidden-quantity');
 
-        quantityContainer.addEventListener('click', (e) => {
-            e.preventDefault();
-        });
+        hiddenQuantity.value = 1;
 
         plus.addEventListener('click', (e) => {
             let currentValue = parseInt(quantity.value) || 0;
