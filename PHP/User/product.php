@@ -18,10 +18,41 @@
     $product = $stmt -> fetch(PDO::FETCH_ASSOC);
 
     // サブ画像
-    $stmt = $pdo2 -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id = :id AND pi.is_main != 1");
+    $stmt = $pdo2 -> prepare("SELECT * FROM product_images WHERE product_id = :id AND is_main != 1");
     $stmt -> bindValue(":id", $_SESSION['productId'], PDO::PARAM_INT);
     $stmt -> execute();
     $subImg = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
+        }
+    
+        // CSRFトークン再生成
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+        $productId = (int)$_POST['productId'];
+        $quantity = (int)$_POST['quantity'];
+    
+        if ($quantity > 0) {
+            // カートが未定義の場合、初期化
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+    
+            // すでにカートにある場合は数量を追加、それ以外は新規追加
+            if (isset($_SESSION['cart'][$productId])) {
+                $_SESSION['cart'][$productId] += $quantity;
+            } else {
+                $_SESSION['cart'][$productId] = $quantity;
+            }
+        }
+
+        header('Location: cart.php');
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +73,8 @@
     <?php include __DIR__.'/../common/header.php'; ?>
 
     <main>
+        <!-- <a href="onlineShop.php">一覧へ</a> -->
         <div class="grid-container">
-            <a href="On"></a>
             <div class="item-img-container">
                 <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
 
@@ -60,10 +91,12 @@
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 
+                <input type="hidden" name="productId" value="<?echo htmlspecialchars($_SESSION['productId'], ENT_QUOTES, 'UTF-8');?>">
+
                 <div class="info-container">
                     <h1 class="product-name"><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h1>
                     <h3 class="price"><span>¥</span><?php echo htmlspecialchars(number_format($product['price']), ENT_QUOTES, 'UTF-8'); ?></h3>
-                    <p><?php echo htmlspecialchars(($product['description']), ENT_QUOTES, 'UTF-8'); ?></p>                    
+                    <p><?php echo htmlspecialchars(($product['description']), ENT_QUOTES, 'UTF-8'); ?></p>  
                 </div>
 
                 <div class="btn-container">
@@ -111,4 +144,4 @@
         });
     </script>
 </body>
-</htm
+</html>

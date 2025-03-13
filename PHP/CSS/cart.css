@@ -3,3 +3,90 @@
 
 
 
+main .cart {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+main .cart .product {
+    display: flex;
+    flex-direction: row;
+    margin: 0 22px;
+    padding-bottom: 24px;
+}
+
+main .cart .product:not(:first-child) {
+    margin-top: 24px;
+    padding-bottom: 0;
+}
+
+main .cart .product:not(:last-child) {
+    border-bottom: 1px solid #999999;
+}
+
+main .cart .product img {
+    width: 33%;
+    aspect-ratio: 330 / 380;
+    object-fit: cover;
+}
+
+main .cart .product-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 3%;
+    justify-content: space-between;
+}
+
+main .cart .product-info .product-name {
+    font-size: 2.3rem;
+}
+
+main .cart .product-info .price {
+    font-size: 2.0rem;
+}
+
+main .quantity-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    border: 1.65px solid var(--gold);
+    width: 150px;
+}
+
+main .quantity-container button {
+    border: none;
+    background: none;
+    font-size: 1.7rem;
+}
+
+main .quantity-container .quantity {
+    width: 30px;
+    border: none;
+    background: none;
+    text-align: center;
+}
+
+main .quantity-container .plus,
+main .quantity-container .minus {
+    padding: 10px 22.7px;
+    font-size: 1.7rem;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    bottom: 7px;
+}
+
+main .quantity-delete {
+    display: flex;
+    flex-direction: row;
+    gap: 150px;
+}
+
+main .quantity-delete .trash-bin {
+    color: rgb(161, 161, 161);
+    font-size: 3.0rem;
+    cursor: pointer;
+}
