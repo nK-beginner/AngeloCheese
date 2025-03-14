@@ -37,19 +37,21 @@
         $quantity  = (int)$_POST['quantity'];
 
         if ($quantity > 0) {
-            // セッション用カート定義
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-    
-            // すでにカートにあれば数量追加、それ以外は新規追加
-            if (isset($_SESSION['cart'][$productId])) {
-                $_SESSION['cart'][$productId] += $quantity;
+            // クッキーからカートを取得（存在しない場合は空配列）
+            $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+        
+            // すでにカートにあれば追加、なければ新規追加
+            if (isset($cart[$productId])) {
+                $cart[$productId] += $quantity;
 
             } else {
-                $_SESSION['cart'][$productId] = $quantity;
+                $cart[$productId] = $quantity;
             }
+        
+            // クッキーに保存（JSONエンコードして格納）
+            setcookie('cart', json_encode($cart), time() + 86400 * 30, '/'); // 30日間有効
         }
+        
     
         header('Location: cart.php');
         exit;

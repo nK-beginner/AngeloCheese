@@ -320,14 +320,14 @@ footer .footer-container p {
     header .header-title a {
         font-size: 1.7rem;
         position: relative;
-        right: 36px;
+        right: 20px;
         bottom: 4px;
     }
 
     header .header-nav {
-        gap: 7px;
+        gap: 17px;
         position: relative;
-        right: 20px;
+        right: 10px;
         bottom: 2px;
     }
 

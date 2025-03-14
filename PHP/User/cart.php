@@ -14,19 +14,20 @@
     require_once __DIR__.'/../backend/csrf_token.php';
     require_once __DIR__.'/../Admin/Backend/connection.php';
 
-    $cart = $_SESSION['cart'] ?? [];
-    
+    // クッキーからカートを取得
+    $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
     if (!empty($cart)) {
         // カート内の商品IDを取得
         $productIds = array_keys($cart);
-    
+
         // SQLのプレースホルダー
         $placeholders = implode(',', array_fill(0, count($productIds), '?'));
-    
+
         // 商品情報を取得
-        $stmt = $pdo2 -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id IN ($placeholders) AND pi.is_main = 1");
-        $stmt -> execute($productIds);
-        $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo2->prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id IN ($placeholders) AND pi.is_main = 1");
+        $stmt->execute($productIds);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
 
@@ -50,7 +51,11 @@
     <main>
         <div class="main-container">
             <?php if(empty($products)): ?>
-                <h2 class="page-title">カートに商品がありません。</h2>
+                <h2 class="page-title no-items">カートに商品がありません。</h2>
+
+                <div class="recommended-container">
+                    <h2>こちらがおすすめです。</h2>
+                </div>
 
             <?php else: ?>
                 <form action="cart.php" method="POST">
@@ -90,7 +95,11 @@
 
                     <div class="total-price">
                         <h1>合計：<span2></span2>(税込)</h1>
+
+                        <p>※送料、保冷剤代が別途かかります。</p>
                     </div>
+
+                    <button class="to-checkout">お会計へ</button>
                 </form>
             <?php endif; ?>
             
@@ -100,7 +109,8 @@
     <?php include __DIR__.'/../common/footer.php'; ?>
 
     <script>
-        const updateTotalPrice = () => {
+        // 合計金額を更新
+        const fncUpdateTotalPrice = () => {
             let total = 0;
 
             document.querySelectorAll('.product').forEach(product => {
@@ -112,17 +122,16 @@
                 total += price * quantity;
             });
 
-            // 合計金額を更新
             const totalPrice = document.querySelector('.total-price span2');
             totalPrice.innerHTML = `<span>¥</span>${total.toLocaleString()}`;
         };
 
         document.querySelectorAll('.quantity-container').forEach(container => {
-            const plus = container.querySelector('.plus');
-            const minus = container.querySelector('.minus');
-            const quantity = container.querySelector('.quantity');
+            const plus           = container.querySelector('.plus');
+            const minus          = container.querySelector('.minus');
+            const quantity       = container.querySelector('.quantity');
             const hiddenQuantity = container.querySelector('.hidden-quantity');
-            const productId = quantity.dataset.id;
+            const productId      = quantity.dataset.id;
 
             const updateCart = (newQuantity) => {
                 fetch('update_cart.php', {
@@ -137,7 +146,6 @@
                         // 正しい数量が入力された場合に値を反映
                         quantity.value = newQuantity;
                         hiddenQuantity.value = newQuantity;
-
                         // 合計金額更新
                         if (data.total_price !== undefined) {
                             document.querySelector('.total-price span2').innerHTML = `<span>¥</span>${data.total_price.toLocaleString()}`;
@@ -155,17 +163,17 @@
                     updateCart(currentValue + 1);
                 }
             });
-
             minus.addEventListener('click', () => {
                 let currentValue = parseInt(quantity.value) || 0;
                 if (currentValue > 0) {
                     updateCart(currentValue - 1);
                 }
             });
+
         });
 
         // 初期時点から表示
-        updateTotalPrice();
+        fncUpdateTotalPrice();
     </script>
 
 </body>

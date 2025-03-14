@@ -8,6 +8,12 @@
     }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
+
+    if(!isset($_SESSION['user_id']) || !isset($_COOKIE['remember_token'])) {
+
+        header('Location: login.php');
+        exit;
+    }
 ?>
 
 
@@ -35,7 +41,7 @@
                 <div class="profile-item">
                     <p>姓</p>
                     <div class="content">
-                        <h3><?php echo htmlspecialchars($_SESSION['firstName'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                        <h3><?php echo htmlspecialchars(isset($_SESSION['firstName']) ? $_SESSION['firstName'] : 'ログインしていません。', ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 
@@ -43,7 +49,7 @@
                 <div class="profile-item">
                     <p>名</p>
                     <div class="content">
-                        <h3><?php echo htmlspecialchars($_SESSION['lastName'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <h3><?php echo htmlspecialchars(isset($_SESSION['lastName']) ? $_SESSION['lastName'] : 'ログインしていません。', ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 
@@ -51,7 +57,7 @@
                 <div class="profile-item">
                     <p>メールアドレス</p>
                     <div class="content">
-                        <h3><?php echo htmlspecialchars($_SESSION['email'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                        <h3><?php echo htmlspecialchars(isset($_SESSION['email']) ? $_SESSION['email'] : 'ログインしていません。', ENT_QUOTES, 'UTF-8'); ?></h3>
                     </div>
                 </div>
 

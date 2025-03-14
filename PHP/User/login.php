@@ -60,15 +60,12 @@
         // エラーがなければSQL確認
         try {
             if(empty($errors)) {
-                $stmt = $pdo -> prepare("SELECT id, firstName, lastName, email FROM test_users WHERE email = :email LIMIT 1");
+                $stmt = $pdo -> prepare("SELECT id, firstName, lastName, email, password FROM test_users WHERE email = :email LIMIT 1");
                 $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
                 $stmt -> execute();
                 $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-                if($user['deleted_at'] !== NULL) {
-                    $errors[] = '存在しないユーザーか、削除されたユーザーです。';
-                    
-                } elseif($user && password_verify($password, $user['password'])) {
+                if($user && password_verify($password, $user['password'])) {
                     // セッション固定攻撃対策
                     session_regenerate_id(true);
 
@@ -78,21 +75,14 @@
                     $_SESSION['lastName']  = $user['lastName'];
                     $_SESSION['email']     = $user['email'];
 
-                    // クッキー設定：チェックがついてれば設定する
-                    if(isset($_POST['remember'])) {
-                        $token = bin2hex(random_bytes(32));
-                        $expire = time() + (7 * 24 * 60 * 60);
-                        setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
-
-                        // クッキー用のトークンを生成
-                        $stmt = $pdo -> prepare("UPDATE test_users SET remember_token = :token WHERE id = :id");
-                        $stmt -> bindValue(':token', $token,      PDO::PARAM_STR);
-                        $stmt -> bindValue(':id',    $user['id'], PDO::PARAM_INT);
-                        $stmt -> execute();
-                    }
+                    // クッキー
+                    require_once __DIR__.'/../Backend/cookie.php';
 
                     header('Location: onlineShop.php');
                     exit;
+
+                } elseif($user['deleted_at'] !== NULL) {
+                    $errors[] = '存在しないユーザーか、削除されたユーザーです。';
 
                 } else {
                     // ログイン失敗回数を記録
@@ -167,9 +157,6 @@
 
                     <h4>パスワード</h4>
                     <input class="user-input" type="password" id="password" name="password" placeholder="パスワード(8文字以上)" minlength="8" required>
-
-                    <!-- COOKIE許可・拒否 -->
-                    <label class="cookie"><input type="checkbox" name="remember"> ログイン情報を記憶</label><br>
 
                     <input class="submit-btn" type="submit" id="login" name="login" value="ログイン">
 

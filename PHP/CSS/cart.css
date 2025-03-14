@@ -3,6 +3,12 @@
 
 
 
+main .recommended-container {
+    
+}
+
+
+
 main .cart {
     display: flex;
     flex-direction: column;
@@ -14,18 +20,11 @@ main .cart .product {
     flex-direction: row;
     margin: 0 22px;
     padding-bottom: 24px;
+    border-bottom: 1px solid #999999;
 }
 
 main .cart .product:not(:first-child) {
     margin-top: 24px;
-}
-
-main .cart .product:not(:last-child) {
-    border-bottom: 1px solid #999999;
-}
-
-main .cart .product:last-child {
-    padding-bottom: 0;
 }
 
 main .cart .product img {
@@ -92,13 +91,52 @@ main .quantity-delete .trash-bin {
     color: rgb(161, 161, 161);
     font-size: 3.0rem;
     cursor: pointer;
+    transition: filter 0.2s;
+}
+
+main .quantity-delete .trash-bin:hover {
+    filter: brightness(132%);
 }
 
 main .total-price {
-    margin-top: 120px;
+    margin-top: 42px;
     text-align: center;
 }
 
 main .total-price span2 {
     font-size: 5.0rem;
+    border-bottom: 1px solid var(--gold);
+}
+
+main .total-price p {
+    margin-top: 7px;
+    font-size: 1.5rem;
+}
+
+main .to-checkout {
+    display: block;
+    margin: 12px auto 24px auto;
+    padding: 16px 59px;
+    border: none;
+    background: var(--gold);
+    font-size: 1.8rem;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 7px;
+    transition: filter 0.2s;
+}
+
+main .to-checkout:hover {
+    filter: brightness(132%);
+}
+
+@media screen and (max-width: 510px) {
+    main .no-items {
+        font-size: 2.4rem !important;
+        margin-top: 32px;
+    }
+
+    main .quantity-delete .trash-bin {
+        margin-left: -95px !important;
+    }
 }

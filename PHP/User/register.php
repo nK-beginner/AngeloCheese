@@ -103,7 +103,10 @@
             $_SESSION['lastName']  = $lastName;
             $_SESSION['email']     = $email;
 
-            header('Location: onlineShop.php');
+            // クッキー
+            require_once __DIR__.'/../Backend/cookie.php';
+
+            header('Location: OnlineShop.php');
             exit;
 
         } catch(PDOException $e) {
@@ -118,8 +121,6 @@
             header('Location: Register.php');
             exit;
         }
-
-
     }
 ?>
 

@@ -4,9 +4,6 @@
 
 
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
     require_once __DIR__.'/../Admin/Backend/connection.php';
@@ -15,27 +12,28 @@
         $productId = $_POST['id'];
         $newQuantity = (int) $_POST['quantity'];
 
-        // セッションにカートがなければ作成
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
+        // クッキーからカートを取得（存在しない場合は空配列）
+        $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+
+        // 数量を更新（0以下なら削除）
+        if ($newQuantity > 0) {
+            $cart[$productId] = $newQuantity;
+        } else {
+            unset($cart[$productId]);
         }
 
-        // 数量を更新
-        if ($newQuantity > 0) {
-            $_SESSION['cart'][$productId] = $newQuantity;
-        } else {
-            unset($_SESSION['cart'][$productId]); // 0以下なら削除
-        }
+        // クッキーに更新データを保存
+        setcookie('cart', json_encode($cart), time() + 86400 * 30, '/'); // 30日間有効
 
         // 合計金額を計算
         $totalPrice = 0;
-        foreach ($_SESSION['cart'] as $id => $qty) {
-            // ここで商品の価格を取得（例: DBから取得）
-            $productPrice = getProductPrice($id); 
+        foreach ($cart as $id => $qty) {
+            // 商品の価格を取得（DBから取得）
+            $productPrice = getProductPrice($id);
             $totalPrice += $productPrice * $qty;
         }
 
-        // JSONでレスポンスを返す
+        // JSONレスポンスを返す
         echo json_encode(['success' => true, 'total_price' => $totalPrice]);
         exit;
     }
@@ -48,12 +46,13 @@
     function getProductPrice($id) {
         global $pdo2;
 
-        $stmt = $pdo2 -> prepare("SELECT * FROM products WHERE id = :id LIMIT 1");
-        $stmt -> bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt -> execute();
+        $stmt = $pdo2->prepare("SELECT tax_included_price FROM products WHERE id = :id LIMIT 1");
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-        $product = $stmt -> fetch(PDO::FETCH_ASSOC);
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $product ? $product['tax_included_price'] : 0;
     }
 ?>
+

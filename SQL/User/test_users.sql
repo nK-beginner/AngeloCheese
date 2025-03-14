@@ -14,7 +14,7 @@ create table test_users (
     updated_at timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP null,
     reset_password_token varchar(255) null unique,
-    reset_password_expires_at timestamp null
+    reset_password_expires_at timestamp null,
     remember_token VARCHAR(255)
 );
 
