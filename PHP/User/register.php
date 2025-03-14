@@ -84,26 +84,42 @@
         // パスワードをハッシュ化
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // ユーザー登録処理
-        $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password)
-                                                 VALUES(:firstName, :lastName, :email, :password");
-        $stmt -> bindValue(':firstName', $firstName, PDO::PARAM_STR);
-        $stmt -> bindValue(':lastName',  $lastName,  PDO::PARAM_STR);
-        $stmt -> bindValue(':email',     $email,     PDO::PARAM_STR);
-        $stmt -> bindValue(':password',  $hashedPassword, PDO::PARAM_STR);
-        $stmt -> execute();
+        try {
+            // ユーザー登録処理
+            $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password)
+                                                    VALUES(:firstName, :lastName, :email, :password)");
+            $stmt -> bindValue(':firstName', $firstName, PDO::PARAM_STR);
+            $stmt -> bindValue(':lastName',  $lastName,  PDO::PARAM_STR);
+            $stmt -> bindValue(':email',     $email,     PDO::PARAM_STR);
+            $stmt -> bindValue(':password',  $hashedPassword, PDO::PARAM_STR);
+            $stmt -> execute();
 
-        // セッション固定攻撃対策
-        session_regenerate_id(true);
+            // セッション固定攻撃対策
+            session_regenerate_id(true);
 
-        // 登録後に自動ログイン
-        $_SESSION['user_id']   = $pdo -> lastInsertId();
-        $_SESSION['firstName'] = $firstName;
-        $_SESSION['lastName']  = $lastName;
-        $_SESSION['email']     = $email;
+            // 登録後に自動ログイン
+            $_SESSION['user_id']   = $pdo -> lastInsertId();
+            $_SESSION['firstName'] = $firstName;
+            $_SESSION['lastName']  = $lastName;
+            $_SESSION['email']     = $email;
 
-        header('Location: onlineShop.php');
-        exit;
+            header('Location: onlineShop.php');
+            exit;
+
+        } catch(PDOException $e) {
+            $pdo->rollBack();
+
+            error_log("ユーザー登録エラー: " . $e->getMessage());
+
+            $_SESSION['errors'] = ['登録処理中にエラーが発生しました。もう一度お試しください。'];
+            $_SESSION['old_firstName'] = $firstName;
+            $_SESSION['old_lastName'] = $lastName;
+            $_SESSION['old_email'] = $email;
+            header('Location: Register.php');
+            exit;
+        }
+
+
     }
 ?>
 

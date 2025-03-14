@@ -18,7 +18,7 @@
     $product = $stmt -> fetch(PDO::FETCH_ASSOC);
 
     // サブ画像
-    $stmt = $pdo2 -> prepare("SELECT  FROM product_images WHERE product_id = :id AND is_main != 1");
+    $stmt = $pdo2 -> prepare("SELECT image_path FROM product_images WHERE product_id = :id AND is_main != 1");
     $stmt -> bindValue(":id", $_SESSION['productId'], PDO::PARAM_INT);
     $stmt -> execute();
     $subImg = $stmt -> fetch(PDO::FETCH_ASSOC);
