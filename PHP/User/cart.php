@@ -35,16 +35,28 @@
     
     if(empty($products)) {
         // 画像データ取得
-        $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price, p.category_id, p.category_name
+        $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price
             FROM product_images AS pi
             JOIN products AS p ON pi.product_id = p.id
             WHERE pi.is_main = 1
+            AND p.category_id = 2
             AND  p.hidden_at IS NULL
             ORDER BY p.id
-            LIMIT 6
         ");
         $stmt -> execute();
         $recommendedProducts = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
+        }
+    
+        // CSRFトークン再生成
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
     }
 ?>
 
@@ -67,11 +79,23 @@
 
     <main>
         <div class="main-container">
-            <?php if(empty($products) && empty($cart)): ?>
+            <?php if(empty($cart)): ?>
                 <h2 class="page-title no-items">カート内に商品がありません。</h2>
+                <h2 class="recommended-title">こちらの商品がおすすめです。</h2>
 
-                <div class="recommended-container">
-                    <h2 class="recommended-title">こちらがおすすめです。</h2>
+                <div class="product-container">
+                    <?php foreach($recommendedProducts as $product): ?>
+                        <form action="onlineShop.php" method="POST" class="product">
+                            <button>
+                                <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                                <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>                                 
+                            </button>
+                        </form>
+                    <?php endforeach; ?>
+
+                    <a href="OnlineShop.php" class="to-shop">もっと見る</a>
                 </div>
 
             <?php else: ?>

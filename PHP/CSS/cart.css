@@ -3,11 +3,67 @@
 
 
 
-main .recommended-container .recommended-title {
-    font-size: 1.7rem;
+ main .recommended-title {
+    font-size: 1.8rem;
+    margin-top: 32px;
 }
 
+.product-container {
+    width: 60%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    flex-direction: row;
+}
 
+.product-container .product {
+    width: calc((100% - 20px) / 2) ;
+    text-align: left !important;
+    border: none;
+}
+
+.product-container .product button {
+    cursor: pointer;
+    border: none;
+}
+
+.product-container .product img {
+    width: 100%;
+    aspect-ratio: 330/380;
+    object-fit: cover;
+    transition: filter 0.2s;
+}
+
+.product-container .product img:hover {
+    filter: brightness(108%);
+}
+
+.product-container .product h3,
+.product-container .product p {
+    font-size: 1.7rem;
+    background: var(--bgblack2);
+    text-align: left;
+    color: #fff;
+}
+
+.product-container .to-shop {
+    display: block;
+    margin: 0 auto;
+    background: var(--gold);
+    padding: 19px 62px;
+    font-size: 2.0rem;
+    border-radius: 12px;
+    transition: filter 0.2s;
+    margin-top: 32px;
+    font-weight: bolder;
+    color: var(--bgblack2);
+}
+
+.product-container .to-shop:hover {
+    filter: brightness(120%);
+}
 
 main .cart {
     display: flex;
