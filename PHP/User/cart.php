@@ -17,6 +17,8 @@
     // クッキーからカートを取得
     $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
 
+    $products = [];
+
     if (!empty($cart)) {
         // カート内の商品IDを取得
         $productIds = array_keys($cart);
@@ -25,9 +27,24 @@
         $placeholders = implode(',', array_fill(0, count($productIds), '?'));
 
         // 商品情報を取得
-        $stmt = $pdo2->prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id IN ($placeholders) AND pi.is_main = 1");
-        $stmt->execute($productIds);
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo2 -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id IN ($placeholders) AND pi.is_main = 1");
+        $stmt -> execute($productIds);
+        $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        
+    }
+    
+    if(empty($products)) {
+        // 画像データ取得
+        $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price, p.category_id, p.category_name
+            FROM product_images AS pi
+            JOIN products AS p ON pi.product_id = p.id
+            WHERE pi.is_main = 1
+            AND  p.hidden_at IS NULL
+            ORDER BY p.id
+            LIMIT 6
+        ");
+        $stmt -> execute();
+        $recommendedProducts = $stmt -> fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
 
@@ -50,11 +67,11 @@
 
     <main>
         <div class="main-container">
-            <?php if(empty($products)): ?>
-                <h2 class="page-title no-items">カートに商品がありません。</h2>
+            <?php if(empty($products) && empty($cart)): ?>
+                <h2 class="page-title no-items">カート内に商品がありません。</h2>
 
                 <div class="recommended-container">
-                    <h2>こちらがおすすめです。</h2>
+                    <h2 class="recommended-title">こちらがおすすめです。</h2>
                 </div>
 
             <?php else: ?>
