@@ -48,7 +48,7 @@
     color: #fff;
 }
 
-.product-container .to-shop {
+.product-container .to-page {
     display: block;
     margin: 0 auto;
     background: var(--gold);
@@ -61,7 +61,7 @@
     color: var(--bgblack2);
 }
 
-.product-container .to-shop:hover {
+.product-container .to-page:hover {
     filter: brightness(120%);
 }
 
@@ -74,9 +74,10 @@ main .cart {
 main .cart .product {
     display: flex;
     flex-direction: row;
-    margin: 0 22px;
+    /* margin: 0 22px; */
     padding-bottom: 24px;
     border-bottom: 1px solid #999999;
+    width: 100%;
 }
 
 main .cart .product:not(:first-child) {
@@ -94,6 +95,8 @@ main .cart .product-info {
     flex-direction: column;
     margin-left: 3%;
     justify-content: space-between;
+    width: calc(100% - 36%);
+    background: red;
 }
 
 main .cart .product-info .product-name {
@@ -169,10 +172,14 @@ main .total-price p {
     font-size: 1.5rem;
 }
 
-main .to-checkout {
-    display: block;
-    margin: 12px auto 24px auto;
-    padding: 16px 59px;
+main .to-btns {
+    display: flex;
+    justify-content: center;
+}
+
+main .to-purchase,
+main .to-login {
+    margin: 22px 0 12px 0;
     border: none;
     background: var(--gold);
     font-size: 1.8rem;
@@ -182,7 +189,17 @@ main .to-checkout {
     transition: filter 0.2s;
 }
 
-main .to-checkout:hover {
+main .to-purchase {
+    padding: 16px 59px;
+}
+
+main .to-login {
+    padding: 16px 39px;
+    color: var(--bgblack2);
+}
+
+main .to-page:hover,
+main .to-login:hover {
     filter: brightness(132%);
 }
 

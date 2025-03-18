@@ -78,8 +78,15 @@
                     // クッキー
                     require_once __DIR__.'/../Backend/cookie.php';
 
-                    header('Location: onlineShop.php');
-                    exit;
+                    if(isset($_SESSION['fromCart'])) {
+                        header('Location: cart.php');
+                        exit;
+
+                    } else {
+                        header('Location: onlineShop.php');
+                        exit;
+                    }
+
 
                 } elseif($user['deleted_at'] !== NULL) {
                     $errors[] = '存在しないユーザーか、削除されたユーザーです。';

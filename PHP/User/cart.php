@@ -57,6 +57,16 @@
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
+        // ログインしてなければログイン画面へ強制遷移
+        if(isset($_POST['toLogin'])) {
+            $_SESSION['fromCart'] = bin2hex(random_bytes(32));
+
+            header('Location: login.php');
+            exit;
+
+        } else {
+            die('lets purchase');
+        }
     }
 ?>
 
@@ -100,7 +110,6 @@
 
             <?php else: ?>
                 <form action="cart.php" method="POST">
-                    <!-- CSRFトークン -->
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                     
                     <h2 class="page-title"><span>C</span>art<span>.</span></h2>
@@ -140,7 +149,15 @@
                         <p>※送料、保冷剤代が別途かかります。</p>
                     </div>
 
-                    <button class="to-checkout">お会計へ</button>
+                    <div class="to-btns">
+                        <?php if(isset($_SESSION['user_id']) || isset($_COOKIE['remember_token'])): ?>
+                            <button class="to-purchase">お会計へ</button>
+                        <?php else: ?>
+                            <input type="hidden" name="toLogin">
+                            <button class="to-login">ログインして買う</button>
+                        <?php endif; ?>
+                    </div>
+
                 </form>
             <?php endif; ?>
             
@@ -174,6 +191,7 @@
             const hiddenQuantity = container.querySelector('.hidden-quantity');
             const productId      = quantity.dataset.id;
 
+            // AJAX処理：商品個数に応じて金額を自動計算
             const updateCart = (newQuantity) => {
                 fetch('update_cart.php', {
                     method: 'POST',
@@ -182,7 +200,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (data.success) {
                         // 正しい数量が入力された場合に値を反映
                         quantity.value = newQuantity;
@@ -191,6 +208,7 @@
                         if (data.total_price !== undefined) {
                             document.querySelector('.total-price span2').innerHTML = `<span>¥</span>${data.total_price.toLocaleString()}`;
                         }
+                        
                     } else {
                         alert('カートの更新に失敗しました');
                     }
