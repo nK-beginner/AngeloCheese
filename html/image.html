@@ -10,64 +10,79 @@
     <title>Document</title>
 </head>
 <style>
-body {
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
     background: gray;
     display: flex;
     justify-content: center;
 }
 
-.main-container {
+.cart {
     background: rgb(169, 169, 255);
-    width: 900px;
+    width: 600px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 20px;
 }
 
 .product {
-    width: calc((100% - 20px) / 3); /* 3列レイアウト */
-    text-align: center;
-    border-radius: 5px;
+    width: calc((100% - 20px) / 2); /* 3列レイアウト */
 }
 
 .product img {
     width: 100%;
     aspect-ratio: 330 / 380;
     object-fit: cover;
-    border-radius: 5px;
+}
+
+.name-price {
+    text-align: left;
 }
 
 </style>
 <body>
     <main>
         <div class="main-container">
-            <div class="product">
-                <img src="240924FVC.jpg" alt="">
-                <h3 class="product-name">商品名1</h3>
-                <p class="product-price">¥1,000</p>
-            </div>
-            <div class="product">
-                <img src="240924FVC.jpg" alt="">
-                <h3 class="product-name">商品名2</h3>
-                <p class="product-price">¥2,000</p>
-            </div>
-            <div class="product">
-                <img src="240924FVC.jpg" alt="">
-                <h3 class="product-name">商品名3</h3>
-                <p class="product-price">¥3,000</p>
-            </div>
-            <div class="product">
-                <img src="240924FVC.jpg" alt="">
-                <h3 class="product-name">商品名4</h3>
-                <p class="product-price">¥4,000</p>
-            </div>
-            <div class="product">
-                <img src="240924FVC.jpg" alt="">
-                <h3 class="product-name">商品名5</h3>
-                <p class="product-price">¥5,000</p>
-            </div>
+            <div class="cart">
+                <div class="product">
+                    <img src="240924FVC.jpg" alt="">
+                    <div class="name-price">
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                    
+                    </div>
+                </div>
+
+                <div class="product">
+                    <img src="240924FVC.jpg" alt="">
+                    <div class="name-price">
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                    
+                    </div>
+                </div>
+
+                <div class="product">
+                    <img src="240924FVC.jpg" alt="">
+                    <div class="name-price">
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                    
+                    </div>
+                </div>
+
+                <div class="product">
+                    <img src="240924FVC.jpg" alt="">
+                    <div class="name-price">
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                    
+                    </div>
+                </div>
+            </div>            
         </div>
+
     </main>
 </body>
 </html>

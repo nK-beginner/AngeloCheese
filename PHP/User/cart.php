@@ -127,17 +127,6 @@
                                             <span>¥</span><?php echo htmlspecialchars(number_format($product['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>
                                         </h3>
                                     </div>
-                                    
-                                    <div class="quantity-delete">
-                                        <div class="quantity-container">
-                                            <button type="button"><i class="minus fa-solid fa-minus"></i></button>
-                                            <input  type="text" class="quantity" data-id="<?php echo $product['id']; ?>" value="<?php echo htmlspecialchars($cart[$product['id']], ENT_QUOTES, 'UTF-8'); ?>" maxlength="2" disabled>
-                                            <input  type="hidden" class="hidden-quantity" name="quantity">
-                                            <button type="button"><i class="plus fa-solid fa-plus"></i></button>
-                                        </div>
-
-                                        <i class="trash-bin fa-solid fa-trash-can"></i>
-                                    </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -189,6 +178,8 @@
             const minus          = container.querySelector('.minus');
             const quantity       = container.querySelector('.quantity');
             const hiddenQuantity = container.querySelector('.hidden-quantity');
+            const product        = container.closest('.product'); // 商品要素
+            const trashBin       = product.querySelector('.trash-bin');
             const productId      = quantity.dataset.id;
 
             // AJAX処理：商品個数に応じて金額を自動計算
@@ -201,9 +192,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // 正しい数量が入力された場合に値を反映
-                        quantity.value = newQuantity;
-                        hiddenQuantity.value = newQuantity;
+                        if (newQuantity === 0) {
+                            // 数量が0なら商品をカートから削除
+                            product.remove();
+                        } else {
+                            // 数量を更新
+                            quantity.value = newQuantity;
+                            hiddenQuantity.value = newQuantity;
+                        }
                         // 合計金額更新
                         if (data.total_price !== undefined) {
                             document.querySelector('.total-price span2').innerHTML = `<span>¥</span>${data.total_price.toLocaleString()}`;
@@ -222,11 +218,16 @@
                     updateCart(currentValue + 1);
                 }
             });
+
             minus.addEventListener('click', () => {
                 let currentValue = parseInt(quantity.value) || 0;
                 if (currentValue > 0) {
                     updateCart(currentValue - 1);
                 }
+            });
+
+            trashBin.addEventListener('click', () => {
+                updateCart(0);
             });
 
         });
