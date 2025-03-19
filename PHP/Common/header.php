@@ -8,7 +8,7 @@
                     <!-- タブレット -->
                     <source media="(max-width: 768px)" srcset="../images/AngeloCheese_face.png">
                     <!-- PC -->
-                    <img src="../images/AngeloCheese_face.png" alt="logo" class="header-logo">
+                    <img src="../images/AngeloCheese_logo1.png" alt="logo" class="header-logo">
                 </picture>
             </a>
             <!-- オンラインショップ画面へ -->

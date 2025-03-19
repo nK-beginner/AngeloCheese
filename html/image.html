@@ -21,7 +21,7 @@
     justify-content: center;
 }
 
-.cart {
+.product-container {
     background: rgb(169, 169, 255);
     width: 600px;
     display: flex;
@@ -44,11 +44,46 @@
     text-align: left;
 }
 
+
 </style>
 <body>
     <main>
         <div class="main-container">
-            <div class="cart">
+            <div class="product-container">
+
+                <form  method="POST" class="product">
+                    <button>
+                        <input type="hidden" name="productId" value="">
+                        <img src="240924FVC.jpg" alt="商品画像">
+
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                                 
+                    </button>
+                </form>
+
+                <form  method="POST" class="product">
+                    <button>
+                        <input type="hidden" name="productId" value="">
+                        <img src="240924FVC.jpg" alt="商品画像">
+                        
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                                 
+                    </button>
+                </form>
+
+                <form  method="POST" class="product">
+                    <button>
+                        <input type="hidden" name="productId" value="">
+                        <img src="240924FVC.jpg" alt="商品画像">
+                        
+                        <h3 class="product-name">商品名1</h3>
+                        <p class="product-price">¥1,000</p>                                 
+                    </button>
+                </form>
+                
+            </div>
+
+            <!-- <div class="cart">
                 <div class="product">
                     <img src="240924FVC.jpg" alt="">
                     <div class="name-price">
@@ -80,7 +115,7 @@
                         <p class="product-price">¥1,000</p>                    
                     </div>
                 </div>
-            </div>            
+            </div>             -->
         </div>
 
     </main>
