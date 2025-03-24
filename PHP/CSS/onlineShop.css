@@ -65,12 +65,17 @@
 .products .product-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    flex-direction: row;
+    gap: 42px 20px;
     justify-content: flex-start;
 }
 
-.products .product {
+.products .forms {
     width: calc((100% - 40px) / 3);
+}
+
+.products .product {
+    width: 100%;
 }
 
 .products .product button {
@@ -90,19 +95,50 @@
     filter: brightness(108%);
 }
 
+.products .to-cart {
+    width: 100%;
+}
+
+.products .to-cart .cart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.62px solid var(--gold);
+    border-radius: 7px;
+    padding: 0 12px;
+    width: 100%;
+    background: var(--bgblack);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.products .to-cart .cart:hover {
+    background: var(--gold);
+}
+
+.products .cart p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.products .cart i {
+    margin-bottom: 12px;
+    font-size: 2.0rem;
+}
+
 .products .product h3 {
     font-size: 2.0rem;
     color: #fff;
     font-weight: bolder;
-    background: var(--bgblack2);
     text-align: left;
 }
 
 .products .product p {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     color: #fff;
-    background: var(--bgblack2);
     text-align: left;
+    margin-bottom: 3px;
 }
 
 .products span2 {
@@ -110,14 +146,13 @@
     margin-left: 5px;
 }
 
-/* 画面幅が800px以下のときは2列 */
 @media (max-width: 510px) {
     .top-container {
         margin-top: 42px;
     }
 
     .products .container {
-        width: 391px;
+        width: 351px;
     }
 
     .products .category-section h2 {
@@ -128,10 +163,3 @@
         width: calc((100% - 20px) / 2);
     }
 }
-
-/* 画面幅が500px以下のときは1列 */
-/* @media (max-width: 510px) {
-    .product {
-        width: 100%;
-    }
-} */

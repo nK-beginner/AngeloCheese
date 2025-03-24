@@ -33,19 +33,18 @@
         
     }
     
-    if(empty($products)) {
-        // 画像データ取得
-        $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price
-            FROM product_images AS pi
-            JOIN products AS p ON pi.product_id = p.id
-            WHERE pi.is_main = 1
-            AND p.category_id = 2
-            AND  p.hidden_at IS NULL
-            ORDER BY p.id
-        ");
-        $stmt -> execute();
-        $recommendedProducts = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-    }
+    // 画像データ取得
+    $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price
+        FROM product_images AS pi
+        JOIN products AS p ON pi.product_id = p.id
+        WHERE pi.is_main = 1
+        AND p.category_id = 2
+        AND  p.hidden_at IS NULL
+        ORDER BY p.id
+    ");
+    $stmt -> execute();
+    $recommendedProducts = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
@@ -106,7 +105,7 @@
                         </form>
                     <?php endforeach; ?>
 
-                    <!-- <a href="OnlineShop.php" class="to-shop">もっと見る</a> -->
+                    <a href="OnlineShop.php" class="to-shop">もっと見る</a>
                 </div>
 
             <?php else: ?>
@@ -128,6 +127,17 @@
                                             <span>¥</span><?php echo htmlspecialchars(number_format($product['tax_included_price']), ENT_QUOTES, 'UTF-8'); ?>
                                         </h3>
                                     </div>
+
+                                    <div class="quantity-delete">
+                                        <div class="quantity-container">
+                                            <button type="button"><i class="minus fa-solid fa-minus"></i></button>
+                                            <input  type="text" class="quantity" data-id="<?php echo $product['id']; ?>" value="<?php echo htmlspecialchars($cart[$product['id']], ENT_QUOTES, 'UTF-8'); ?>" maxlength="2" disabled>
+                                            <input  type="hidden" class="hidden-quantity" name="quantity">
+                                            <button type="button"><i class="plus fa-solid fa-plus"></i></button>
+                                        </div>
+
+                                        <i class="trash-bin fa-solid fa-trash-can"></i>
+                                    </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -147,8 +157,23 @@
                             <button class="to-login">ログインして買う</button>
                         <?php endif; ?>
                     </div>
-
                 </form>
+
+                <div class="product-container">
+                    <?php foreach($recommendedProducts as $product): ?>
+                        <form action="onlineShop.php" method="POST" class="product">
+                            <button>
+                                <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                
+                                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                                <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>
+                            </button>
+                        </form>
+                    <?php endforeach; ?>
+
+                    <a href="OnlineShop.php" class="to-shop">もっと見る</a>
+                </div>
             <?php endif; ?>
             
         </div>

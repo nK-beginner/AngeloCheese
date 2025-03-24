@@ -105,8 +105,10 @@
                 <div class="btn-container">
                     <div class="quantity-container">
                         <button type="button"><i class="minus fa-solid fa-minus"></i></button>
+
                         <input type="text" class="quantity" value="1" maxlength="2" disabled>
                         <input type="hidden" class="hidden-quantity" name="quantity">
+                        
                         <button type="button"><i class="plus fa-solid fa-plus"></i></button>
                     </div>
                     

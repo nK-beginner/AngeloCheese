@@ -24,7 +24,7 @@
 :root {
     --gold: #C2A26A;        /* メインの金色 */
     --hoveredGold: #dabc89; /* ホバー時の金色 */
-    --bgblack: #242424;     /* 全体背景色 */
+    --bgblack: #202020;     /* 全体背景色 */
     --bgblack2: #242424;    /* フォーム内背景色 */
     --bgblack3: #272727;    /* インプット内、フッター背景色 */
     --width: 1040px;          /* 全体幅 */
@@ -75,7 +75,7 @@ span {
 
 /********** header**********/
 header {
-    border-bottom: 0.37px solid #FFFFFF;
+    border-bottom: 0.37px solid #bebebe;
     position: fixed;
     top: 0;
     left: 0;
@@ -103,7 +103,6 @@ header .header-logo {
     width: 100%;
 }
 
-
 header .header-list {
     display: flex;
     gap: 32px;
@@ -129,7 +128,7 @@ header .cart-login {
 }
 
 /* ハンバーガーボタン */
-.hamburger-menu {
+header .hamburger-menu {
     display: none;
     flex-direction: column;
     gap: 5px;
@@ -138,7 +137,7 @@ header .cart-login {
     z-index: 200;
 }
 
-.hamburger-menu span {
+header .hamburger-menu span {
     display: block;
     width: 100%;
     height: 3px;
@@ -146,7 +145,7 @@ header .cart-login {
     transition: all 0.3s ease-in-out;
 }
 
-.nav-menu {
+header .nav-menu {
     display: flex;
     align-items: center;
 }
@@ -281,6 +280,7 @@ main .main-container form .user-input {
     border: none;
     outline: none;
     border-bottom: 1.72px solid #9E9E9E;
+    border-radius: 0;
 }
 
 main .main-container form .submit-btn {
@@ -388,6 +388,10 @@ footer .footer-container p {
     }
 
     /********** header **********/
+    header .header-container {
+        padding: 0 21px;
+    }
+
     header .header-logo {
         width: 40px;
     }
@@ -413,9 +417,9 @@ footer .footer-container p {
 
     header .nav-menu {
         display: none;
-         flex-direction: column;
+        flex-direction: column;
         position: absolute;
-        top: 50px;
+        top: 40px;
         left: 0px;
         width: 100%;
         height: 100vh;
@@ -437,11 +441,11 @@ footer .footer-container p {
         align-items: center;
         flex-direction: column;
         gap: 20px;
-        margin-top: 65px;
+        margin-top: 125px;
     }
 
     header .cart-login {
-        margin-top: 235px;
+        margin-top: 295px;
     }
 
     /********** main **********/

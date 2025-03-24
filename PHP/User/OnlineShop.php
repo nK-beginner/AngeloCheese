@@ -54,9 +54,8 @@
 
     <div class="top-container">
         <img src="../images/trimmedTop2.jpg" alt="top image">
-        <h1><span>大</span>切な人に届けたい<span>。</span></h1>
-        <h2><span>誰</span>にでも愛されるチーズケーキ<span>。</span></h2>
-        <!-- <p>自己紹介文</p> -->
+        <h1>大切な人に届けたい<span>。</span></h1>
+        <h2>誰にでも愛されるチーズケーキ<span>。</span></h2>
     </div>
 
     <div class="products">
@@ -69,14 +68,29 @@
                         </div>
                         <div class="product-container">
                             <?php foreach($items as $item): ?>
-                                <form action="onlineShop.php" method="POST" class="product">
-                                    <button type="submit">
-                                        <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                        <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                                <div class="forms">
+                                    <form action="onlineShop.php" method="POST" class="product">
+                                        <button type="submit">
+                                            <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                            <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
+                                        </button>
+
                                         <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                        <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>                                        
-                                    </button>
-                                </form>
+                                        <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>
+                                    </form>
+
+                                    <form action="product.php" method="POST" class="to-cart">
+                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" value="1" name="quantity">
+
+                                        <button class="cart">
+                                            <p>カートに追加する</p>
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
                             <?php endforeach; ?>
                         </div>
                     </div>
