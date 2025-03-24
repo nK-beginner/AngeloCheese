@@ -107,7 +107,7 @@
     border-radius: 7px;
     padding: 0 12px;
     width: 100%;
-    background: var(--bgblack);
+    background: var(--bgblack3);
     color: #fff;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -159,7 +159,7 @@
         text-align: center;
     }
 
-    .products .product {
+    .products .forms {
         width: calc((100% - 20px) / 2);
     }
 }

@@ -94,7 +94,7 @@
 
                 <div class="product-container">
                     <?php foreach($recommendedProducts as $product): ?>
-                        <form action="onlineShop.php" method="POST" class="product">
+                        <form action="onlineShop.php" method="POST" class="recommended-product">
                             <button>
                                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 
@@ -159,15 +159,17 @@
                     </div>
                 </form>
 
+                <h2 class="recommended-here">こちらの商品もおすすめです。</h2>
+
                 <div class="product-container">
                     <?php foreach($recommendedProducts as $product): ?>
-                        <form action="onlineShop.php" method="POST" class="product">
+                        <form action="onlineShop.php" method="POST" class="recommended-product">
                             <button>
                                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 
                                 <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
                                 <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>
+                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>                                 
                             </button>
                         </form>
                     <?php endforeach; ?>
@@ -221,6 +223,11 @@
                         if (newQuantity === 0) {
                             // 数量が0なら商品をカートから削除
                             product.remove();
+
+                            if (document.querySelectorAll('.product').length === 0) {
+                                location.reload();
+                            }
+
                         } else {
                             // 数量を更新
                             quantity.value = newQuantity;

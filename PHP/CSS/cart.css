@@ -10,36 +10,36 @@ main .recommended-title {
 }
 
 main .product-container {
-    width: 600px;
+    width: 573px;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
     column-gap: 20px;
 }
 
-main .product-container .product {
+main .product-container .recommended-product {
     width: calc((100% - 20px) / 2) !important; /* 3列レイアウト */
     border: none !important;
 }
 
-main .product-container .product button {
+main .product-container .recommended-product button {
     cursor: pointer;
     border: none;
 }
 
-main .product-container .product img {
+main .product-container .recommended-product img {
     width: 100%;
     aspect-ratio: 330 / 380;
     object-fit: cover;
     transition: filter 0.2s;
 }
 
-main .product-container .product img:hover {
+main .product-container .recommended-product img:hover {
     filter: brightness(108%);
 }
 
-main .product-container .product h3,
-main .product-container .product p {
+main .product-container .recommended-product h3,
+main .product-container .recommended-product p {
     font-size: 1.7rem;
     background: var(--bgblack2);
     text-align: left;
@@ -198,6 +198,11 @@ main .to-login {
 main .to-page:hover,
 main .to-login:hover {
     filter: brightness(132%);
+}
+
+main .recommended-here {
+    margin-top: 90px;
+    font-size: 2.8rem;
 }
 
 @media screen and (max-width: 510px) {
