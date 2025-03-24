@@ -8,6 +8,7 @@
         session_start();
     }
     require_once __DIR__.'/../backend/connection.php';
+    require_once __DIR__.'/../backend/csrf_token.php';
     
     if(!isset($_SESSION['user_id'])) {
         header('Location: onlineShop.php');
@@ -19,14 +20,7 @@
     unset($_SESSION['errors']);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
-        }
-    
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        fncVerifyToken($_POST['hidden']);
 
         $password   = $_POST['password'] ?? '';
         $rePassword = $_POST['rePassword'] ?? '';
@@ -113,7 +107,7 @@
             <form action="confirmUnsubscribe.php" method="POST" class="form">
                 <h2 class="page-title"><span>U</span>nsubscribe<span>.</span></h2>
                 <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 
                 <?php if(!empty($errors)): ?>
                     <div class="error-msg">

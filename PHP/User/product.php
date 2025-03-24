@@ -7,6 +7,9 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+
+    session_regenerate_id(true);
+
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
     require_once __DIR__.'/../Admin/Backend/connection.php';
@@ -24,20 +27,16 @@
     $subImg = $stmt -> fetch(PDO::FETCH_ASSOC);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
+        if(!fncVerifyToken($_POST['hidden'])) {
+            header('Location: product.php');
+            exit;
         }
-    
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     
         $productId = (int)$_POST['productId'];
         $quantity  = (int)$_POST['quantity'];
 
         if ($quantity > 0) {
-            // クッキーからカートを取得（存在しない場合は空配列）
+            // クッキーからカートを取得
             $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
         
             // すでにカートにあれば追加、なければ新規追加
@@ -48,10 +47,10 @@
                 $cart[$productId] = $quantity;
             }
         
-            // クッキーに保存（JSONエンコードして格納）
-            setcookie('cart', json_encode($cart), time() + 86400 * 30, '/'); // 30日間有効
+            // クッキーに保存（JSONエンコードして格納）+ データ暗号化
+            $encryptedCart = openssl_encrypt(json_encode($cart), 'aes-256-cbc', 'your-encryption-key', 0, 'your-encryption-iv');
+            setcookie('cart', $encryptedCart, time() + 86400 * 30, '/'); // 30日間有効
         }
-        
     
         header('Location: cart.php');
         exit;
@@ -92,7 +91,7 @@
 
             <form action="product.php" method="POST">
                 <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                 
                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($_SESSION['productId'], ENT_QUOTES, 'UTF-8');?>">
 

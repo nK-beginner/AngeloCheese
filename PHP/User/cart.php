@@ -30,7 +30,6 @@
         $stmt = $pdo2 -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id IN ($placeholders) AND pi.is_main = 1");
         $stmt -> execute($productIds);
         $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        
     }
     
     // 画像データ取得
@@ -44,17 +43,9 @@
     ");
     $stmt -> execute();
     $recommendedProducts = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-    
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
-        }
-    
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        fncVerifyToken($_POST['hidden']);
 
         // ログインしてなければログイン画面へ強制遷移
         if(isset($_POST['toLogin'])) {
@@ -110,7 +101,7 @@
 
             <?php else: ?>
                 <form action="cart.php" method="POST">
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                    <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                     
                     <h2 class="page-title"><span>C</span>art<span>.</span></h2>
 

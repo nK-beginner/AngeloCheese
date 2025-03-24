@@ -31,7 +31,7 @@
         <div class="main-container">
             <form action="#" method="POST">
                 <!-- CSRFトークン -->
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 <h2 class="page-title"><span>R</span>eset <span>P</span>assword<span>.</span></h2>
 

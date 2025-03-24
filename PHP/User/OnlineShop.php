@@ -21,6 +21,8 @@
     $stmt -> execute();
     $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
+    
+
     // カテゴリーごとに商品分割
     $categorizedProducts = [];
     foreach($products as $product) {
@@ -80,7 +82,7 @@
                                     </form>
 
                                     <form action="product.php" method="POST" class="to-cart">
-                                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" value="1" name="quantity">
 

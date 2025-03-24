@@ -9,36 +9,33 @@
     }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
+    require_once __DIR__.'/../backend/functions.php';
 
     if(isset($_SESSION['user_id']) || isset($_COOKIE['remember_token'])) {
         header('Location: onlineShop.php');
         exit;
     }
     
-    $errors   = $_SESSION['errors'] ?? [];
+    $errors    = $_SESSION['errors'] ?? [];
     $firstName = $_SESSION['old_firstName'] ?? '';
     $lastName  = $_SESSION['old_lastName'] ?? '';
-    $email    = $_SESSION['old_email'] ?? '';
+    $email     = $_SESSION['old_email'] ?? '';
     
     unset($_SESSION['errors'], $_SESSION['old_firstName'], $_SESSION['old_lastName'], $_SESSION['old_email']); // 一度表示したら削除
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $errors = []; // 入力エラー用配列
-
-        // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
-            $errors[] = 'CSRFトークン不一致エラー';
+        if(!fncVerifyToken($_POST['hidden'])) {
+            header('Location: Register.php');
+            exit;
         }
-
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
-        // フォームデータ取得とサニタイズ
+        
         $firstName = trim($_POST['firstName'] ?? '');
         $lastName  = trim($_POST['lastName'] ?? '');
-        $email    = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
+        $email     = trim($_POST['email'] ?? '');
+        $password  = $_POST['password'] ?? '';
+        $ip        = $_SERVER['REMOTE_ADDR'];
+
+        $errors = [];
 
         // メアドチェック
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -51,32 +48,25 @@
         }
 
         // メアド重複チェック
-        $stmt = $pdo -> prepare("SELECT id FROM test_users WHERE email = :email LIMIT 1");
+        $stmt = $pdo -> prepare("SELECT count(*) FROM test_users WHERE email = :email LIMIT 1");
         $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
         $stmt -> execute();
-        $user = $stmt -> fetch();
-
-        if($user) {
+        if ($stmt -> fetchColumn() > 0) {
             $errors[] = 'このメールアドレスは既に登録されています。';
         }
 
         // レートリミットチェック（スパム対策）
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $register_key = 'register_attempt_'.$ip;
-        if(isset($_SESSION[$register_key]) && $_SESSION[$register_key]['count'] >= 3) {
-            if(time() - $_SESSION[$register_key]['last_attempt'] < 3600) {
-                $errors[] = 'アカウント登録の試行回数が多すぎます。しばらくしてから再試行してください。';
-            } else {
-                unset($_SESSION[$register_key]);
-            }
+        if(fncRegisterRateLimit($ip)) {
+            $errors[] = 'アカウント登録の試行回数が多すぎます。しばらくしてから再試行してください。';
         }
 
-        // エラーあったら特定の情報を残しつつ、フォームへ戻る
+        // エラー時はリダイレクト
         if(!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $_SESSION['errors']        = $errors;
             $_SESSION['old_firstName'] = $firstName;
-            $_SESSION['old_lastName'] = $lastName;
-            $_SESSION['old_email'] = $email;
+            $_SESSION['old_lastName']  = $lastName;
+            $_SESSION['old_email']     = $email;
+
             header('Location: Register.php');
             exit;
         }
@@ -94,11 +84,15 @@
             $stmt -> bindValue(':password',  $hashedPassword, PDO::PARAM_STR);
             $stmt -> execute();
 
+            $userId = $pdo -> lastInsertId();
+
+            $pdo -> commit();
+
             // セッション固定攻撃対策
             session_regenerate_id(true);
 
             // 登録後に自動ログイン
-            $_SESSION['user_id']   = $pdo -> lastInsertId();
+            $_SESSION['user_id']   = $userId;
             $_SESSION['firstName'] = $firstName;
             $_SESSION['lastName']  = $lastName;
             $_SESSION['email']     = $email;
@@ -110,14 +104,15 @@
             exit;
 
         } catch(PDOException $e) {
-            $pdo->rollBack();
+            $pdo -> rollBack();
 
-            error_log("ユーザー登録エラー: " . $e->getMessage());
+            error_log("ユーザー登録エラー: " . $e -> getMessage());
 
-            $_SESSION['errors'] = ['登録処理中にエラーが発生しました。もう一度お試しください。'];
+            $_SESSION['errors']        = ['登録処理中にエラーが発生しました。もう一度お試しください。'];
             $_SESSION['old_firstName'] = $firstName;
-            $_SESSION['old_lastName'] = $lastName;
-            $_SESSION['old_email'] = $email;
+            $_SESSION['old_lastName']  = $lastName;
+            $_SESSION['old_email']     = $email;
+            
             header('Location: Register.php');
             exit;
         }
@@ -153,7 +148,7 @@
             <div class="main-container">
                 <form action="Register.php" method="POST">
                     <!-- CSRFトークン -->
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                    <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     <h2 class="page-title"><span>R</span>egister<span>.</span></h2>
 
