@@ -23,22 +23,15 @@
     unset($_SESSION['errors'], $_SESSION['old_firstName'], $_SESSION['old_lastName'], $_SESSION['old_email']); // 一度表示したら削除
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $errors = []; // 入力エラー用配列
-
-        // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
-            $errors[] = 'CSRFトークン不一致エラー';
-        }
-
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        require_once __DIR__.'/../backend/check.php';
 
         // フォームデータ取得とサニタイズ
         $firstName = trim($_POST['firstName'] ?? '');
         $lastName  = trim($_POST['lastName'] ?? '');
         $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
+
+        $errors = []; // 入力エラー用配列
 
         // メアドチェック
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
