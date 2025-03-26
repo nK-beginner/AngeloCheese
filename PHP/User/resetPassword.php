@@ -14,7 +14,10 @@
     unset($_SESSION['errors']);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        fncVerifyToken($_POST['hidden']);
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $errors[] = 'CSRFトークン不一致エラー';
+        }
 
         $password = $_POST['password'] ?? '';
         $re_password = $_POST['re-password'] ?? '';
@@ -81,7 +84,7 @@
             <form action="resetPassword.php" method="POST" class="form">
                 <h2><span>R</span>eset <span>P</span>assword<span>.</span></h2>
                 <!-- CSRFトークン -->
-                <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 <!-- エラーメッセージ表示 -->
                 <?php if(!empty($errors)): ?>

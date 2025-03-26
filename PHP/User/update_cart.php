@@ -55,4 +55,3 @@
         return $product ? $product['tax_included_price'] : 0;
     }
 ?>
-

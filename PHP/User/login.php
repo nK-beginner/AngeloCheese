@@ -9,7 +9,6 @@
     }
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
-    require_once __DIR__.'/../backend/functions.php';
 
     if(isset($_SESSION['user_id']) || isset($_COOKIE['remember_token'])) {
         header('Location: onlineShop.php');
@@ -22,14 +21,17 @@
     unset($_SESSION['errors'], $_SESSION['old_email']);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if(!fncVerifyToken($_POST['hidden'])) {
-            header('Location: Login.php');
-            exit;
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
         }
+
+        // CSRFトークン再生成：既存のトークンを無効化し再生成 ⇒ 使い回しを防ぐ
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
-        $ip = $_SERVER['REMOTE_ADDR'];
 
         $errors = [];
 
@@ -43,59 +45,70 @@
             $errors[] = 'パスワードを入力してください。';
         }
 
-        // レートリミット
-        if(fncLoginRateLimit($ip)) {
-            $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
+        // レートリミットチェック（ブルートフォース対策：5回以上失敗で15分ログイン阻止）
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $failed_login_key = 'failed_login_'.$ip;
+        if(isset($_SESSION[$failed_login_key]) && $_SESSION[$failed_login_key]['count'] >= 5) {
+            if(time() - $_SESSION[$failed_login_key]['last_attempt'] < 900) {
+                $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
+
+            } else {
+                unset($_SESSION[$failed_login_key]);
+            }
         }
         
         // エラーがなければSQL確認
-        if(empty($errors)) {
-            try {
+        try {
+            if(empty($errors)) {
                 $stmt = $pdo -> prepare("SELECT id, firstName, lastName, email, password FROM test_users WHERE email = :email LIMIT 1");
                 $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
                 $stmt -> execute();
                 $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-                if($user) {
-                    if($user['deleted_at'] !== NULL) {
-                        $errors[] = '存在しないユーザーか、削除されたユーザーです。';
+                if($user && password_verify($password, $user['password'])) {
+                    // セッション固定攻撃対策
+                    session_regenerate_id(true);
 
-                    } elseif(password_verify($password, $user['password'])) {
-                        // セッション固定攻撃対策
-                        session_regenerate_id(true);
+                    // セッション各情報へデータ格納
+                    $_SESSION['user_id']   = $user['id'];
+                    $_SESSION['firstName'] = $user['firstName'];
+                    $_SESSION['lastName']  = $user['lastName'];
+                    $_SESSION['email']     = $user['email'];
 
-                        // セッション各情報へデータ格納
-                        $_SESSION['user_id']   = $user['id'];
-                        $_SESSION['firstName'] = $user['firstName'];
-                        $_SESSION['lastName']  = $user['lastName'];
-                        $_SESSION['email']     = $user['email'];
+                    // クッキー
+                    require_once __DIR__.'/../Backend/cookie.php';
 
-                        // クッキー
-                        require_once __DIR__.'/../Backend/cookie.php';
-
-                        if(isset($_SESSION['fromCart'])) {
-                            header('Location: cart.php');
-                            
-                        } else {
-                            header('Location: onlineShop.php');
-                        }
+                    if(isset($_SESSION['fromCart'])) {
+                        header('Location: cart.php');
                         exit;
-                        
+
                     } else {
-                        fncRecordFailedLogins($ip);
-                        $errors[] = 'メールアドレスまたはパスワードが間違っています。';
+                        header('Location: onlineShop.php');
+                        exit;
                     }
 
+
+                } elseif($user['deleted_at'] !== NULL) {
+                    $errors[] = '存在しないユーザーか、削除されたユーザーです。';
+
                 } else {
-                    fncRecordFailedLogins($ip);
+                    // ログイン失敗回数を記録
+                    $_SESSION[$failed_login_key]['count'] = ($_SESSION[$failed_login_key]['count'] ?? 0) + 1; 
+
+                    // 最後にログイン失敗した時刻を保存
+                    $_SESSION[$failed_login_key]['last_attempt'] = time(); 
+                    
                     $errors[] = 'メールアドレスまたはパスワードが間違っています。';
                 }
-
-            } catch(PDOException $e) {
-                error_log('データベース接続エラー：' . $e -> getMessage());
-                $errors[] = 'データベース接続エラー';
             }
-        } else {
+
+        } catch(PDOException $e) {
+            error_log('データベース接続エラー：' . $e -> getMessage());
+            $error[] = 'データベース接続エラー';
+        }
+
+
+        if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
             $_SESSION['old_email']  = $email;
 
@@ -133,7 +146,8 @@
 
             <div class="main-container">
                 <form action="login.php" method="POST">
-                    <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                    <!-- CSRFトークン -->
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                     <h2 class="page-title"><span>L</span>ogin<span>.</span></h2>
 

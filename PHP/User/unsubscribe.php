@@ -16,7 +16,14 @@
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        fncVerifyToken($_POST['hidden']);
+        // CSRFトークンチェック
+        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            die('CSRFトークン不一致エラー');
+        }
+    
+        // CSRFトークン再生成
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // 退会理由受け取り
         $_SESSION['reason'] = $_POST['reason'] ?? '';
@@ -54,7 +61,7 @@
             <form action="unsubscribe.php" method="POST">
                 <h2 class="page-title"><span>U</span>nsubscribe<span>.</span></h2>
                 <!-- CSRFトークン -->
-                <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 
                 <!-- 注意書き -->
                 <div class="warning-container">
