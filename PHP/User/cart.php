@@ -83,22 +83,6 @@
                 <h2 class="page-title no-items">カート内に商品がありません。</h2>
                 <h2 class="recommended-title">こちらの商品がおすすめです。</h2>
 
-                <div class="product-container">
-                    <?php foreach($recommendedProducts as $product): ?>
-                        <form action="onlineShop.php" method="POST" class="recommended-product">
-                            <button>
-                                <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                
-                                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                                <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>                                 
-                            </button>
-                        </form>
-                    <?php endforeach; ?>
-
-                    <a href="OnlineShop.php" class="to-shop">もっと見る</a>
-                </div>
-
             <?php else: ?>
                 <form action="cart.php" method="POST">
                     <input type="hidden" name="hidden" value="<?php echo htmlspecialchars($_SESSION['hidden'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
@@ -152,22 +136,37 @@
 
                 <h2 class="recommended-here">こちらの商品もおすすめです。</h2>
 
-                <div class="product-container">
-                    <?php foreach($recommendedProducts as $product): ?>
+            <?php endif; ?>
+
+            <div class="product-container">
+                <?php foreach($recommendedProducts as $product): ?>
+                    <div class="forms">
                         <form action="onlineShop.php" method="POST" class="recommended-product">
                             <button>
                                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 
-                                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                                <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>                                 
+                                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                             
+                            </button>
+                            <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                            <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>    
+                        </form>
+                        
+                        <form action="product.php" method="POST" class="to-cart">
+                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" value="1" name="quantity">
+
+                            <button class="cart">
+                                <p>カートに追加する</p>
+                                <i class="fa-solid fa-cart-shopping"></i>
                             </button>
                         </form>
-                    <?php endforeach; ?>
+                    </div>
 
-                    <a href="OnlineShop.php" class="to-shop">もっと見る</a>
-                </div>
-            <?php endif; ?>
+                <?php endforeach; ?>
+
+                <a href="OnlineShop.php" class="to-shop">もっと見る</a>
+            </div>
             
         </div>
     </main>

@@ -17,9 +17,14 @@ main .product-container {
     column-gap: 20px;
 }
 
+main .product-container .forms {
+    width: calc((100% - 20px) / 2);
+}
+
 main .product-container .recommended-product {
-    width: calc((100% - 20px) / 2) !important; /* 3列レイアウト */
+    width: 100%;
     border: none !important;
+    background: var(--bgblack);
 }
 
 main .product-container .recommended-product button {
@@ -41,20 +46,53 @@ main .product-container .recommended-product img:hover {
 main .product-container .recommended-product h3,
 main .product-container .recommended-product p {
     font-size: 1.7rem;
-    background: var(--bgblack2);
     text-align: left;
     color: #fff;
 }
 
+main .product-container .to-cart {
+    width: 100%;
+    border: none;
+    background: red;
+}
+
+main .product-container .to-cart .cart {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1.62px solid var(--gold);
+    border-radius: 7px;
+    padding: 0 12px;
+    width: 100%;
+    background: var(--bgblack3);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+main .product-container .to-cart .cart:hover {
+    background: var(--gold);
+}
+
+main .product-container .to-cart .cart p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+main .product-container .to-cart .cart i {
+    margin-bottom: 12px;
+    font-size: 2.0rem;
+}
+
 main .product-container .to-shop {
     display: block;
-    margin: 0 auto;
+    margin: 32px auto 0 auto;
     background: var(--gold);
     padding: 14px 32px;
     font-size: 2.0rem;
     border-radius: 7px;
     transition: filter 0.2s;
-    margin-top: 32px;
     color: var(--bgblack2);
 }
 

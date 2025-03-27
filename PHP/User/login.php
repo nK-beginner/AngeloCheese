@@ -73,12 +73,11 @@
 
                     if(isset($_SESSION['fromCart'])) {
                         header('Location: cart.php');
-                        exit;
 
                     } else {
                         header('Location: onlineShop.php');
-                        exit;
                     }
+                    exit;
 
 
                 } elseif($user['deleted_at'] !== NULL) {
