@@ -129,10 +129,10 @@
     <link rel="stylesheet" href="../css/register.css?v=<?php echo time(); ?>">
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+    <?php include __DIR__.'../common/header.php'; ?>
 
     <main>
         <div class="grid-container">
@@ -180,6 +180,6 @@
 
     </main>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 </body>
 </html>

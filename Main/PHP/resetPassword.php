@@ -68,13 +68,13 @@
     <title>パスワードのリセット</title>
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 
     <!-- パスワードリセット用CSS -->
     <link rel="stylesheet" href="../css/resetPassword.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+    <?php include __DIR__.'../common/header.php'; ?>
 
     <main>
         <div class="main-container">
@@ -106,7 +106,7 @@
         </div>
     </main>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 
 </body>
 </html>

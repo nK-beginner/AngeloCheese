@@ -25,13 +25,13 @@
     <title>会員情報</title>
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 
     <!-- アカウント情報用CSS -->
     <link rel="stylesheet" href="../css/myAccount.css?v=<?php echo time(); ?>">
 </head>
 <body>
-<?php include __DIR__.'/../common/header.php'; ?>
+<?php include __DIR__.'../common/header.php'; ?>
 
     <main>
         <div class="main-container">
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 
     <script src="../JS/myAccount.js"></script>
 </body>

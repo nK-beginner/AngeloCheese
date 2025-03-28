@@ -41,16 +41,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Shop</title>
+    <title>商品一覧 | Angelo Cheese</title>
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 
     <!-- Online Shop用CSS -->
     <link rel="stylesheet" href="../css/onlineShop.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+    <?php include __DIR__.'../common/header.php'; ?>
 
     <div class="top-container">
         <img src="../images/trimmedTop2.jpg" alt="top image">
@@ -99,6 +99,6 @@
         </div>
     </div>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 </body>
 </html>

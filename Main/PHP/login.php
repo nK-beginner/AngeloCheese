@@ -119,13 +119,13 @@
     <title>ログイン</title>
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 
     <!-- ログイン用CSS -->
     <link rel="stylesheet" href="../css/Login.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+    <?php include __DIR__.'../common/header.php'; ?>
 
     <main>
         <div class="grid-container">
@@ -168,7 +168,7 @@
 
     </main>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 
 </body>
 </html>

@@ -19,13 +19,13 @@
     <title>レビューを投稿する</title>
 
     <!-- headタグ -->
-    <?php include __DIR__.'/../common/headTags.php'; ?>
+    <?php include __DIR__.'../common/headTags.php'; ?>
 
     <!-- レビュー用 -->
     <link rel="stylesheet" href="../css/review.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <?php include __DIR__.'/../common/header.php'; ?>
+    <?php include __DIR__.'../common/header.php'; ?>
 
     <main>
         <div class="main-container">
@@ -96,7 +96,7 @@
         </div>
     </main>
 
-    <?php include __DIR__.'/../common/footer.php'; ?>
+    <?php include __DIR__.'../common/footer.php'; ?>
 
     <script src="../JS/review.js"></script>
 </body>

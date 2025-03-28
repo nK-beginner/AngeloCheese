@@ -1,5 +1,5 @@
 <header> 
-        <?php include __DIR__.'/../Backend/autoLogin.php'; ?>
+        <?php include __DIR__.'/../../Backend/autoLogin.php'; ?>
         <div class="header-container">
             <a href="#">
                 <picture>
