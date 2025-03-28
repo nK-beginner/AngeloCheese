@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/unsubscribe.php.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>
@@ -16,7 +20,7 @@
 
     <main>
         <div class="main-container">
-            <form action="unsubscribe.php" method="POST">
+            <form action="../PHP/unsubscribe.php" method="POST">
                 <h2 class="page-title"><span>U</span>nsubscribe<span>.</span></h2>
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">

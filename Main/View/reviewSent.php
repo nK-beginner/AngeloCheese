@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/reviewSent.php.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>

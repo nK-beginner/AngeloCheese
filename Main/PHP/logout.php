@@ -1,8 +1,3 @@
-
-
-
-
-
 <?php
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -24,6 +19,6 @@
     setcookie('remember_token', '', time() - 3600, '/', '', false, true);
 
     // ログインページへリダイレクト
-    header("Location: login.php");
+    header("Location: ../View/login.php");
     exit;
 ?>

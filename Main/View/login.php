@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/login.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>
@@ -25,7 +29,7 @@
             </div>
 
             <div class="main-container">
-                <form action="login.php" method="POST">
+                <form action="../PHP/login.php" method="POST">
                     <!-- CSRFトークン -->
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
 

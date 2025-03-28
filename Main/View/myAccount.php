@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/myAccount.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>

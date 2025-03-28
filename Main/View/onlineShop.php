@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/onlineShop.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>
@@ -31,7 +35,7 @@
                         <div class="product-container">
                             <?php foreach($items as $item): ?>
                                 <div class="forms">
-                                    <form action="onlineShop.php" method="POST" class="product">
+                                    <form action="../PHP/onlineShop.php" method="POST" class="product">
                                         <button type="submit">
                                             <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                             <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
@@ -41,7 +45,7 @@
                                         <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>
                                     </form>
 
-                                    <form action="product.php" method="POST" class="to-cart">
+                                    <form action="../PHP/product.php" method="POST" class="to-cart">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" value="1" name="quantity">

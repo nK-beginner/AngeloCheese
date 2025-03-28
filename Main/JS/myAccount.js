@@ -13,7 +13,7 @@ logoutBtn.addEventListener('click', (e) => {
 });
 
 confirmBtn.addEventListener('click', () => {
-    window.location.href = 'logout.php';
+    window.location.href = '../PHP/logout.php';
 });
 
 cancelBtn.addEventListener('click', () => {

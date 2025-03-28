@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/cart.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>
@@ -22,7 +26,7 @@
                 <h2 class="recommended-title">こちらの商品がおすすめです。</h2>
 
             <?php else: ?>
-                <form action="cart.php" method="POST">
+                <form action="../PHP/cart.php" method="POST">
                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                     
                     <h2 class="page-title"><span>C</span>art<span>.</span></h2>
@@ -79,7 +83,7 @@
             <div class="product-container">
                 <?php foreach($recommendedProducts as $product): ?>
                     <div class="forms">
-                        <form action="onlineShop.php" method="POST" class="recommended-product">
+                        <form action="../PHP/onlineShop.php" method="POST" class="recommended-product">
                             <button>
                                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 
@@ -89,7 +93,7 @@
                             <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>    
                         </form>
 
-                        <form action="product.php" method="POST" class="to-cart">
+                        <form action="../PHP/product.php" method="POST" class="to-cart">
                             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                             <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                             <input type="hidden" value="1" name="quantity">

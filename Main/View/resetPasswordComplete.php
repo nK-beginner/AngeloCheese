@@ -1,14 +1,5 @@
-
-
-
-
-
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    require_once __DIR__.'/../backend/connection.php';
-    require_once __DIR__.'/../backend/csrf_token.php';
+    require_once __DIR__.'/../PHP/resetPasswordComplete.php.php';
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +21,10 @@
     <main>
         <div class="main-container">
             <div class="form">
-                    <h2><span>R</span>eset <span>P</span>assword<span>.</span></h2>
-                    <h3 class="reset-done"><span>✔</span>パスワードの変更が完了しました。</h3>
+                <h2><span>R</span>eset <span>P</span>assword<span>.</span></h2>
+                <h3 class="reset-done"><span>✔</span>パスワードの変更が完了しました。</h3>
 
-                    <a href="login.php" class="to-login-a"><button class="btn to-login-btn">ログイン画面へ</button></a>
+                <a href="login.php" class="to-login-a"><button class="btn to-login-btn">ログイン画面へ</button></a>
             </div>
         </div>
     </main>

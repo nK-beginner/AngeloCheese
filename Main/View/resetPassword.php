@@ -1,3 +1,7 @@
+<?php
+    require_once __DIR__.'/../PHP/resetPassword.php';
+?>
+
 <!DOCTYPE html>
 <html lang="jp">
 <head>
@@ -16,7 +20,7 @@
 
     <main>
         <div class="main-container">
-            <form action="resetPassword.php" method="POST" class="form">
+            <form action="../PHP/resetPassword.php" method="POST" class="form">
                 <h2><span>R</span>eset <span>P</span>assword<span>.</span></h2>
                 <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">

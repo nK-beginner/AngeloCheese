@@ -1,14 +1,5 @@
-
-
-
-
-
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    require_once __DIR__.'/../backend/connection.php';
-    require_once __DIR__.'/../backend/csrf_token.php';
+    require_once __DIR__.'/../PHP/unsubscribeComplete.php.php';
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +28,7 @@
             <a href="#" class="to-top">商品一覧へ</a>
         
             <div class="recommended-container">
-                <h2 class="page-title"><span>R</span>ccomended<span>.</span></h2>
+                <h2 class="page-title"><span>R</span>commended<span>.</span></h2>
             </div>
         </div>
     </main>
