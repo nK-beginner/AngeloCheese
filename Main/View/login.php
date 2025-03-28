@@ -1,6 +1,4 @@
-<?php
-    require_once __DIR__.'/../PHP/login.php';
-?>
+<?php require_once __DIR__.'/../PHP/login.php'; ?>
 
 <!DOCTYPE html>
 <html lang="jp">
