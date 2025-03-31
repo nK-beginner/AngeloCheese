@@ -10,11 +10,20 @@
     // 画像データ取得
     $products = fncGetImages($pdo2, 1, 1);
 
+    // 英語化
+    $engCategory = [
+        '人気商品'          => 'Recommend',
+        'チーズケーキサンド' => 'Cheesecake Sandwich',
+        'アンジェロチーズ'   => 'Angelo Cheesecake',
+        'その他'            => 'Others',
+    ];
+
     // カテゴリーごとに商品分割
     $categorizedProducts = [];
     foreach($products as $product) {
         $category = $product['category_name'];
-        $categorizedProducts[$category][] = $product;
+        $categoryEn = $engCategory[$category];
+        $categorizedProducts[$categoryEn][] = $product;
     }
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {

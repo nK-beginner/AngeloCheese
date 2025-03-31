@@ -24,7 +24,7 @@
 :root {
     --gold: #C2A26A;        /* メインの金色 */
     --hoveredGold: #dabc89; /* ホバー時の金色 */
-    --bgblack: #1a1a1a;     /* 全体背景色 */
+    --bgblack: #202020;     /* 全体背景色 */
     --bgblack2: #242424;    /* フォーム内背景色 */
     --bgblack3: #272727;    /* インプット内、フッター背景色 */
     --width: 1040px;          /* 全体幅 */
@@ -75,14 +75,85 @@ span {
 
 /********** header**********/
 header {
-    /* border-bottom: 0.37px solid rgb(212, 212, 212); */
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    /* border-bottom: 0.37px solid rgba(255, 255, 255, 0.7); */
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    padding: 12px 62px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+
+.pages {
+    font-size: 1.6rem;
+    letter-spacing: 1.3px;
+}
+
+.pages li {
+    display: inline-block;
+    position: relative;
+}
+
+.pages li::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 36px;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--hoveredGold);
+    transition: width 0.27s ease-in-out, left 0.27s ease-in-out;
+}
+
+.pages li:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.header-logo {
+    width: 12%;
+    position: relative;
+    left: 43.5%;
+    transform: translateX(-50%);
+}
+
+.login-cart {
+    display: flex;
+    flex-direction: row;
+    gap: 27px;
+    font-size: 1.2rem;
+}
+
+.login-cart i {
+    
+}
+
+/* header {
+    border-bottom: 0.37px solid rgb(212, 212, 212);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    /* background: var(--bgblack); */
-}
+    background: var(--bgblack);
+} 
 
 header .header-container {
     width: 100%;
@@ -125,7 +196,7 @@ header .cart-login {
     display: flex;
     gap: 32px;
     margin-bottom: 12px;
-}
+} */
 
 /* ハンバーガーボタン */
 header .hamburger-menu {
@@ -213,7 +284,7 @@ main {
     max-width: var(--width);
     width: 100%;
     margin: 147px auto 0 auto;
-}
+} 
 
 main .main-container {
     width: 100%;
