@@ -1,6 +1,4 @@
-<?php
-    require_once __DIR__.'/../PHP/onlineShop.php';
-?>
+<?php require_once __DIR__.'/../PHP/OnlineShop.php'; ?>
 
 <!DOCTYPE html>
 <html lang="jp">
@@ -19,7 +17,7 @@
     <?php include __DIR__.'../common/header.php'; ?>
 
     <div class="top-container">
-        <img src="../images/trimmedTop2.jpg" alt="top image">
+        <!-- <img src="/../AngeloCheese/images/trimmedTop.jpg" alt="top image"> -->
         <h1>大切な人に届けたい<span>。</span></h1>
         <h2>誰にでも愛されるチーズケーキ<span>。</span></h2>
     </div>
@@ -35,17 +33,17 @@
                         <div class="product-container">
                             <?php foreach($items as $item): ?>
                                 <div class="forms">
-                                    <form action="../PHP/onlineShop.php" method="POST" class="product">
+                                    <form action="onlineShop.php" method="POST" class="product">
                                         <button type="submit">
                                             <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                            <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
+                                            <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
                                         </button>
 
                                         <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                         <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>
                                     </form>
 
-                                    <form action="../PHP/product.php" method="POST" class="to-cart">
+                                    <form action="product.php" method="POST" class="to-cart">
                                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                         <input type="hidden" value="1" name="quantity">

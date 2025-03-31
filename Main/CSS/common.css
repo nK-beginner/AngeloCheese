@@ -24,7 +24,7 @@
 :root {
     --gold: #C2A26A;        /* メインの金色 */
     --hoveredGold: #dabc89; /* ホバー時の金色 */
-    --bgblack: #202020;     /* 全体背景色 */
+    --bgblack: #1a1a1a;     /* 全体背景色 */
     --bgblack2: #242424;    /* フォーム内背景色 */
     --bgblack3: #272727;    /* インプット内、フッター背景色 */
     --width: 1040px;          /* 全体幅 */
@@ -75,13 +75,13 @@ span {
 
 /********** header**********/
 header {
-    border-bottom: 0.37px solid #bebebe;
+    /* border-bottom: 0.37px solid rgb(212, 212, 212); */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    background: var(--bgblack);
+    /* background: var(--bgblack); */
 }
 
 header .header-container {

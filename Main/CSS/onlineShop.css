@@ -14,7 +14,7 @@
 }
 
 .top-container h1 {
-    margin-top: 34px;
+    margin-top: 134px;
     font-size: clamp(2rem, 7vw, 4.5em); /* 最小2rem、最大4.5em、基準は5vw */
     text-align: center;
 }

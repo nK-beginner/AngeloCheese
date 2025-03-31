@@ -3,11 +3,11 @@
         <div class="header-container">
             <a href="#">
                 <picture>
-                    <source media="(max-width: 510px)" srcset="../images/AngeloCheese_face.png">
+                    <source media="(max-width: 510px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
 
-                    <source media="(max-width: 768px)" srcset="../images/AngeloCheese_face.png">
+                    <source media="(max-width: 768px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
 
-                    <img src="../images/AngeloCheese_logo1.png" alt="logo" class="header-logo">
+                    <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="logo" class="header-logo">
                 </picture>
             </a>
 

@@ -42,9 +42,8 @@
             exit;
         }
 
+        $pdo -> beginTransaction();
         try {
-            $pdo -> beginTransaction();
-            
             $stmt = $pdo -> prepare("INSERT INTO deletedUsers (userId,  firstName,  lastName,  email, reason, reasonDetail)
                                                         VALUES(:userId, :firstName, :lastName, :email, :reason, :reasonDetail)");
             $stmt -> bindValue(":userId",    $user['id'],        PDO::PARAM_INT);

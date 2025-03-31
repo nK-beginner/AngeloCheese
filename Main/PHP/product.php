@@ -5,18 +5,13 @@
     require_once __DIR__.'/../backend/connection.php';
     require_once __DIR__.'/../backend/csrf_token.php';
     require_once __DIR__.'/../../Admin/backend/connection.php';
+    require_once __DIR__.'/../PHP/function/getImages.php';
 
     // メイン画像用 + 商品名などもここから取ること
-    $stmt = $pdo2 -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON pi.product_id = p.id WHERE p.id = :id AND pi.is_main = 1");
-    $stmt -> bindValue(":id", $_SESSION['productId'], PDO::PARAM_INT);
-    $stmt -> execute();
-    $product = $stmt -> fetch(PDO::FETCH_ASSOC);
+    $product = fncGetImages($pdo2, 2, 0);
 
     // サブ画像
-    $stmt = $pdo2 -> prepare("SELECT image_path FROM product_images WHERE product_id = :id AND is_main != 1");
-    $stmt -> bindValue(":id", $_SESSION['productId'], PDO::PARAM_INT);
-    $stmt -> execute();
-    $subImg = $stmt -> fetch(PDO::FETCH_ASSOC);
+    $subImg = fncGetImages($pdo2, 3, 0);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once __DIR__.'/../backend/check.php';

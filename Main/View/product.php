@@ -1,6 +1,4 @@
-<?php
-    require_once __DIR__.'/../PHP/product.php';
-?>
+<?php require_once __DIR__.'/../PHP/product.php'; ?>
 
 <!DOCTYPE html>
 <html lang="jp">
@@ -22,14 +20,14 @@
     <main>
         <div class="grid-container">
             <div class="item-img-container">
-                <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
 
                 <div class="item-img-subcontainer">
-                    <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                    <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                    <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                    <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
-                    <img src="<?php echo htmlspecialchars('/AngeloCheese/php/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
                 </div>
             </div>
 
