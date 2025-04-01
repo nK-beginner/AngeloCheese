@@ -15,16 +15,13 @@
 </head>
 <body>
     <?php include __DIR__.'../common/header.php'; ?>
+    
+    <div class="top-container">
+        <h1>大切な人に届けたい<span>。</span></h1>
+        <h2>誰にでも愛されるチーズケーキ<span>。</span></h2>
+    </div>
 
-
-
-    <main>
-        <div class="top-container">
-            <!-- <img src="/../AngeloCheese/images/trimmedTop.jpg" alt="top image"> -->
-            <h1>大切な人に届けたい<span>。</span></h1>
-            <h2>誰にでも愛されるチーズケーキ<span>。</span></h2>
-        </div>
-        
+    <main>        
         <div class="products">
             <div class="container">
                 <?php if(!empty($categorizedProducts)): ?>

@@ -1,7 +1,26 @@
 <header> 
         <?php include __DIR__.'/../../Backend/autoLogin.php'; ?>
         <div class="header-container">
-            <ul class="pages">
+            <picture class="logo">
+                    <source media="(max-width: 510px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
+
+                    <source media="(max-width: 768px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
+
+                    <img src="/../AngeloCheese/images/white/AngeloCheese_logo1.png" alt="logo" class="header-logo">       
+            </picture>
+
+            <nav>
+                <ul>
+                    <li><a href="OnlineShop.php">Product</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Recipe</a></li>
+
+                    <li><a href="login.php"><i class="bi bi-person-circle"></i></a></li>
+                    <li><a href="cart.php"><i class="bi bi-cart2"></i></a></li>
+                </ul>
+            </nav>
+
+            <!-- <ul class="pages">
                 <li><a href="#">About</a></li>
                 <li><a href="#">Product</a></li>
                 <li><a href="#">Recipe</a></li>
@@ -18,7 +37,9 @@
             <ul class="login-cart">
                 <li><a href="login.php"><i class="bi bi-person-circle"></i></a></li>
                 <li><a href="cart.php"><i class="bi bi-cart2"></i></a></li>
-            </ul>
+            </ul> -->
+
+            
             <!-- <a href="#">
                 <picture>
                     <source media="(max-width: 510px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">

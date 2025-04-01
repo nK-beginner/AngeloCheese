@@ -1,6 +1,6 @@
 <footer>
         <div class="footer-container">
-            <a href="#"><img src="../images/AngeloCheese_logo1.png" alt="logo" class="footer-logo"></a>
+            <a href="#"><img src="/../AngeloCheese/images/white/AngeloCheese_logo1.png" alt="logo" class="footer-logo"></a>
             <ul class="footer-list">
                 <h2>タイトル</h2>
                 <li><a href="#">項目</a></li>

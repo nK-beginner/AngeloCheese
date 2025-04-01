@@ -2,19 +2,30 @@
 
 
 
-
 .top-container {
     width: 100%;
-    color: #fff;
+    min-height: 100vh;
+    color: #000;
+    position: relative; /* 疑似要素を親要素に対して配置 */
+    overflow: hidden;
 }
 
-img {
+.top-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    background-image: url(/../AngeloCheese/images/bgImg2.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* opacity: 0.5; */
+    z-index: -1; /* 背景として配置 */
 }
 
 .top-container h1 {
-    margin-top: 224px;
+    padding-top: 100px;
     font-size: clamp(2rem, 7vw, 4.5em); /* 最小2rem、最大4.5em、基準は5vw */
     text-align: center;
 }
