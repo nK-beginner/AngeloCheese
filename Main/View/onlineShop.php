@@ -15,13 +15,32 @@
 </head>
 <body>
     <?php include __DIR__.'../common/header.php'; ?>
-    
+
     <div class="top-container">
-        <h1>大切な人に届けたい<span>。</span></h1>
-        <h2>誰にでも愛されるチーズケーキ<span>。</span></h2>
+        <h1 class="title">ONLINE SHOP.</h1>
     </div>
 
-    <main>        
+    <main>
+        <div class="about-us">
+            <h1>大切な人に届けたい。</h1>
+            <h2>誰にでも愛されるチーズケーキ。</h2>
+
+            <p>
+                ふんわりとした口どけと、ほどよい甘さが広がる一口は、誰もが笑顔になれる特別な時間を演出します。
+                素材ひとつひとつにこだわり、じっくり丁寧に焼き上げたこのチーズケーキは、小さなお子様からご年配の方まで、どなたにも愛される優しい味わい。
+                大切な人と囲むひととき、久しぶりに会う友人との語らいの時間、大切な記念日に。
+                「美味しいね」と言い合いながら、心がつながる瞬間をお届けします。
+                贈る人の想いと、受け取る人の笑顔をつなぐ一品を、心を込めてお届けします。
+            </p>
+        </div>
+
+        <div class="categories">
+            <img src="/../AngeloCheese/images/category1.jpg" alt="">
+            <img src="/../AngeloCheese/images/category2.jpg" alt="">
+            <img src="/../AngeloCheese/images/category3.jpg" alt="">
+            <img src="/../AngeloCheese/images/category4.jpg" alt="">
+        </div>
+
         <div class="products">
             <div class="container">
                 <?php if(!empty($categorizedProducts)): ?>
@@ -39,8 +58,11 @@
                                                 <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
                                             </button>
 
-                                            <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                            <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>
+                                            <div class="product-info">
+                                                <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                                                <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>                                                
+                                            </div>
+
                                         </form>
 
                                         <form action="product.php" method="POST" class="to-cart">
