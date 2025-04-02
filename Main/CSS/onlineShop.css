@@ -23,7 +23,7 @@
 }
 
 .top-container .title {
-    font-size: 10.0em;
+    font-size: 5vw;
     padding-top: 133px;
     transform: scale(1, 1.13);
 }
@@ -52,23 +52,6 @@ main {
     width: 70%;
     margin: 26px auto 0 auto;
     font-size: 1.6rem;
-}
-
-.categories {
-    margin-top: 123px;
-    display: flex;
-    flex-direction: row;
-    width: 99vw;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%); 
-}
-
-.categories img {
-    width: 25%;
-    aspect-ratio: 330 / 380;
-    object-fit: cover;
-    cursor: pointer;
 }
 
 .products {
@@ -113,7 +96,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    gap: 42px 20px;
+    gap: 40px 20px;
     justify-content: flex-start;
 }
 
@@ -121,8 +104,17 @@ main {
     width: calc((100% - 40px) / 3);
 }
 
+.products .forms-container {
+    width: 96%;
+    margin: 0 auto;
+    padding-bottom: 16px;
+    background: var(--bgblack3);
+    border-radius: 12px;
+}
+
 .products .product {
     width: 100%;
+    margin: 0 auto;
     overflow: hidden;
 }
 
@@ -142,8 +134,22 @@ main {
 .products .product img:hover {
     filter: brightness(108%);
 }
+.products .product-info h3 {
+    font-size: 2.4rem;
+    color: #fff;
+    font-weight: bolder;
+    text-align: left;
+}
+
+.products .product-info p {
+    font-size: 1.8rem;
+    color: #fff;
+    text-align: left;
+    margin-top: -5px;
+}
 
 .products .to-cart {
+    margin-top: 17px;
     width: 100%;
 }
 
@@ -151,12 +157,12 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1.62px solid var(--gold);
+    /* border: 1.62px solid var(--gold); */
     border-radius: 7px;
     padding: 0 12px;
     width: 100%;
-    background: var(--bgblack3);
-    color: #fff;
+    background: #fff;
+    color: #000;
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -173,20 +179,6 @@ main {
 .products .cart i {
     margin-bottom: 12px;
     font-size: 2.0rem;
-}
-
-.products .product h3 {
-    font-size: 2.0rem;
-    color: #fff;
-    font-weight: bolder;
-    text-align: left;
-}
-
-.products .product p {
-    font-size: 1.7rem;
-    color: #fff;
-    text-align: left;
-    margin-bottom: 3px;
 }
 
 .products span2 {

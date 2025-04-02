@@ -1,7 +1,37 @@
 <header> 
         <?php include __DIR__.'/../../Backend/autoLogin.php'; ?>
         <div class="header-container">
+            <nav class="nav-1">
+                <ul>
+                    <li><a href="OnlineShop.php">Product</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Recipe</a></li>
+                </ul>
+            </nav>
+
             <picture class="logo">
+                    <source media="(max-width: 510px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
+
+                    <source media="(max-width: 768px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
+
+                    <img src="/../AngeloCheese/images/white/AngeloCheese_logo1.png" alt="logo" class="header-logo">       
+            </picture>
+
+            <nav class="nav-2">
+                <ul>
+                    <a class="log-cart" href="login.php">
+                        <p><?php echo isset($_SESSION['user_id']) ? 'Logout' : 'Login'; ?></p>
+                        <li><i class="bi bi-person-circle"></i></li>
+                    </a>
+
+                    <a class="log-cart" href="cart.php">
+                        <p>Cart</p>
+                        <li><i class="bi bi-cart2"></i></li>
+                    </a>
+                </ul>
+            </nav>
+            
+            <!-- <picture class="logo">
                     <source media="(max-width: 510px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
 
                     <source media="(max-width: 768px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
@@ -18,7 +48,7 @@
                     <li><a href="login.php"><i class="bi bi-person-circle"></i></a></li>
                     <li><a href="cart.php"><i class="bi bi-cart2"></i></a></li>
                 </ul>
-            </nav>
+            </nav> -->
 
             <!-- <ul class="pages">
                 <li><a href="#">About</a></li>
@@ -31,7 +61,7 @@
 
                     <source media="(max-width: 768px)" srcset="/../AngeloCheese/images/AngeloCheese_face.png">
 
-                    <img src="/../AngeloCheese/images/AngeloCheese_logo5.png" alt="logo" class="header-logo">       
+                    <img src="/../AngeloCheese/images/white/AngeloCheese_logo1.png" alt="logo" class="header-logo">       
             </picture>
 
             <ul class="login-cart">
