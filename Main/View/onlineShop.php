@@ -65,9 +65,9 @@
 
                                                 <button class="cart">
                                                     <p>カートに追加する</p>
-                                                    <i class="fa-solid fa-cart-shopping"></i>
+                                                    <i class="bi bi-cart2"></i>
                                                 </button>
-                                            </form>                                            
+                                            </form>
                                         </div>
 
                                     </div>
