@@ -87,8 +87,8 @@ header .header-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     max-width: var(--width);
+    width: 100%;
     margin: 0 auto;
     padding: 10px 0;
     box-sizing: border-box;
@@ -101,22 +101,7 @@ header .nav-menu {
     align-items: center;
 }
 
-header .header-logo {
-    width: 32%;
-    cursor: pointer;
-    position: relative;
-}
-
 header ul {
-    display: flex;
-    flex-direction: row;
-}
-
-header .nav-2 {
-    
-}
-
-/* header ul {
     display: flex;
     flex-direction: row;
     gap: 24px;
@@ -149,10 +134,12 @@ header .nav-1 li:hover::after {
 header .logo {
     display: flex;
     justify-content: center;
+    position: relative;
+    right: 2.7%;
 }
 
 header .header-logo {
-    width: 32%;
+    width: 39%;
     cursor: pointer;
     position: relative;
 }
@@ -163,7 +150,7 @@ header .nav-2 .log-cart {
     align-items: center;
     gap: 4px;
     cursor: pointer;
-} */
+}
 
 /* ハンバーガーボタン */
 header .hamburger-menu {
@@ -348,7 +335,8 @@ footer .footer-container p {
 }
 
 /********** レスポンシブ：スマホ画面 **********/
-@media screen and (max-width: 510px) {
+/* @media screen and (max-width: 510px) { */
+@media (max-width: 768px) {
     /********** 各種初期設定 **********/
     :root {
         --width: 480px;          /* 全体幅 */
@@ -359,43 +347,23 @@ footer .footer-container p {
     }
 
     i {
-        font-size: 2.2rem;
+        font-size: 2.8rem;
     }
 
     /********** header **********/
     header .header-container {
-        padding: 0 21px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* padding: 0 21px; */
         height: 73px;
-    }
-    
-    header .nav-menu {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        padding-top: 170px;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: var(--bgblack);
-    }
-
-    header .nav-menu.active {
-        display: flex;
-    }
-
-    header .logo {
-        width: 70%;
-        height: auto;
-        display: flex;
-        justify-content: center;
-        position: absolute;
-        top: 10px;
+        position: relative;
     }
 
     header .hamburger-menu {
         display: flex;
-        margin-left: auto;
+        position: relative;
+        left: 0;
     }
 
     header .hamburger-menu.active span:first-child {
@@ -404,6 +372,54 @@ footer .footer-container p {
     
     header .hamburger-menu.active span:last-child {
         transform: rotate(-45deg) translate(2px, -3px);
+    }
+
+    header .nav-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        padding-top: 170px;
+        top: 73px;
+        left: 0;
+        max-width: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: max-width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        background: var(--bgblack3);
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    header .nav-menu.active {
+        max-width: 100%;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    header .nav-menu.closing {
+        opacity: 0;
+        max-width: 0;
+        transition: max-width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+    header .logo {
+        position: absolute;
+        left: 47%;
+        transform: translateX(-50%);
+    }
+
+    header .header-logo {
+        width: 100%;
+    }
+
+    header .nav-2 {
+        gap: 12px;
+    }
+
+    header .log-cart p {
+        display: none;
     }
     /********** main **********/
     main {

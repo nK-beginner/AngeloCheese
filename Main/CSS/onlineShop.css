@@ -16,7 +16,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(/../AngeloCheese/images/bgImg2.jpg);
+    background-image: url(/../AngeloCheese/images/Background/bgImg2.jpg);
     background-position: center top;
     background-size: cover;
     background-repeat: no-repeat;
@@ -34,6 +34,8 @@ main {
 }
 
 .about-us {
+    width: 100%;
+    background: red;
     text-align: center;
 }
 
@@ -108,7 +110,6 @@ main {
 .products .forms-container {
     width: 96%;
     margin: 0 auto;
-    /* background: var(--bgblack3); */
 }
 
 .products .product {
@@ -135,7 +136,7 @@ main {
 }
 
 .products .product-info {
-    padding-left: 10px;
+    /* padding-left: 10px; */
     color: #fff;
     text-align: left;
 }
@@ -186,14 +187,15 @@ main {
     margin-left: 5px;
 }
 
-@media (max-width: 510px) {
+/* @media (max-width: 510px) { */
+@media (max-width: 768px) {
     .top-container::before {
-        background-image: url(/../AngeloCheese/images/bgImg3.jpg);
+        background-image: url(/../AngeloCheese/images/Background/bgImg3.jpg);
     }
 
     .top-container .title {
-        font-size: 11vw;
-        padding-top: 87px;
+        font-size: 11.3vw;
+        padding-top: 127px;
     }
 
     .products .container {
