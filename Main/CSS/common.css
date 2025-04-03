@@ -339,7 +339,7 @@ footer .footer-container p {
 @media (max-width: 768px) {
     /********** 各種初期設定 **********/
     :root {
-        --width: 480px;          /* 全体幅 */
+        --width: 760px;          /* 全体幅 */
     }
     
     html {
@@ -355,7 +355,7 @@ footer .footer-container p {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        /* padding: 0 21px; */
+        padding: 0 21px;
         height: 73px;
         position: relative;
     }

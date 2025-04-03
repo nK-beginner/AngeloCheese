@@ -35,7 +35,6 @@ main {
 
 .about-us {
     width: 100%;
-    background: red;
     text-align: center;
 }
 
@@ -45,14 +44,18 @@ main {
     text-align: center;
 }
 
+.about-us h1 {
+    white-space: nowrap;
+}
+
 .about-us h2 {
-    font-size: clamp(2.5rem, 6.0vw, 3.0rem);
+    font-size: clamp(2.5rem, 5.0vw, 3.0rem);
     text-align: center;
     margin-top: -7px;
 }
 
 .about-us p {
-    width: 70%;
+    width: 75%;
     margin: 26px auto 0 auto;
     font-size: 1.6rem;
 }
@@ -136,7 +139,6 @@ main {
 }
 
 .products .product-info {
-    /* padding-left: 10px; */
     color: #fff;
     text-align: left;
 }
@@ -189,8 +191,9 @@ main {
 
 /* @media (max-width: 510px) { */
 @media (max-width: 768px) {
+    
     .top-container::before {
-        background-image: url(/../AngeloCheese/images/Background/bgImg3.jpg);
+        background-image: url(/../AngeloCheese/images/Background/bgImg4.jpg);
     }
 
     .top-container .title {
@@ -198,15 +201,33 @@ main {
         padding-top: 127px;
     }
 
+    .about-us h2 {
+        font-size: 4.5vw;
+    }
+
+    .about-us p {
+        width: 92%;
+        font-size: 1.4rem;
+    }
+
     .products .container {
         width: 500px;
     }
 
+    .products .product-container {
+        padding: 0 6px;
+    }
+
     .products .category-section h2 {
         text-align: center;
+        font-size: 2.6rem;
     }
 
     .products .forms {
         width: calc((100% - 20px) / 2);
+    }
+
+    .products .product-info h3 {
+        font-size: 2.0rem;
     }
 }
