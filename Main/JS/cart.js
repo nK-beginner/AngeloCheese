@@ -20,6 +20,7 @@ document.querySelectorAll('.quantity-container').forEach(container => {
     const product        = container.closest('.product');
     const trashBin       = product.querySelector('.trash-bin');
     const productId      = quantity.dataset.id;
+    
     // AJAX処理：商品個数に応じて金額を自動計算
     const updateCart = (newQuantity) => {
         fetch('../php/updateCart.php', {

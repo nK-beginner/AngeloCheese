@@ -19,7 +19,6 @@
                 <img src="/../AngeloCheese/images/white/AngeloCheese_logo1.png" alt="logo" class="header-logo">
             </div>
             
-
             <ul class="nav-2">
                 <a class="log-cart" href="login.php">
                     <p><?php echo isset($_SESSION['user_id']) ? 'Logout' : 'Login'; ?></p>

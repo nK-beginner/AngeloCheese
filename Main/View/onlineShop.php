@@ -54,7 +54,7 @@
 
                                             <div class="product-info">
                                                 <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                                                <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>                                                
+                                                <p>¥<?php echo number_format($item['tax_included_price']); ?><span2>(税込)</span2></p>
                                             </div>
 
                                             <form action="product.php" method="POST" class="to-cart">
@@ -77,9 +77,12 @@
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-        </div>        
+        </div>
     </main>
 
     <?php include __DIR__.'../common/footer.php'; ?>
+
+    <script src="/../AngeloCheese/Main/JS/onlineShop.js"></script>
+
 </body>
 </html>
