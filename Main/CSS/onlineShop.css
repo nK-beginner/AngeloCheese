@@ -190,7 +190,7 @@ main {
 }
 
 /* @media (max-width: 510px) { */
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     
     .top-container::before {
         background-image: url(/../AngeloCheese/images/Background/bgImg4.jpg);

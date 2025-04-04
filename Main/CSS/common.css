@@ -90,7 +90,7 @@ header .header-container {
     max-width: var(--width);
     width: 100%;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 10px 12px;
     box-sizing: border-box;
     position: relative;
 }
@@ -336,10 +336,10 @@ footer .footer-container p {
 
 /********** レスポンシブ：スマホ画面 **********/
 /* @media screen and (max-width: 510px) { */
-@media (max-width: 768px) {
+@media (max-width: 968px) {
     /********** 各種初期設定 **********/
     :root {
-        --width: 760px;          /* 全体幅 */
+        --width: 960px;          /* 全体幅 */
     }
     
     html {
