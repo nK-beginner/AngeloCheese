@@ -36,9 +36,11 @@
                             <th>アカウント更新日</th>
                             <th>アカウント削除日</th>
                         </tr>
-                        <?php for($i = 0; $i < count($users); $i++): ?>
+                        <?php for($i = 0; $i < count($users); $i++): 
+                            $isDeleted = !is_null($users[$i]['deleted_at']);   
+                        ?>
                             
-                        <tr>
+                        <tr style="color: <?php echo $isDeleted ? 'red' : 'inherit'; ?>;">
                             <td><?php echo htmlspecialchars($users[$i]['id'],         ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($users[$i]['firstName'].$users[$i]['lastName'],   ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($users[$i]['email'],      ENT_QUOTES, 'UTF-8'); ?></td>
