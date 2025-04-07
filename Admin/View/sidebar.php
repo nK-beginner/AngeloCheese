@@ -1,5 +1,5 @@
 <aside class="sidebar">
-    <img src="images/AngeloCheese_logo1.png" alt="logo" class="sidebar-logo">
+    <img src="/../AngeloCheese/images/Gold/AngeloCheese_logo1.png" alt="logo" class="sidebar-logo">
 
     <div class="sidebar-contents">
         <ul class="menu">
