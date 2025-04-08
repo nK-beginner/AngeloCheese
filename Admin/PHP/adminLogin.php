@@ -1,6 +1,8 @@
 <?php
-    fncSessionCheck();
-
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
     require_once __DIR__ . '/../PHP/function/functions.php';
@@ -17,17 +19,11 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
-        }
-
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        fncCheckCSRF();
 
         // 受け取り
         $email    = trim($_POST['email'] ?? '');
-        $password = trim($_POST['password'] ?? '');
+        $password = $_POST['password'] ?? '';
 
         // バリデーション
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -68,7 +64,7 @@
                 session_regenerate_id(true);
 
                 // セッションに id, firstName, lastName を保存
-                $_SESSION['adminId'] = $admin['id'];
+                $_SESSION['adminId']   = $admin['id'];
                 $_SESSION['adminName'] = $admin['firstName'] . ' ' . $admin['lastName']; // フルネームを保存
 
                 header('Location: itemAdd.php');

@@ -1,5 +1,7 @@
 <?php
-    fncSessionCheck();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
@@ -14,13 +16,7 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
-        if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
-        }
-    
-        // CSRFトークン再生成
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        fncCheckCSRF();
 
         // 受け取り
         $firstName = trim($_POST['first-name'] ?? '');

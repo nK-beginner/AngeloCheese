@@ -76,7 +76,7 @@
 	/* 戻り値：SQL実行結果									  */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncGetUserByEmail($pdo, $email) {
+    function fncGetUserByEmail(PDO $pdo, $email) {
         $stmt = $pdo -> prepare("SELECT id, firstName, lastName, email, password, deleted_at FROM test_users WHERE email = :email LIMIT 1");
         $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
         $stmt -> execute();
@@ -93,7 +93,7 @@
 	/* 戻り値：なし											 */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncSaveUser($pdo, $firstName, $lastName, $email, $hashedPassword) {
+    function fncSaveUser(PDO $pdo, $firstName, $lastName, $email, $hashedPassword) {
         $stmt = $pdo -> prepare("INSERT INTO test_users (firstName, lastName, email, password)
                                                   VALUES(:firstName, :lastName, :email, :password)");
         $stmt -> bindValue(':firstName', $firstName,      PDO::PARAM_STR);
@@ -102,4 +102,6 @@
         $stmt -> bindValue(':password',  $hashedPassword, PDO::PARAM_STR);
         $stmt -> execute();
     }
+
+
 ?>

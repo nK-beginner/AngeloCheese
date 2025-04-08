@@ -1,8 +1,3 @@
-
-
-
-
-
 <?php
     require_once __DIR__ . '/backend/connection.php';
     require_once __DIR__.'/../Admin/Backend/config.php';

@@ -84,7 +84,7 @@
 
         </main>
     </div>
-    <script src="JS/sidebar.js"></script> <!-- サイドバー -->
-    <script src="JS/itemDelete.js"></script> <!-- 削除画面用 -->
+    <script src="/../AngeloCheese/Admin/JS/sidebar.js"></script> <!-- サイドバー -->
+    <script src="/../AngeloCheese/Admin/JS/itemDelete.js"></script> <!-- 削除画面用 -->
 </body>
 </html>

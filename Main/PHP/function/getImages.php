@@ -5,7 +5,7 @@
 	/* 戻り値：SQL実行結果															*/
 	/* 備考：なし																    */
 	/*======================================================*/
-    function fncGetImages($pdo, int $int, int $fetchType) {
+    function fncGetImages(PDO $pdo, int $int, int $fetchType) {
         switch($int) {
             case 1:
                 /********** OnlineShop **********/
