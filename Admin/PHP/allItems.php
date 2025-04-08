@@ -1,8 +1,10 @@
 <?php
-    session_start();
+    fncSessionCheck();
+
     require_once __DIR__.'/../Backend/connection.php';
     require_once __DIR__.'/../Backend/csrf_token.php';
     require_once __DIR__.'/../Backend/config.php';
+    require_once __DIR__.'/../PHP/function/functions.php';
 
     // 画像データ取得
     $stmt = $pdo2 -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price, p.category_id, p.category_name, p.hidden_at

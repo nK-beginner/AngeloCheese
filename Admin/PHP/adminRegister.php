@@ -1,12 +1,14 @@
 <?php
-    session_start();
+    fncSessionCheck();
+
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
+    require_once __DIR__ . '/../PHP/function/functions.php';
 
     $errors      = $_SESSION['errors'] ?? [];
-    $firstName   = $_SESSION['old-firstName'] ?? ''; // エラー時に苗字を保持
-    $lastName    = $_SESSION['old-lastName'] ?? '';  // エラー時に名前を保持
-    $email       = $_SESSION['old-email'] ?? '';     // エラー時にメールを保持
+    $firstName   = $_SESSION['old-firstName'] ?? '';
+    $lastName    = $_SESSION['old-lastName'] ?? '';
+    $email       = $_SESSION['old-email'] ?? '';
 
     unset($_SESSION['errors'], $_SESSION['old-firstName'], $_SESSION['old-lastName']);
 
@@ -31,50 +33,47 @@
             $errors[] = '有効なメールアドレスを入力してください。';
         }
 
+        // メアド重複チェック
+        if(fncGetUserByEmail($pdo2, $email)) {
+            $errors[] = 'このメールアドレスは既に登録されています。';
+        }
+
         // パスワードのフォーマット設定
         if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/', $password)) {
             $errors[] = 'パスワードは英数字記号を含む8文字以上で入力してください。';
         }
 
+        if(!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['old-firstName'] = $firstName;
+            $_SESSION['old-lastName'] = $lastName;
+            $_SESSION['old-email'] = $email;
+
+            header('Location: adminRegister.php');
+            exit;
+        }
+
+        $pdo2 -> beginTransaction();
         try {
-            $stmt = $pdo2 -> prepare("SELECT * FROM admin WHERE email = :email LIMIT 1");
-            $stmt -> bindValue(":email", $email, PDO::PARAM_STR);
-            $stmt -> execute();
-            $admin = $stmt -> fetch(PDO::FETCH_ASSOC);
-
-            if($admin) {
-                $errors[] = 'このメールアドレスは既に登録されています。';
-            }
-
-            if(!empty($errors)) {
-                $_SESSION['errors'] = $errors;
-                $_SESSION['old-firstName'] = $firstName;
-                $_SESSION['old-lastName'] = $lastName;
-                $_SESSION['old-email'] = $email;
-                header('Location: adminRegister.php');
-                exit;
-            }
-
             // パスワードハッシュ化
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // 登録
-            $stmt = $pdo2 -> prepare("INSERT INTO admin (firstName, lastName, email, password)
-                                                values (:firstName, :lastName, :email, :password)");
-            $stmt -> bindValue(":firstName", $firstName     , PDO::PARAM_STR);
-            $stmt -> bindValue(":lastName",  $lastName      , PDO::PARAM_STR);
-            $stmt -> bindValue(":email",     $email         , PDO::PARAM_STR);
-            $stmt -> bindValue(":password",  $hashedPassword, PDO::PARAM_STR);
-            $stmt -> execute();
+            fncSaveUser($pdo2, $firstName, $lastName, $email, $hashedPassword);
 
             // セッション固定攻撃対策
             session_regenerate_id(true);
+
+            $pdo2 -> commit();
 
             header('Location: adminLogin.php');
             exit;
 
         } catch(PDOException $e) {
-            $errors[] = 'データベース接続エラー';
+            $pdo2 -> rollBack();
+            error_log("ユーザー登録エラー: " . $e -> getMessage());
+            
+            $_SESSION['errors'] = '登録処理中にエラーが発生しました。もう一度お試しください。';
             
         }
 

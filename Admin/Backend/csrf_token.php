@@ -1,8 +1,3 @@
-
-
-
-
-
 <?php
     // CSRFトークン生成
     if(empty($_SESSION['csrf_token'])) {

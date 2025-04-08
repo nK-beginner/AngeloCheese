@@ -1,8 +1,3 @@
-
-
-
-
-
 <?php
     $host     = 'localhost';
     $dbname   = 'angelo_cheese_management';

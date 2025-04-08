@@ -1,7 +1,9 @@
 <?php
-    session_start();
+    fncSessionCheck();
+
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
+    require_once __DIR__ . '/../PHP/function/functions.php';
 
     $errors = $_SESSION['errors'] ?? [];
     $email  = $_SESSION['old-email'] ?? '';
@@ -36,23 +38,16 @@
             $errors[] = 'パスワードを入力してください。';
         }
 
-        // レートリミットチェック（ブルートフォース対策：5回以上失敗で15分ログイン阻止）
+        // レートリミットチェック
         $ip = $_SERVER['REMOTE_ADDR'];
-        $failed_login_key = 'failed_login_'.$ip;
-        if (isset($_SESSION[$failed_login_key]) && $_SESSION[$failed_login_key]['count'] >= 5) {
-            if (time() - $_SESSION[$failed_login_key]['last_attempt'] < 900) {
-                $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
-            } else {
-                unset($_SESSION[$failed_login_key]);
-            }
+        $login_key = 'failed_login_' . $ip;
+        if (fncManageAttempts($login_key)) {
+            $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
         }
 
         if (empty($errors)) {
             try {
-                $stmt = $pdo2 -> prepare("SELECT * FROM admin WHERE email = :email LIMIT 1");
-                $stmt->bindValue(":email", $email, PDO::PARAM_STR);
-                $stmt->execute();
-                $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+                $admin = fncGetUserByEmail($pdo2, $email);
 
                 if (!$admin) {
                     $errors[] = '存在しないメールアドレスです。';
@@ -63,7 +58,8 @@
 
                 if (!empty($errors)) {
                     $_SESSION['errors'] = $errors;
-                    $_SESSION['old-email'] = $email; // 入力されたメールアドレスをセッションに保存
+                    $_SESSION['old-email'] = $email;
+                    
                     header('Location: adminLogin.php');
                     exit;
                 }
@@ -74,19 +70,6 @@
                 // セッションに id, firstName, lastName を保存
                 $_SESSION['adminId'] = $admin['id'];
                 $_SESSION['adminName'] = $admin['firstName'] . ' ' . $admin['lastName']; // フルネームを保存
-
-                // クッキー設定：チェックがついてれば設定する
-                // if(isset($_POST['remember'])) {
-                //     $token = bin2hex(random_bytes(32));
-                //     $expire = time() + (7 * 24 * 60 * 60);
-                //     setcookie('remember_token', $token, $expire, '/', '', false, false); // ※公開時はfalse, trueにすること：HttpOnlyに
-
-                //     // クッキー用のトークンを生成
-                //     $stmt = $pdo -> prepare("UPDATE admin SET remember_token = :token WHERE id = :id");
-                //     $stmt -> bindValue(':token', $token, PDO::PARAM_STR);
-                //     $stmt -> bindValue(':id', $user['id'], PDO::PARAM_INT);
-                //     $stmt -> execute();
-                // }
 
                 header('Location: itemAdd.php');
                 exit;
