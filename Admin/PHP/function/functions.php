@@ -70,7 +70,7 @@
 	/*======================================================*/
     function fncSaveUser($pdo, $firstName, $lastName, $email, $hashedPassword) {
         $stmt = $pdo -> prepare("INSERT INTO admin (firstName, lastName, email, password)
-                                            values (:firstName, :lastName, :email, :password)");
+                                            VALUES (:firstName, :lastName, :email, :password)");
         $stmt -> bindValue(":firstName", $firstName     , PDO::PARAM_STR);
         $stmt -> bindValue(":lastName",  $lastName      , PDO::PARAM_STR);
         $stmt -> bindValue(":email",     $email         , PDO::PARAM_STR);
@@ -187,11 +187,12 @@
             // 画像を保存
             if(move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
                 $stmt = $pdo -> prepare("INSERT INTO product_images (product_id,  image_path,  is_main)
-                                                              VALUES (:product_id, :image_path, :is_main)");
+                                                             VALUES (:product_id, :image_path, :is_main)");
                 $stmt -> bindValue(':product_id', $product_id,     PDO::PARAM_INT);
                 $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
                 $stmt -> bindValue(':is_main',    $is_main,        PDO::PARAM_INT);
                 $stmt -> execute();
+                
             } else {
                 $errors[] = '画像の保存に失敗しました。';
             }

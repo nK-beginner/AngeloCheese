@@ -40,10 +40,10 @@
         }
 
         if(!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $_SESSION['errors']        = $errors;
             $_SESSION['old-firstName'] = $firstName;
-            $_SESSION['old-lastName'] = $lastName;
-            $_SESSION['old-email'] = $email;
+            $_SESSION['old-lastName']  = $lastName;
+            $_SESSION['old-email']     = $email;
 
             header('Location: adminRegister.php');
             exit;

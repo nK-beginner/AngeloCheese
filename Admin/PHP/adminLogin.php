@@ -13,9 +13,9 @@
     unset($_SESSION['errors'], $_SESSION['old-email']);
 
     // CSRFトークンが未セットなら生成
-    if (!isset($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
+    // if (!isset($_SESSION['csrf_token'])) {
+    //     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    // }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
@@ -41,39 +41,38 @@
             $errors[] = 'ログイン試行回数が多すぎます。しばらくしてから再試行してください。';
         }
 
-        if (empty($errors)) {
-            try {
-                $admin = fncGetUserByEmail($pdo2, $email);
+        try {
+            $admin = fncGetUserByEmail($pdo2, $email);
+        } catch(PDOException $e) {
+            error_log('データベースエラー:' . $e->getMessage());
+            $errors[] = 'データベース接続エラー';
+        }
 
-                if (!$admin) {
-                    $errors[] = '存在しないメールアドレスです。';
+        if (!$admin) {
+            $errors[] = '存在しないメールアドレスです。';
+        }
 
-                } else if (!password_verify($password, $admin['password'])) {
-                    $errors[] = 'パスワードが間違っています。';
-                }
+        if ($admin && !password_verify($password, $admin['password'])) {
+            $errors[] = 'パスワードが間違っています。';
+        }
 
-                if (!empty($errors)) {
-                    $_SESSION['errors'] = $errors;
-                    $_SESSION['old-email'] = $email;
-                    
-                    header('Location: adminLogin.php');
-                    exit;
-                }
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            $_SESSION['old-email'] = $email;
+            
+            header('Location: adminLogin.php');
+            exit;
 
-                // セッション固定攻撃対策
-                session_regenerate_id(true);
+        } else {
+            // セッション固定攻撃対策
+            session_regenerate_id(true);
 
-                // セッションに id, firstName, lastName を保存
-                $_SESSION['adminId']   = $admin['id'];
-                $_SESSION['adminName'] = $admin['firstName'] . ' ' . $admin['lastName']; // フルネームを保存
+            // セッションに id, firstName, lastName を保存
+            $_SESSION['adminId']   = $admin['id'];
+            $_SESSION['adminName'] = $admin['firstName'] . ' ' . $admin['lastName']; // フルネームを保存
 
-                header('Location: itemAdd.php');
-                exit;
-
-            } catch (PDOException $e) {
-                error_log('データベースエラー:' . $e->getMessage());
-                $errors[] = 'データベース接続エラー';
-            }            
+            header('Location: itemAdd.php');
+            exit;
         }
     }
 ?>
