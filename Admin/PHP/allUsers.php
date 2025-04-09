@@ -12,13 +12,17 @@
     unset($_SESSION['errors']);
 
     try {
-        $stmt = $pdo -> prepare("SELECT * FROM test_users");
-        $stmt -> execute();
-        $users = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $users = fncGetData($pdo, 3, 1);
 
     } catch(PDOException $e) {
         error_log('データベース接続エラー:' . $e -> getMessage());
         $errors[] = 'データベース接続エラー';
     }
 
+    if(!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+
+        header("Location: allUsers.php");
+        exit;
+    }
 ?>

@@ -43,6 +43,7 @@
 
         try {
             $admin = fncGetUserByEmail($pdo2, $email);
+            
         } catch(PDOException $e) {
             error_log('データベースエラー:' . $e->getMessage());
             $errors[] = 'データベース接続エラー';

@@ -21,10 +21,12 @@
 
     // 一覧表示
     try {
-        $products = fncDataControl($pdo2, 2, 1);
+        $products = fncGetData($pdo2, 2, 1);
 
     } catch(PDOException $e) {
-        $errors[] = 'データベース接続エラー:' . $e -> getMessage();
+        error_log('データベース接続エラー:' . $e -> getMessage());
+
+        $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
     }
 
     // allItems.phpから商品を選択されてきた時
@@ -38,7 +40,9 @@
             $editItem = fncUpdatingProduct($pdo2, $editItemId);
 
         } catch(PDOException $e) {
-            $errors[] = 'データベース接続エラー:' . $e -> getMessage();
+            error_log('データベース接続エラー:' . $e -> getMessage());
+
+            $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
         }
     }
 
@@ -106,6 +110,8 @@
         } catch(PDOException $e){
             $pdo2 -> rollback();
             error_log('データベース接続エラー:' . $e -> getMessage());
+
+            $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
         }
     }
 ?>

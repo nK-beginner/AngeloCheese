@@ -14,12 +14,11 @@
 
     // データ取得・表示
     try {
-        $stmt = $pdo2 -> prepare("SELECT * FROM products");
-        $stmt -> execute();
-        $products = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $products = fncGetData($pdo2, 2, 1);
 
     } catch(PDOException $e) {
-        $errors[] = 'データベース接続エラー:' . $e -> getMessage();
+        error_log('データベース接続エラー:' . $e -> getMessage());
+        $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
     }
 
     // データ削除
@@ -46,7 +45,7 @@
             $pdo2 -> rollback();
 
             error_log('データベース接続エラー:' . $e -> getMessage());
-            $errors[] = 'データベース接続エラーが発生しました。管理者にお問い合わせください';
+            $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
         }
 
     }

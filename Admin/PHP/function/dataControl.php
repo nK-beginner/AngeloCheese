@@ -1,5 +1,5 @@
 <?php
-    function fncDataControl($pdo, int $int, int $fetchType) {
+    function fncGetData($pdo, int $int, int $fetchType) {
         switch($int) {
             case 1:
                 /********** allItems **********/
@@ -12,13 +12,12 @@
                 break;
 
             case 2:
-                /********** itemEdit **********/
+                /********** itemEdit, itemDelete **********/
                 $stmt = $pdo -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id");
                 break;
 
             case 3:
-            
-
+                $stmt = $pdo -> prepare("SELECT * FROM test_users");
                 break;
     
             case 4:

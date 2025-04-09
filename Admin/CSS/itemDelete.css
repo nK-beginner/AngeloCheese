@@ -14,8 +14,10 @@ main h1 {
 }
 
 table {
-    width: 140%;
+    width: auto;
+    table-layout: auto;
     border-collapse: collapse;
+    white-space: nowrap;
 }
 
 th,
@@ -60,7 +62,7 @@ td:first-child {
     display: block;
     margin: 32px auto 0 auto;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease;
 }
 
 .delete-btn:hover {

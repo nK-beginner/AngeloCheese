@@ -29,14 +29,21 @@
             $errors[] = '有効なメールアドレスを入力してください。';
         }
 
-        // メアド重複チェック
-        if(fncGetUserByEmail($pdo2, $email)) {
-            $errors[] = 'このメールアドレスは既に登録されています。';
-        }
-
         // パスワードのフォーマット設定
         if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/', $password)) {
             $errors[] = 'パスワードは英数字記号を含む8文字以上で入力してください。';
+        }
+
+        // メアド重複チェック
+        try {
+            $admin = fncGetUserByEmail($pdo2, $email);
+            if($admin) {
+                $errors[] = 'このメールアドレスは既に登録されています。';
+            }
+
+        } catch(PDOException $e) {
+            error_log('データベースエラー:' . $e->getMessage());
+            $errors[] = 'データベース接続エラー';
         }
 
         if(!empty($errors)) {
@@ -47,31 +54,35 @@
 
             header('Location: adminRegister.php');
             exit;
-        }
+        } 
 
         $pdo2 -> beginTransaction();
         try {
             // パスワードハッシュ化
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
+    
             // 登録
             fncSaveUser($pdo2, $firstName, $lastName, $email, $hashedPassword);
-
+    
             // セッション固定攻撃対策
             session_regenerate_id(true);
-
+    
             $pdo2 -> commit();
-
+    
             header('Location: adminLogin.php');
             exit;
-
+    
         } catch(PDOException $e) {
             $pdo2 -> rollBack();
             error_log("ユーザー登録エラー: " . $e -> getMessage());
             
-            $_SESSION['errors'] = '登録処理中にエラーが発生しました。もう一度お試しください。';
-            
-        }
+            $_SESSION['errors']        = '登録処理中にエラーが発生しました。もう一度お試しください。';
+            $_SESSION['old-firstName'] = $firstName;
+            $_SESSION['old-lastName']  = $lastName;
+            $_SESSION['old-email']     = $email;
 
+            header('Location: adminRegister.php');
+            exit;
+        }
     }
 ?>

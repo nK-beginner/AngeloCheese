@@ -10,7 +10,7 @@
     require_once __DIR__.'/../PHP/function/dataControl.php';
 
     // 画像データ取得
-    $products = fncDataControl($pdo2, 1, 1);
+    $products = fncGetData($pdo2, 1, 1);
 
     // カテゴリー商品分割
     $categorizedProducts = [];

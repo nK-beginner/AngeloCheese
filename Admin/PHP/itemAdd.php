@@ -53,14 +53,21 @@
         ];
 
         // 各入力バリデーション
-        if(empty($name))     {  $errors[] = '商品名が入力されていません。'; }
-        if(empty($category_id)) {  $errors[] = 'カテゴリーが選択されていません。'; }
-        if(!is_numeric($size1) || $size1 <= 0) {  $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
-        if(!is_numeric($size2) || $size2 <= 0) {  $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
-        if(!is_numeric($price) || $price <= 0) {  $errors[] = '値段には0より大きい数値を入力してください。';  }
-        if(!is_numeric($cost) || $cost <= 0)   {  $errors[] = '原価には0より大きい数値を入力してください。';  }
+        if(empty($name))     {                           $errors[] = '商品名が入力されていません。'; }
+        if(empty($category_id)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
+        if(!is_numeric($size1) || $size1 <= 0) {         $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
+        if(!is_numeric($size2) || $size2 <= 0) {         $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
+        if(!is_numeric($price) || $price <= 0) {         $errors[] = '値段には0より大きい数値を入力してください。';  }
+        if(!is_numeric($cost) || $cost <= 0)   {         $errors[] = '原価には0より大きい数値を入力してください。';  }
         if($expirationDateMin1 > $expirationDateMax1) {  $errors[] = '消費期限の大小関係が不正です。';  }
         if($expirationDateMin2 > $expirationDateMax2) {  $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
+
+        if(!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+    
+            header("Location: itemAdd.php");
+            exit;
+        }
 
         /******************** ↓ 画像の保存前処理 ↓ ********************/
         // アップロードディレクトリ設定(無ければ作成)
@@ -90,19 +97,13 @@
                 fncSaveImage($file, null, $uploadDir, $allowedExt, $errors, $pdo2, $product_id);
             }
 
-            // エラー無ければコミット、あればロールバック
-            if(empty($errors)) {
-                $pdo2 -> commit();
-
-            } else {
-                $pdo2 -> rollback();
-                $_SESSION['errors'] = $errors;
-            }
+            $pdo2 -> commit();
 
         } catch(Exception $e) {
             $pdo2 -> rollback();
             error_log('データベース接続エラー:' . $e -> getMessage());
-            $errors[] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
+
+            $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
         }
 
         // セッション固定攻撃対策
