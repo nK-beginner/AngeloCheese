@@ -19,27 +19,19 @@
                 <h1>商品追加</h1>
                 <div class="product-info">
                     <div class="form-block">
-                        <div class="block file-upload">
+                        <div class="block">
                             <h3>メイン画像</h3>
-                            <label for="thumbnail" id="drop-area" class="file-upload-label">
-                                画像をドラッグ＆ドロップ または クリックして選択
-                            </label>
-                            <input type="file" class="file-input" name="thumbnail" id="thumbnail">
-                            <div class="preview-container" id="preview-container">
-                                <p>画像プレビュー</p>
-                            </div>
+                            <div class="preview-container"></div>
+                            <label for="thumbnail" class="drop-area">画像をドラッグ＆ドロップ または クリックして選択</label>
+                            <input type="file"     class="thumbnail" name="thumbnail" id="thumbnail">
                         </div>
 
-                        <!-- <div class="block">
+                        <div class="block">
                             <h3>サブ画像</h3>
-                            <div class="sub-block">
-                                <input type="file" name="file1">
-                                <input type="file" name="file2">
-                                <input type="file" name="file3">
-                                <input type="file" name="file4">
-                                <input type="file" name="file5">
-                            </div>
-                        </div> -->
+                            <div class="sub-image-container"></div>
+                            <label for="sub-pics" class="drop-area">ドラッグアンドドロップ</label>
+                            <input type="file"    class="sub-pics" name="sub-pics[]" id="sub-pics" multiple>
+                        </div>
                     </div>
 
                     <div class="form-block">
@@ -143,63 +135,72 @@
     </form>
 
     <script>
-// DnDイベントの処理
-const dropArea = document.getElementById('drop-area');
-const fileInput = document.getElementById('thumbnail');
-const previewContainer = document.getElementById('preview-container');
+        const dropArea         = document.querySelector(".drop-area");
+        const fileInput        = document.querySelector(".thumbnail");
+        const previewContainer = document.querySelector(".preview-container");
 
-// 変数で選択されたファイルを保持
-let selectedFile = null;
+        let lastSelectedFile = null;
 
-// ドラッグオーバーイベント
-dropArea.addEventListener('dragover', function(event) {
-    event.preventDefault();  // ブラウザのデフォルト動作を無効化
-    dropArea.classList.add('dragover');  // ドラッグ中のスタイル変更
-});
+        // ドラッグ処理
+        dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropArea.classList.add("hover");
+        });
 
-// ドロップイベント
-dropArea.addEventListener('drop', function(event) {
-    event.preventDefault();  // デフォルト動作無効化
-    dropArea.classList.remove('dragover');  // スタイルを戻す
+        dropArea.addEventListener("dragleave", () => {
+            dropArea.classList.remove("hover");
+        });
 
-    const files = event.dataTransfer.files;  // ドロップされたファイルを取得
-    if (files.length > 0) {
-        selectedFile = files[0];  // 選択されたファイルを保持
-        displayPreview(selectedFile);  // 画像プレビューを表示
-        fileInput.files = files;  // input[type="file"] にファイルを設定
-    }
-});
+        dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropArea.classList.remove("hover");
+            previewContainer.classList.add("show");
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
 
-// input[type="file"] で選択された場合の処理
-fileInput.addEventListener('change', function() {
-    const file = this.files[0];
-    if (file) {
-        selectedFile = file;  // 選択されたファイルを保持
-        displayPreview(file);  // 画像プレビューを表示
-    }
-});
+        // input経由の選択
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files.length > 0) {
+                handleFile(fileInput.files[0]);
 
-// 画像プレビューの表示
-function displayPreview(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const imgElement = document.createElement('img');
-        imgElement.src = e.target.result;  // ファイルのデータを画像に設定
-        previewContainer.innerHTML = '';  // 既存の内容をクリア
-        previewContainer.appendChild(imgElement);  // 新しい画像を追加
-    }
-    reader.readAsDataURL(file);  // ファイルを読み込む
-}
+            } else if (lastSelectedFile) {
+                // キャンセルされたら前のファイルを再設定
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(lastSelectedFile);
+                fileInput.files = dataTransfer.files;
+            }
+        });
 
-// 画像が選択された後にダイアログを再度開いたときに、選択した画像を保持する方法
-function resetFileInput() {
-    fileInput.value = ''; // ファイル選択をリセットすることで再度選択可能に
-}
 
-// リセット後に再度画像を表示
-fileInput.addEventListener('click', function() {
-    setTimeout(resetFileInput, 100);
-});
-</script>
+
+
+
+
+        const handleFile = (file) => {
+            if (!file || !file.type.startsWith("image/")) return;
+
+            lastSelectedFile = file;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // 既存のプレビュー画像をクリア
+                previewContainer.querySelectorAll("img").forEach(img => img.remove());
+
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                previewContainer.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+
+            // inputに強制的に再設定
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+        }
+    </script>
 </body>
 </html>
