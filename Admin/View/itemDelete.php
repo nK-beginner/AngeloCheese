@@ -78,7 +78,6 @@
                             </tr>
                             <?php endfor; ?>                            
                         </tbody>
-
                     </table>
                 </div>
 
