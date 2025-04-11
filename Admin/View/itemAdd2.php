@@ -30,7 +30,7 @@
                             <h3>サブ画像</h3>
                             <div class="sub-image-container"></div>
                             <label for="sub-pics" class="drop-area">ドラッグアンドドロップ</label>
-                            <input type="file"    class="sub-pics" name="sub-pics[]" id="sub-pics" multiple>
+                            <input type="file"    class="sub-pics" name="sub-pics" id="sub-pics">
                         </div>
                     </div>
 
@@ -173,11 +173,6 @@
                 fileInput.files = dataTransfer.files;
             }
         });
-
-
-
-
-
 
         const handleFile = (file) => {
             if (!file || !file.type.startsWith("image/")) return;

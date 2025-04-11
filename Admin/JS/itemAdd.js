@@ -39,107 +39,77 @@ document.querySelectorAll('input[name="tax-rate"]').forEach(radio => {
 
 
 /********** 画像ファイルのドラッグ＆ドロップ **********/
-const dropAreas = document.querySelectorAll('.drop-area');
-let lastFile = null; // 直前に選択された画像を保持
+document.querySelectorAll('.drop-area').forEach(dropArea => {
+    const fileInput = dropArea.querySelector('.file-input');
+    const previewContainer = dropArea.querySelector('.preview-container');
 
-const addDragOverStyle = (e) => {
-    e.preventDefault();
-    e.currentTarget.classList.add('drag-over'); // ドラッグ中のスタイル
-};
+    let lastSelectedFile = null;
 
-const removeDragOverStyle = (e) => {
-    e.preventDefault();
-    e.currentTarget.classList.remove('drag-over'); // ドラッグ終了時のスタイルをリセット
-};
+    // inputからの画像選択
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length > 0) {
+            handleFile(fileInput.files[0], dropArea, previewContainer, fileInput);
+        } else if (lastSelectedFile) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(lastSelectedFile);
+            fileInput.files = dataTransfer.files;
+        }
+    });
 
-// 画像を表示 & `<input type="file">` にセット
-const displayImage = (file, dropArea) => {
-    if (file.type.startsWith('image/')) {
-        lastFile = file; // 最後に選択したファイルを保存
+    // ドラッグ処理
+    dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.classList.add("hover");
+    });
+
+    dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("hover");
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("hover");
+
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            handleFile(file, dropArea, previewContainer, fileInput);
+        }
+    });
+
+    // ファイル処理本体（関数の中でスコープを閉じる）
+    function handleFile(file, targetArea, targetPreview, targetInput) {
+        if (!file || !file.type.startsWith("image/")) {
+            alert("画像ファイルを選択してください。");
+            return;
+        }
+
+        lastSelectedFile = file;
+
         const reader = new FileReader();
 
-        reader.onload = () => {
-            let existingContainer = dropArea.querySelector('.image-container');
-            if (existingContainer) {
-                existingContainer.remove();
-            }
+        reader.onload = (e) => {
+            // 非同期でもスコープを閉じてるので正しく処理される
+            targetPreview.innerHTML = '';
 
-            const container = document.createElement('div');
-            container.className = 'image-container';
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover";
 
-            const img = document.createElement('img');
-            img.src = reader.result;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-
-            const removeButton = document.createElement('button');
-            removeButton.textContent = '✖';
-            removeButton.className = 'remove-button';
-            removeButton.addEventListener('click', () => {
-                container.remove();
-                dropArea.querySelector('.file-input').value = '';
-                // `lastFile` を保持して、キャンセル後も再送信できるようにする
-            });
-
-            container.appendChild(img);
-            container.appendChild(removeButton);
-            dropArea.appendChild(container);
+            targetPreview.appendChild(img);
         };
 
         reader.readAsDataURL(file);
 
-        // `hidden` の `<input type="file">` にファイルをセット
-        const fileInput = dropArea.querySelector('.file-input');
+        // inputに強制再設定
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
-        fileInput.files = dataTransfer.files;
-    } else {
-        alert('画像ファイルを選択してください。');
+        targetInput.files = dataTransfer.files;
     }
-};
+});
 
-// ファイルがドロップされたときの処理
-const handleDrop = (e) => {
-    e.preventDefault();
-    const dropArea = e.currentTarget;
-    dropArea.classList.remove('drag-over');
 
-    const files = e.dataTransfer.files;
-
-    if (files.length > 0) {
-        displayImage(files[0], dropArea);
-    }
-};
-
-// ファイル選択時の処理
-const handleFileSelect = (e) => {
-    e.preventDefault();
-    const input = e.currentTarget;
-    const dropArea = input.closest('.drop-area');
-
-    if (input.files.length > 0) {
-        displayImage(input.files[0], dropArea);
-
-    } else if (lastFile) {
-        // `lastFile` がある場合、削除後でも再設定できるようにする
-        displayImage(lastFile, dropArea);
-    }
-};
-
-// 各ドロップエリアにイベントを設定
-for (const dropArea of dropAreas) {
-    dropArea.addEventListener('dragover', addDragOverStyle);
-    dropArea.addEventListener('dragleave', removeDragOverStyle);
-    dropArea.addEventListener('drop', handleDrop); 
-    // ここまで：現時点だと画像フォルダ単体でドラドロした時は行けるけど、
-    // 「ファイルを選択ボタン」で開いた画像フォルダからドラドロするとバグる（1枚目の画像が最後に切り替わる）
-
-    const fileInput = dropArea.querySelector('.file-input');
-    if (fileInput) {
-        fileInput.addEventListener('change', handleFileSelect);
-    }
-}
 
 
 

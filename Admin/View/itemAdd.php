@@ -156,7 +156,7 @@
                     <div class="drop-area">
                         <p id="drop-text">ここに画像をドロップ<br>または</p>
                         <label for="thumbnail" class="custom-button">ファイルを選択</label>
-                        <input type="file" name="thumbnail" class="file-input" id="thumbnail" accept="image/*" hidden>
+                        <input type="file" name="thumbnail" class="file-input" id="thumbnail" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                     </div>
 
                     <h3 class="subtitle">サブ画像<span>(ドラッグアンドドロップで追加できます。)</span></h3>
@@ -165,31 +165,31 @@
                         <!-- サブ画像 1 -->
                         <div class="drop-area">
                             <label for="file1" class="custom-button">+</label>
-                            <input type="file" name="file1" class="file-input" id="file1" accept="image/*" hidden>
+                            <input type="file" name="file1" class="file-input" id="file1" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                         </div>
 
                         <!-- サブ画像 2 -->
                         <div class="drop-area">
                             <label for="file2" class="custom-button">+</label>
-                            <input type="file" name="file2" class="file-input" id="file2" accept="image/*" hidden>
+                            <input type="file" name="file2" class="file-input" id="file2" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                         </div>
 
                         <!-- サブ画像 3 -->
                         <div class="drop-area">
                             <label for="file3" class="custom-button">+</label>
-                            <input type="file" name="file3" class="file-input" id="file3" accept="image/*" hidden>
+                            <input type="file" name="file3" class="file-input" id="file3" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                         </div>
 
                         <!-- サブ画像 4 -->
                         <div class="drop-area">
                             <label for="file4" class="custom-button">+</label>
-                            <input type="file" name="file4" class="file-input" id="file4" accept="image/*" hidden>
+                            <input type="file" name="file4" class="file-input" id="file4" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                         </div>
 
                         <!-- サブ画像 5 -->
                         <div class="drop-area">
                             <label for="file5" class="custom-button">+</label>
-                            <input type="file" name="file5" class="file-input" id="file5" accept="image/*" hidden>
+                            <input type="file" name="file5" class="file-input" id="file5" accept="image/*" style="position: absolute; top: 0; z-index: 100;">
                         </div>
                     </div>
 
