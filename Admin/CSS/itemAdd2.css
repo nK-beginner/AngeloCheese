@@ -84,7 +84,9 @@ main .form-block .block .hidden-input {
 
 
 
-
+input[type="file"] {
+    /* display: none; */
+}
 
 .preview-container {
     display: inline-block;
@@ -121,23 +123,43 @@ main .form-block .block .hidden-input {
     text-align: center;
     transition: background-color 0.2s ease;
     width: 100%;
+    font-size: 1.5rem;
 }
 
 .drop-area.hover {
     background: rgb(255, 249, 217);
 }
 
-.sub-image-container {
-  margin-top: 15px;
+.submit-btn {
+    background: red;
+    height: 40px;
+    width: 100%;
 }
 
-.sub-image-container img {
-  max-width: 150px;
-  margin-top: 10px;
-  margin-right: 10px;
-  display: inline-block;
+
+
+/* .sub-preview-container {
+    margin-top: 15px;
 }
 
-input[type="file"] {
-    /* display: none; */
-}
+.sub-preview-container img {
+    max-width: 150px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

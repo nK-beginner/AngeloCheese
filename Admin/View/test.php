@@ -2,99 +2,111 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>画像アップロード</title>
+  <title>画像を1枚ずつ追加</title>
   <style>
-    #drop-area {
-      border: 2px dashed #ccc;
-      padding: 30px;
-      text-align: center;
+    #dropArea {
+      width: 100%;
+      max-width: 500px;
+      height: 200px;
+      border: 2px dashed #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-family: sans-serif;
       cursor: pointer;
-      border-radius: 10px;
-      transition: background-color 0.3s;
     }
-    #drop-area.hover {
-      background-color: #f0f0f0;
+    #preview img {
+      max-width: 120px;
+      max-height: 120px;
+      margin: 5px;
+      object-fit: cover;
     }
-    #preview {
-      margin-top: 20px;
-      max-width: 300px;
+    #fileInput {
+      /* display: none; */
     }
   </style>
 </head>
 <body>
 
-
-    <input type="file" multiple>
-
+    <h2>画像を1枚ずつドロップ or 選択して追加</h2>
 
 
+    <div id="preview"></div>
+    <div id="dropArea">ここに画像をドロップ<br>またはクリックで選択</div>
+    <input type="file" id="fileInput" accept="image/*">
 
+    <button id="submitBtn">送信する</button>
 
-  <form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" id="file-input" accept="image/*">
-    <label id="drop-area" for="file-input">
-      画像をドラッグ＆ドロップ、またはクリックして選択
-    </label>
-    <img id="preview" src="" alt="プレビュー画像">
-    <br><br>
-    <button type="submit">アップロード</button>
-  </form>
+    <script>
+        const dropArea  = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const preview   = document.getElementById('preview');
+        const submitBtn = document.getElementById('submitBtn');
 
-  <script>
-    const dropArea  = document.getElementById("drop-area");
-    const fileInput = document.getElementById("file-input");
-    const preview   = document.getElementById("preview");
+        let selectedFiles = [];
 
-    // 前回選択されたファイルを保持
-    let lastSelectedFile = null;
+        dropArea.addEventListener('click', () => fileInput.click());
 
-    // ファイル選択 or ドロップ時の処理
-    function handleFile(file) {
-      if (!file.type.startsWith('image/')) return;
-      lastSelectedFile = file;
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, e => e.preventDefault());
+        });
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+        dropArea.addEventListener('drop', (e) => {
+            const files = Array.from(e.dataTransfer.files);
+            files.forEach(file => {
+            selectedFiles.push(file);
+            });
+            updatePreview();
+        });
 
-      // fileInputにファイルを再設定（キャンセル対策）
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
-      fileInput.files = dataTransfer.files;
-    }
+        fileInput.addEventListener('change', () => {
+            const files = Array.from(fileInput.files);
+            files.forEach(file => {
+            selectedFiles.push(file);
+            });
+            updatePreview();
+            fileInput.value = ""; // 同じファイルでも再選択できるように
+        });
 
-    // ドラッグオーバー時のスタイル
-    dropArea.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      dropArea.classList.add("hover");
-    });
+        function updatePreview() {
+            preview.innerHTML = '';
+            selectedFiles.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+            });
+        }
 
-    dropArea.addEventListener("dragleave", () => {
-      dropArea.classList.remove("hover");
-    });
+        submitBtn.addEventListener('click', () => {
+            if (selectedFiles.length === 0) {
+            alert('画像を選択してください');
+            return;
+            }
 
-    dropArea.addEventListener("drop", (e) => {
-      e.preventDefault();
-      dropArea.classList.remove("hover");
-      const file = e.dataTransfer.files[0];
-      if (file) handleFile(file);
-    });
+            const formData = new FormData();
+            selectedFiles.forEach((file, i) => {
+            formData.append('images[]', file);
+            });
 
-    // ファイル選択時
-    fileInput.addEventListener("change", () => {
-      if (fileInput.files.length > 0) {
-        handleFile(fileInput.files[0]);
-      } else if (lastSelectedFile) {
-        // キャンセルされた場合、前のファイルを再設定
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(lastSelectedFile);
-        fileInput.files = dataTransfer.files;
-      }
-    });
-  </script>
+            fetch('test2.php', {
+            method: 'POST',
+            body: formData
+            })
+            .then(res => res.text())
+            .then(html => {
+            document.body.innerHTML = html;
+            })
+            .catch(err => {
+            alert('アップロードに失敗しました');
+            console.error(err);
+            });
+        });
+    </script>
 
 </body>
 </html>
