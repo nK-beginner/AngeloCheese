@@ -85,10 +85,11 @@ main .form-block .block .hidden-input {
 
 
 input[type="file"] {
-    /* display: none; */
+    display: none;
 }
 
-.preview-container {
+.preview-container,
+.sub-preview-container {
     display: inline-block;
     width: 330px;
     height: 380px;
@@ -102,12 +103,14 @@ input[type="file"] {
     gap: 12px;
 }
 
-.preview-container.show {
+.preview-container.show,
+.sub-preview-container.show {
     display: flex;
     margin-bottom: 12px;
 }
 
-.preview-container img {
+.preview-container img,
+.sub-preview-container img {
     width: 100%;
     height: 100%;
     aspect-ratio: 330/380;
