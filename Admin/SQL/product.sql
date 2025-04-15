@@ -1,5 +1,5 @@
 /**/
--- use angelo_cheese_management
+use angelo_cheese_management
 
 select * from products
 

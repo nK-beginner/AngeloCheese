@@ -13,6 +13,7 @@
         <div class="grid-container">
             <!-- サイドバー -->
             <?php include 'sidebar.php'; ?>
+            
             <!-- 商品詳細エリア -->
             <main>
                 <h1>商品追加</h1>

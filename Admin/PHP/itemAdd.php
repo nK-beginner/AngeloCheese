@@ -90,11 +90,11 @@
             $product_id = $pdo2 -> lastInsertId();
 
             // メイン画像保存(is_main = 1)
-            fncSaveImage($thumbnail, 1, $uploadDir, $allowedExt, $errors, $pdo2, $product_id);
+            fncSaveImage($pdo2, $thumbnail, 1, $uploadDir, $allowedExt, $errors, $product_id);
 
             // サブ画像の保存(is_main = null)
             foreach($files as $file) {
-                fncSaveImage($file, null, $uploadDir, $allowedExt, $errors, $pdo2, $product_id);
+                fncSaveImage($pdo2, $file, null, $uploadDir, $allowedExt, $errors, $product_id);
             }
 
             $pdo2 -> commit();

@@ -160,20 +160,20 @@
 	/*======================================================*/
 	/* 用途：画像登録処理                           		  */
 	/* 引数：$file：投稿された画像ファイル
-            $$is_main：メイン画像かサブか（1またはnull）
+            isMain：メイン画像かサブか（1またはnull）
             $uploadFir：アップロード先
             $allowedExt：許可する拡張子
             $errors：エラー
             $pdo：DB接続
-            $product_id：商品ID                              */
+            $productId：商品ID                               */
 	/* 戻り値：SQL実行結果									  */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncSaveImage($file, $is_main, $uploadDir, $allowedExt, &$errors, $pdo, $product_id) {
+    function fncSaveImage($pdo, $file, $isMain, $uploadDir, $allowedExt, $errors, $productId) {
         if($file && $file['error'] === UPLOAD_ERR_OK) {
             // 拡張子を取得＆チェック
             $fineName = basename($file['name']);
-            $fileExt = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
+            $fileExt  = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
 
             if(!in_array($fileExt, $allowedExt)) {
                 $errors[] = '許可されていないファイル形式です。';
@@ -188,9 +188,9 @@
             if(move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
                 $stmt = $pdo -> prepare("INSERT INTO product_images (product_id,  image_path,  is_main)
                                                              VALUES (:product_id, :image_path, :is_main)");
-                $stmt -> bindValue(':product_id', $product_id,     PDO::PARAM_INT);
+                $stmt -> bindValue(':product_id', $productId,      PDO::PARAM_INT);
                 $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
-                $stmt -> bindValue(':is_main',    $is_main,        PDO::PARAM_INT);
+                $stmt -> bindValue(':is_main',    $isMain,         PDO::PARAM_INT);
                 $stmt -> execute();
                 
             } else {

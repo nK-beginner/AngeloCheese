@@ -1,5 +1,5 @@
 <?php
-    $uploadDir = __DIR__ . '/uploads/';
+    $uploadDir = __DIR__ . '/../Uploads/';
     if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
     // メイン画像
