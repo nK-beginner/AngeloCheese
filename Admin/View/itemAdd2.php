@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd2.css?v=<?php echo time(); ?>">
 </head>
 <body>
-    <form method="POST" id="product-form" enctype="multipart/form-data">
+    <form method="POST" class="product-form" enctype="multipart/form-data">
         <div class="grid-container">
             <!-- サイドバー -->
             <?php include 'sidebar.php'; ?>
@@ -26,10 +26,10 @@
                         </div>
 
                         <div class="block">
-                            <h3>サブ画像</h3>
-                            <div class="sub-preview-container"></div>
-                            <div class="drop-area sub-drop">画像をドラッグ&ドロップ、またはクリックで選択</div>
-                            <input type="file" class="file-input sub-file" accept="image/*" name="images[]" multiple>
+                            <h3>サブ画像（複数追加可能）</h3>
+                            <div class="sub-preview-wrapper"></div>
+                            <div class="drop-area sub-drop" id="sub-drop-area">画像をドラッグ&ドロップ、またはクリックで選択</div>
+                            <input type="file" class="sub-file" accept="image/*" name="images[]" multiple>
                         </div>
                     </div>
 
@@ -134,114 +134,6 @@
         </div>
     </form>
 
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const mainDrop = document.querySelector('.main-drop');
-    const mainInput = document.querySelector('.main-file');
-    const mainPreview = document.querySelector('.preview-container');
-
-    const subDrop = document.querySelector('.sub-drop');
-    const subInput = document.querySelector('.sub-file');
-    const subPreview = document.querySelector('.sub-preview-container');
-
-    const form = document.getElementById('product-form');
-
-    let mainImage = null;
-    let subImages = [];
-
-    function setupDrop(dropArea, input, handleFile) {
-        dropArea.addEventListener('click', () => input.click());
-
-        ['dragenter', 'dragover'].forEach(event => {
-            dropArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                dropArea.classList.add('hover');
-            });
-        });
-
-        ['dragleave', 'drop'].forEach(event => {
-            dropArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                dropArea.classList.remove('hover');
-            });
-        });
-
-        dropArea.addEventListener('drop', (e) => {
-            const files = Array.from(e.dataTransfer.files);
-            handleFile(files);
-        });
-
-        input.addEventListener('change', () => {
-            const files = Array.from(input.files);
-            handleFile(files);
-        });
-    }
-
-    function showMainPreview(file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            mainPreview.innerHTML = `<img src="${e.target.result}">`;
-            mainPreview.classList.add('show');
-        };
-        reader.readAsDataURL(file);
-    }
-
-    function showSubPreview(files) {
-        subPreview.innerHTML = '';
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                subPreview.innerHTML = `<img src="${e.target.result}">`;
-                subPreview.classList.add('show');
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    setupDrop(mainDrop, mainInput, (files) => {
-        if (files[0] && files[0].type.startsWith('image/')) {
-            mainImage = files[0];
-            showMainPreview(mainImage);
-        }
-    });
-
-    setupDrop(subDrop, subInput, (files) => {
-        subImages = subImages.concat(files.filter(file => file.type.startsWith('image/')));
-        showSubPreview(subImages);
-    });
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        if (!mainImage) {
-            alert('メイン画像を選択してください');
-            return;
-        }
-
-        const formData = new FormData(form);
-        formData.set('image', mainImage);
-
-        subImages.forEach((file, index) => {
-            formData.append('images[]', file);
-        });
-
-        fetch('test3.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.text())
-        .then(html => {
-            document.body.innerHTML = html;
-        })
-        .catch(err => {
-            alert('送信に失敗しました');
-            console.error(err);
-        });
-    });
-});
-</script>
-
-
-
+    <script type="module" src="/../AngeloCheese/Admin/JS/itemAdd2.js"></script>
 </body>
 </html>

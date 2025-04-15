@@ -40,7 +40,7 @@
     <p><strong>説明:</strong><br><?= $desc ?></p>
 
     <?php if ($mainPath): ?>
-        <h2>メイン画像</h2>
+        <h2>メイン画像aaaaaaaaaaaaa</h2>
         <img src="<?= $mainPath ?>" style="max-width:300px;">
     <?php endif; ?>
 
