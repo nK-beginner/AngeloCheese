@@ -95,4 +95,3 @@ export function fncSubmitImages(url, form, mainImage, subImages) {
         console.error(err);
     });
 }
-

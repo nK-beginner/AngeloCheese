@@ -5,6 +5,10 @@ select * from products
 
 select * from product_images
 
+
+
+
+
 CREATE TABLE product_images (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     product_id INT(11) NOT NULL,

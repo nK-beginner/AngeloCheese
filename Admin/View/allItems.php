@@ -38,7 +38,7 @@
                                     <?php foreach($items as $item): ?>
                                         <form action="itemEdit.php" method="POST" class="product">
                                             <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                            <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                                            <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
                                             
                                             <h3><?php echo htmlspecialchars($item['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                                             <p>

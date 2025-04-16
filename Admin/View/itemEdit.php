@@ -116,7 +116,7 @@
 
                     <!-- 商品画像 -->
                     <div class="product-pics">
-                        <img class="product-image" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                        <img class="product-image" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
                     </div>
                 </form>
 
