@@ -6,7 +6,7 @@
     <!-- ヘッダータグ -->
     <?php include 'headTags.php' ?>
     <title>testView</title>
-    <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd2.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <form method="POST" class="product-form" enctype="multipart/form-data">

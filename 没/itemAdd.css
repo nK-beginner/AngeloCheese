@@ -1,0 +1,316 @@
+
+
+
+
+
+form {
+    overflow-y: hidden;
+}
+
+/********** 全体をgridに指定 **********/
+.grid-container {
+    display: grid;
+    grid-template-columns: 215px 1.5fr 1fr !important; /* サイドバー、詳細書き込み欄、画像ドラッグアンドドロップ欄 */
+    width: 100%;
+    height: 100%;
+}
+
+/********** main **********/
+main .form-block {
+    margin-top: 15px;
+    border: 1px solid #888888;
+    border-radius: 2px;
+    padding: 9px 9px 13px 9px;
+    background: #fff;
+}
+
+main .form-block .block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3px;
+}
+
+main .form-block .error-msg {
+    border: 1px solid #FF4141;
+    background: #f8b2b2;
+    padding: 20px;
+}
+
+main .form-block .error-msg p {
+    color: #ff2121;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+main .form-block .size-title {
+    display: block;
+    margin-top: 15px;
+}
+
+main .form-block .block input {
+    width: 100%;
+    border: 1px solid;
+}
+
+main .form-block .block .label {
+    margin-top: 10px;
+}
+
+main .form-block .block input, 
+select {
+    border-radius: 4px;
+    height: 27px;
+    padding: 4px;
+}
+
+main .form-block .block textarea {
+    height: 220px;
+    width: 100%;
+    padding: 5px;
+    resize: vertical;
+    border-radius: 5px;
+    font-size: 1.7rem;
+}
+
+main .form-block .flex-block {
+    display: flex;
+    gap: 0 13px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+main .form-block .size-block {
+    width: 100%;
+}
+
+main .form-block .tax-rate {
+    display: flex;
+    gap: 12px;
+}
+
+main .form-block .tax-included-price {
+    background: rgb(202, 202, 202);
+}
+
+main .form-block .price-block {
+    width: 60%;
+}
+
+main .form-block .radio-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-left: 15px;
+}
+
+main .expiration {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+main .form-block .date-block .firstdate,
+main .form-block .date-block .lastdate {
+    display: flex;
+    align-items: center;
+}
+
+main .form-block .date-block .firstdate {
+    gap: 15px;
+}
+
+main .form-block .date-block input {
+    width: 45px;
+    padding: 0 4px;
+}
+
+main .form-block .date-block p {
+    font-size: 1.5rem;
+}
+
+/********** photo-drop-area **********/
+.photo-drop-area {
+    background: #f1f1f1;
+    padding-top: 50px;
+    padding-left: 20px;
+    overflow-x: hidden;
+    width: 100%;
+
+}
+
+.photo-drop-area .photo-drop-container {
+    width: 370px;
+}
+
+.photo-drop-area .photo-drop-container h3 {
+    font-size: 1.7rem;
+}
+
+.photo-drop-area span {
+    font-size: 12px;
+    padding-left: 5px;
+}
+
+.photo-drop-area .drop-area {
+    border: 1.5px dashed #ccc;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    background: #e9e9e9;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    transition: background-color 0.1s ease, border-color 0.1s ease;;
+}
+
+.photo-drop-area .drop-area.drag-over {
+    background-color: #d0f0ff;
+    border-color: #5ef1fc;
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-input,
+.custom-button {
+    position: relative;
+    z-index: 1;
+}
+
+.remove-button {
+    position: absolute;
+    top: 4px;
+    right: 3px;
+    background: #000000;
+    color: white;
+    border: none;
+    padding: 2px 7px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.remove-button:hover {
+    background: #ff3b3b;
+}
+
+.photo-drop-area .drop-area .custom-button {
+    padding: 4px 12px;
+    background: #b3b3b3;
+    position: relative;
+    top: 0;
+    cursor: pointer;
+    margin-top: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.photo-drop-area .drop-area .custom-button:hover {
+    background: #d4d4d4;
+}
+
+.photo-drop-area .subtitle {
+    margin-top: 20px;
+}
+
+.photo-drop-area .flex-block {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 17px 0px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.photo-drop-area .flex-block .drop-area {
+    width: calc(100% / 5.3);
+    height: calc(400px / 5.3);
+}
+
+.photo-drop-area .flex-block .drop-area p,
+.photo-drop-area .flex-block .drop-area label {
+    font-size: 6px;
+    font-weight: bold;
+}
+
+.photo-drop-area .flex-block .drop-area .custom-button {
+    padding: -30px;
+    border: 0.1px dashed;
+    border-radius: 50%;
+    background: none;
+    font-size: 22px;
+    color: #5c5c5c;
+    transition: background-color 0.2s ease;
+}
+
+.photo-drop-area .flex-block .drop-area .custom-button:hover {
+    background: #ffffff;
+}
+
+.photo-drop-area .flex-btns {
+    display: flex;
+    justify-content: center;
+    width: 250px;
+    margin: 25px auto;
+    gap: 15px;
+}
+
+.photo-drop-area .flex-btns .savebtn {
+    padding: 8px 42px;
+    color: #fff;
+    background: var(--gold);
+    border: none;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+.photo-drop-area .flex-btns .savebtn:hover {
+    background: var(--hoveredGold);
+}
+
+.photo-drop-area .flex-btns .cancelbtn {
+    padding: 8px 17px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-grow: 1;
+}
+
+/********** 各スクロールバー **********/
+.sidebar-contents::-webkit-scrollbar,
+main::-webkit-scrollbar,
+.photo-drop-area::-webkit-scrollbar { 
+    /* 横幅調整 */
+    width: 5.6px;
+}
+
+.sidebar-contents::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track,
+.photo-drop-area::-webkit-scrollbar-track { 
+    /* トラック部分の色 */
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.sidebar-contents::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb,
+.photo-drop-area::-webkit-scrollbar-thumb { 
+    /* つまみ部分の色 */
+    background: #888;
+    border-radius: 10px;
+    
+}
