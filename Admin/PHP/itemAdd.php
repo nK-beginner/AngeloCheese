@@ -2,10 +2,10 @@
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-
+    
     require_once __DIR__.'/../Backend/connection.php';
     require_once __DIR__.'/../Backend/csrf_token.php';
-    require_once __DIR__.'/../Backend/config.php';
+    // require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
     require_once __DIR__.'/../PHP/function/dataControl.php';
 
@@ -16,7 +16,7 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
         // fncCheckCSRF();
-
+        
         // 画像データ
         $thumbnail          = $_FILES['image'] ?? null;
         $subImages          = $_FILES['images'] ?? null;
@@ -43,7 +43,7 @@
         $expirationDateMax1 = (int)($_POST['expiration-date-max1'] ?? 0);
         $expirationDateMin2 = (int)($_POST['expiration-date-min2'] ?? 0);
         $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
-
+        
         // 各入力バリデーション
         if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
         if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
@@ -97,9 +97,12 @@
 
             $pdo2 -> commit();
 
-            die('passed');
+            echo './Admin/View/itemAdd.php';
+            exit;
+            // die('done');
 
         } catch(PDOException $e) {
+            die('no');
             $pdo2 -> rollBack();
             error_log('データベース接続エラー:' . $e -> getMessage());
 

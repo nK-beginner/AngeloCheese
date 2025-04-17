@@ -1,73 +1,74 @@
+import { fncSetupDrop, fncShowMainPreview, fncShowSubPreview, fncSubmitImages } from './function/functions.js';
 
+document.addEventListener('DOMContentLoaded', () => {
+    /******************** 画像のDnD処理 ********************/
+    const mainDrop    = document.querySelector('.main-drop');
+    const mainInput   = document.querySelector('.main-file');
+    const mainPreview = document.querySelector('.preview-container');
 
+    const subDrop     = document.querySelector('.sub-drop');
+    const subInput    = document.querySelector('.sub-file');
+    const subPreviewWrapper = document.querySelector('.sub-preview-wrapper');
 
+    const form = document.querySelector('.product-form');
 
+    let mainImage = null;
+    let subImages = [];
 
-/********** 数字のみ入力許可 **********/
-const numInputs = document.querySelectorAll('input[inputmode="numeric"]');
-
-numInputs.forEach(numInput => {
-    numInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/[^0-9]/g, '');
+    fncSetupDrop(mainDrop, mainInput, (files) => {
+        if (files[0] && files[0].type.startsWith('image/')) {
+            mainImage = files[0];
+            fncShowMainPreview(mainImage, mainPreview);
+        }
     });
+
+    fncSetupDrop(subDrop, subInput, (files) => {
+        const validFiles = files.filter(file => file.type.startsWith('image/'));
+        subImages = subImages.concat(validFiles);
+        fncShowSubPreview(validFiles, subPreviewWrapper);
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+	    
+        if (!mainImage) {
+            alert('メイン画像を選択してください');
+            return;
+        }
+
+        // fncSubmitImages('test3.php', form, mainImage, subImages);
+        fncSubmitImages('/AngeloCheese/Admin/PHP/itemAdd.php', form, mainImage, subImages);
+    });
+
+
+    /******************** 数字のみ許容 ********************/
+    const numInputs = document.querySelectorAll('input[inputmode="numeric"]');
+
+    numInputs.forEach(numInput => {
+        numInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    });
+
+    /******************** 税込み価格自動計算 ********************/
+    const priceInput         = document.querySelector('input[name="price"]');
+    const taxRateInputs      = document.querySelectorAll('input[name="tax-rate"]');
+    const taxIncludedDisplay = document.getElementById('tax-included-price-display');
+    const taxIncludedHidden  = document.getElementById('tax-included-price-hidden');
+
+    function fncCalcTaxIncludedPrice() {
+        const price           = parseFloat(priceInput.value) || 0;
+        const selectedTaxRate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value);
+        const taxIncluded     = Math.floor(price * (1 + selectedTaxRate));
+
+        taxIncludedDisplay.value = `¥${taxIncluded.toLocaleString()}`;
+        taxIncludedHidden.value  = taxIncluded;
+    }
+
+    priceInput.addEventListener('input', fncCalcTaxIncludedPrice);
+    taxRateInputs.forEach(input => {
+        input.addEventListener('change', fncCalcTaxIncludedPrice);
+    });
+
+    fncCalcTaxIncludedPrice();
 });
-
-
-
-/********** 税込み価格自動計算 **********/
-const calculateTaxIncludedPrice = () => {
-    const price   = parseFloat(document.querySelector('.price').value) || 0;
-    const taxRate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value) || 0.1;
-
-    // 税込み価格を計算
-    const taxIncludedPrice = (price * (1 + taxRate)).toFixed(0);
-
-    // 表示用フィールドの更新
-    document.querySelector('.tax-included-price').value = `¥${parseInt(taxIncludedPrice).toLocaleString()}`;
-
-    // 送信用 hidden フィールドの更新
-    document.querySelector('#tax-included-price').value = taxIncludedPrice;
-};
-
-// イベントリスナー追加
-document.querySelector('.price').addEventListener('input', calculateTaxIncludedPrice);
-document.querySelectorAll('input[name="tax-rate"]').forEach(radio => {
-    radio.addEventListener('change', calculateTaxIncludedPrice);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/********** 使ったメソッド **********/
-// stopPropagation()：親要素へのイベント伝播を防ぐ
-// 
-// parseFloat()：浮動小数点を返す
-// 
-// toFixed()：指定の桁数で四捨五入
-// 
-// toLocaleString()：カンマを入れる
-// 
-// preventDefault()：ブラウザでのドロップイベント（他のタブで開くの）を防ぐ
-// 
-// startsWith()：文字列が引数で指定された文字列で始まるかを判定
-// 
-// createElement()：要素を作成する
-// 
-// appendChild()：特定の親要素の中に要素を追加する
-// 
-// readAsDataURL()：指定された Blob または File の内容を読み込む
-// 
-// displayImage()：画像を表示
-// 

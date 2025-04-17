@@ -137,6 +137,6 @@
     </form>
 
     <script type="module" src="/../AngeloCheese/Admin/JS/sidebar.js"></script>
-    <script type="module" src="/../AngeloCheese/Admin/JS/itemAdd2.js"></script>
+    <script type="module" src="/../AngeloCheese/Admin/JS/itemAdd.js"></script>
 </body>
 </html>

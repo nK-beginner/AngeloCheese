@@ -3,7 +3,7 @@
         switch($int) {
             case 1:
                 /********** allItems **********/
-                $stmt = $pdo -> prepare("SELECT p.id, pi.image_path, p.name, p.tax_included_price, p.category_id, p.category_name, p.hidden_at
+                $stmt = $pdo -> prepare("SELECT *
                     FROM product_images AS pi
                     JOIN products AS p ON pi.product_id = p.id
                     WHERE pi.is_main = 1
@@ -13,7 +13,7 @@
 
             case 2:
                 /********** itemEdit, itemDelete **********/
-                $stmt = $pdo -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id");
+                $stmt = $pdo -> prepare("SELECT * FROM product_images AS pi JOIN products AS p ON pi.product_id = p.id WHERE pi.is_main = 1 ORDER BY p.id");
                 break;
 
             case 3:

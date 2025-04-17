@@ -150,7 +150,7 @@
                                 $isHidden = !is_null($products[$i]['hidden_at']); // hidden_at が null でなければ true
                         ?>
                         <tr class="row" data-id="<?php echo htmlspecialchars($products[$i]['id'], ENT_QUOTES, 'UTF-8'); ?>" style="color: <?php echo $isHidden ? 'red' : 'inherit'; ?>; cursor: pointer;">
-                            <td><img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/' . $products[$i]['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像" class="product-image"></td>
+                            <td><img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $products[$i]['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像" class="product-image"></td>
                             <td><?php echo htmlspecialchars($products[$i]['id'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($products[$i]['name'], ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo htmlspecialchars($products[$i]['description'], ENT_QUOTES, 'UTF-8'); ?></td>

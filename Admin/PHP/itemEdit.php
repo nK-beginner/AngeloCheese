@@ -21,7 +21,7 @@
 
     // 一覧表示
     try {
-        $products = fncGetData($pdo2, 2, 1);
+        $products = fncGetData($pdo2, 1, 1);
 
     } catch(PDOException $e) {
         error_log('データベース接続エラー:' . $e -> getMessage());
