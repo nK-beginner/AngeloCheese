@@ -5,7 +5,6 @@
     
     require_once __DIR__.'/../Backend/connection.php';
     require_once __DIR__.'/../Backend/csrf_token.php';
-    // require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
     require_once __DIR__.'/../PHP/function/dataControl.php';
 

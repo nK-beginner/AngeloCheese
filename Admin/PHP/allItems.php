@@ -23,4 +23,6 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         exportCSV($pdo2);
     }
+
+    require_once __DIR__.'/../View/allItems.php';
 ?>
