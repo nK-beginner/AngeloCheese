@@ -1,5 +1,3 @@
-<?php require_once __DIR__.'/../PHP/itemDelete.php' ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

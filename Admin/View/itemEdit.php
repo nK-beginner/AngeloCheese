@@ -1,4 +1,4 @@
-<?php require_once __DIR__.'/../Backend/config.php' ?>
+<?php require_once __DIR__.'/../PHP/itemEdit.php' ?>
 
 <!DOCTYPE html>
 <html lang="ja">

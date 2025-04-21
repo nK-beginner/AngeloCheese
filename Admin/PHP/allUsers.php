@@ -7,6 +7,7 @@
     require_once __DIR__.'/../Backend/csrf_token.php';
     require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
+    require_once __DIR__.'/../PHP/function/dataControl.php';
 
     $errors = $_SESSION['errors'] ?? [];
     unset($_SESSION['errors']);
