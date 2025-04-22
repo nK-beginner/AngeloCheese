@@ -1,4 +1,7 @@
-<?php require_once __DIR__.'/../Backend/config.php' ?>
+<?php 
+    require_once __DIR__ . '/../Backend/config.php';
+    require_once __DIR__  . '/../PHP/itemAdd.php';
+?>
 
 <!DOCTYPE html>
 <html lang="jp">

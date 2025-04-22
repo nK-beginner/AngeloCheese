@@ -162,10 +162,10 @@
                             <td>¥<?php echo number_format(htmlspecialchars($products[$i]['price'], ENT_QUOTES, 'UTF-8')); ?></td>
                             <td>¥<?php echo number_format(htmlspecialchars($products[$i]['tax_included_price'], ENT_QUOTES, 'UTF-8')); ?></td>
                             <td>¥<?php echo number_format(htmlspecialchars($products[$i]['cost'], ENT_QUOTES, 'UTF-8')); ?></td>
-                            <td><?php echo htmlspecialchars($products[$i]['expirationdate_min1'], ENT_QUOTES, 'UTF-8'); ?>日</td>
-                            <td><?php echo htmlspecialchars($products[$i]['expirationdate_max1'], ENT_QUOTES, 'UTF-8'); ?>日</td>
-                            <td><?php echo htmlspecialchars($products[$i]['expirationdate_min2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
-                            <td><?php echo htmlspecialchars($products[$i]['expirationdate_max2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
+                            <td><?php echo htmlspecialchars($products[$i]['expirationDate_min1'], ENT_QUOTES, 'UTF-8'); ?>日</td>
+                            <td><?php echo htmlspecialchars($products[$i]['expirationDate_max1'], ENT_QUOTES, 'UTF-8'); ?>日</td>
+                            <td><?php echo htmlspecialchars($products[$i]['expirationDate_min2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
+                            <td><?php echo htmlspecialchars($products[$i]['expirationDate_max2'], ENT_QUOTES, 'UTF-8'); ?>日</td>
                             <td><?php echo $isHidden ? '非表示中' : ''; ?></td>
                         </tr>
                         <?php endfor; ?>

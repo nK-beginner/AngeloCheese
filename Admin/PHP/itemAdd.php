@@ -96,7 +96,8 @@
 
             $pdo2 -> commit();
 
-            echo './Admin/View/itemAdd.php';
+            // echo './Admin/View/itemAdd.php';
+            echo './itemAdd.php';
             exit;
             // die('done');
 

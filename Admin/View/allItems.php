@@ -1,3 +1,5 @@
+<?php require_once __DIR__  . '/../PHP/allItems.php'; ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
