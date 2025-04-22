@@ -99,7 +99,6 @@
             // echo './Admin/View/itemAdd.php';
             echo './itemAdd.php';
             exit;
-            // die('done');
 
         } catch(PDOException $e) {
             die('no');

@@ -41,8 +41,16 @@ export function fncSetupDrop(dropArea, input, handleFile) {
 export function fncShowMainPreview(file, mainPreview) {
     const reader = new FileReader();
     reader.onload = (e) => {
-        mainPreview.innerHTML = `<img src="${e.target.result}">`;
+        mainPreview.innerHTML = 
+            `<img src="${e.target.result}">
+             <div class="delete-main-img">✖</div>`;
         mainPreview.classList.add('show');
+
+        const deleteBtn = document.querySelector('.delete-main-img');
+        deleteBtn.addEventListener('click', () => {
+            mainPreview.innerHTML = '';
+            mainPreview.classList.remove('show');
+        });
     };
     reader.readAsDataURL(file);
 }
@@ -63,8 +71,17 @@ export function fncShowSubPreview(files, subPreviewWrapper) {
             const img = document.createElement('img');
             img.src = e.target.result;
 
-            container.appendChild(img);
+            const deleteBtn = document.createElement('div');
+            deleteBtn.textContent = '✖'
+            deleteBtn.classList.add('delete-btn');
+
+            deleteBtn.addEventListener('click', () => {
+                container.remove();
+            });
+
             subPreviewWrapper.appendChild(container);
+            container.appendChild(img);
+            container.appendChild(deleteBtn);
         };
         reader.readAsDataURL(file);
     });
