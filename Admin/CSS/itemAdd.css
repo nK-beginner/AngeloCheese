@@ -152,7 +152,7 @@ main .submit-btn {
 
 
 .delete-main-img,
-.delete-btn {
+.delete-sub-img {
     z-index: 100;
     border: 2px dashed #fff;
     color: #fff;
@@ -166,7 +166,7 @@ main .submit-btn {
 }
 
 .delete-main-img:hover,
-.delete-btn:hover {
+.delete-sub-img:hover {
     border: 2px dashed #000;
     color: #000;
 }

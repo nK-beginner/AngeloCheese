@@ -200,7 +200,7 @@
     }
 
 	/*======================================================*/
-	/* 用途：ユーザー情報をDBから取得                		   */
+	/* 用途：商品の論理削除                         		   */
 	/* 引数：$pdo：DB接続, $ids：削除（非表示）する商品配列     */
 	/* 戻り値：SQL実行結果									  */
 	/* 備考：なし											 */
@@ -217,17 +217,31 @@
     }
 
 	/*======================================================*/
-	/* 用途：ユーザー情報をDBから取得                		   */
+	/* 用途：商品情報をDBから取得（メイン画像）        		   */
 	/* 引数：$pdo：DB接続, $editItemId：編集する商品のID       */
 	/* 戻り値：更新する商品情報								   */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncUpdatingProduct($pdo, $editItemId) {
-        $stmt = $pdo -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id");
+    function fncGetProduct($pdo, $editItemId) {
+        $stmt = $pdo -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main = 1");
         $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
         $stmt -> execute();
 
         return $stmt -> fetch(PDO::FETCH_ASSOC);
+    }
+
+	/*======================================================*/
+	/* 用途：サブ画像の取得                            		  */
+	/* 引数：$pdo：DB接続, $editItemId：編集する商品のID       */
+	/* 戻り値：更新する商品情報								  */
+	/* 備考：なし											 */
+	/*======================================================*/
+    function fncGetSubImages($pdo, $editItemId) {
+        $stmt = $pdo -> prepare("SELECT image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main is NULL");
+        $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
+        $stmt -> execute();
+
+        return $stmt -> fetchAll(PDO::FETCH_COLUMN);
     }
 
 	/*======================================================*/
@@ -250,10 +264,10 @@
                                             price = :price, 
                                             tax_included_price = :tax_included_price,
                                             cost = :cost, 
-                                            expirationdate_min1 = :expirationDate_min1, 
-                                            expirationdate_max1 = :expirationDate_max1,
-                                            expirationdate_min2 = :expirationDate_min2,
-                                            expirationdate_max2 = :expirationDate_max2, 
+                                            expirationDate_min1 = :expirationDate_min1, 
+                                            expirationDate_max1 = :expirationDate_max1,
+                                            expirationDate_min2 = :expirationDate_min2,
+                                            expirationDate_max2 = :expirationDate_max2, 
                                             hidden_at = " . ($productData['hiddenAt'] ? "NOW()" : "NULL") . " 
                                             WHERE id = :id");
         $stmt -> bindValue(':name'               , $productData['name'],               PDO::PARAM_STR);

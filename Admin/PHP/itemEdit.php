@@ -31,13 +31,15 @@
 
     // allItems.phpから商品を選択されてきた時
     $editItem = null;
+    $subImages = [];
 
     if(isset($_SESSION['edit_item_id'])) {
         $editItemId = $_SESSION['edit_item_id'];
         unset($_SESSION['edit_item_id']);
         
         try {
-            $editItem = fncUpdatingProduct($pdo2, $editItemId);
+            $editItem  = fncGetProduct($pdo2, $editItemId);
+            $subImages = fncGetSubImages($pdo2, $editItemId); 
 
         } catch(PDOException $e) {
             error_log('データベース接続エラー:' . $e -> getMessage());

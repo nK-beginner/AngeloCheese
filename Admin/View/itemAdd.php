@@ -1,7 +1,4 @@
-<?php 
-    require_once __DIR__ . '/../Backend/config.php';
-    require_once __DIR__  . '/../PHP/itemAdd.php';
-?>
+<?php require_once __DIR__ . '/../Backend/config.php'; ?>
 
 <!DOCTYPE html>
 <html lang="jp">
@@ -23,6 +20,7 @@
             <main>
                 <div class="main-container">
                     <h1>商品追加</h1>
+                    
                     <div class="product-info">
                         <div class="form-block">
                             <div class="block">

@@ -1,3 +1,5 @@
+<?php require_once __DIR__  . '/../PHP/allUsers.php'; ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>

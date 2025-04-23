@@ -3,6 +3,8 @@ use angelo_cheese_management
 
 select * from products
 
+SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = 1 AND pi.is_main = 1
+
 
 CREATE TABLE products (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,

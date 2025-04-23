@@ -73,7 +73,7 @@ export function fncShowSubPreview(files, subPreviewWrapper) {
 
             const deleteBtn = document.createElement('div');
             deleteBtn.textContent = '✖'
-            deleteBtn.classList.add('delete-btn');
+            deleteBtn.classList.add('delete-sub-img');
 
             deleteBtn.addEventListener('click', () => {
                 container.remove();
@@ -84,6 +84,40 @@ export function fncShowSubPreview(files, subPreviewWrapper) {
             container.appendChild(deleteBtn);
         };
         reader.readAsDataURL(file);
+    });
+}
+
+/*======================================================*/
+/* 用途：表示中のメイン画像の削除                    	　 */
+/* 引数：メインプレビューコンテナ                          */
+/* 戻り値：なし											 */
+/* 備考：なし											 */
+/*======================================================*/
+export function fncDeleteMainImg(previewElement) {
+    const deleteBtn = previewElement.querySelector('.delete-main-img');
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+            previewElement.innerHTML = '';
+            previewElement.classList.remove('show');
+        });
+    }
+}
+
+/*======================================================*/
+/* 用途：表示中のサブ画像の削除                    		   */
+/* 引数：サブプレビューラッパー                            */
+/* 戻り値：なし											 */
+/* 備考：なし											 */
+/*======================================================*/
+export function fncDeleteSubImgs(subPreviewWrapper) {
+    const deleteBtns = subPreviewWrapper.querySelectorAll('.delete-sub-img');
+    deleteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const container = btn.closest('.sub-preview-container');
+            if (container) {
+                container.remove();
+            }
+        });
     });
 }
 
