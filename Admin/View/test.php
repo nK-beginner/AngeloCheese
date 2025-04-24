@@ -1,112 +1,49 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>画像を1枚ずつ追加</title>
-  <style>
-    #dropArea {
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      max-width: 980px;
       width: 100%;
-      max-width: 500px;
-      height: 200px;
-      border: 2px dashed #aaa;
+      display: block;
+      margin: 0 auto;
+    }
+
+    main {
+      background: black;
+    }
+
+    .img-container {
+      width: calc(100% - 40px) / 3;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      font-family: sans-serif;
-      cursor: pointer;
+      
     }
-    #preview img {
-      max-width: 120px;
-      max-height: 120px;
-      margin: 5px;
-      object-fit: cover;
-    }
-    #fileInput {
-      /* display: none; */
+
+    img {
+      width: 100%;
+      aspect-ratio: 300/380;
+      object-fit: contain;
     }
   </style>
-</head>
 <body>
+    <main>
+      <div class="img-container">
+          <img src="/../AngeloCheese/Admin/uploads/680867a744bea1a92284957f2ed02c0c32ba2e4202692da45cb50ef0cf76ec7af33294119469c.jpg" alt="">
+          <img src="/../AngeloCheese/Admin/uploads/680867a744bea1a92284957f2ed02c0c32ba2e4202692da45cb50ef0cf76ec7af33294119469c.jpg" alt="">
+          <img src="/../AngeloCheese/Admin/uploads/680867a744bea1a92284957f2ed02c0c32ba2e4202692da45cb50ef0cf76ec7af33294119469c.jpg" alt="">
+          <img src="/../AngeloCheese/Admin/uploads/680867a744bea1a92284957f2ed02c0c32ba2e4202692da45cb50ef0cf76ec7af33294119469c.jpg" alt="">
+      </div>      
+    </main>
 
-    <h2>画像を1枚ずつドロップ or 選択して追加</h2>
-
-
-    <div id="preview"></div>
-    <div id="dropArea">ここに画像をドロップ<br>またはクリックで選択</div>
-    <input type="file" id="fileInput" accept="image/*">
-
-    <button id="submitBtn">送信する</button>
-
-    <script>
-        const dropArea  = document.getElementById('dropArea');
-        const fileInput = document.getElementById('fileInput');
-        const preview   = document.getElementById('preview');
-        const submitBtn = document.getElementById('submitBtn');
-
-        let selectedFiles = [];
-
-        dropArea.addEventListener('click', () => fileInput.click());
-
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, e => e.preventDefault());
-        });
-
-        dropArea.addEventListener('drop', (e) => {
-            const files = Array.from(e.dataTransfer.files);
-            files.forEach(file => {
-            selectedFiles.push(file);
-            });
-            updatePreview();
-        });
-
-        fileInput.addEventListener('change', () => {
-            const files = Array.from(fileInput.files);
-            files.forEach(file => {
-            selectedFiles.push(file);
-            });
-            updatePreview();
-            fileInput.value = ""; // 同じファイルでも再選択できるように
-        });
-
-        function updatePreview() {
-            preview.innerHTML = '';
-            selectedFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-            });
-        }
-
-        submitBtn.addEventListener('click', () => {
-            if (selectedFiles.length === 0) {
-            alert('画像を選択してください');
-            return;
-            }
-
-            const formData = new FormData();
-            selectedFiles.forEach((file, i) => {
-            formData.append('images[]', file);
-            });
-
-            fetch('test2.php', {
-            method: 'POST',
-            body: formData
-            })
-            .then(res => res.text())
-            .then(html => {
-            document.body.innerHTML = html;
-            })
-            .catch(err => {
-            alert('アップロードに失敗しました');
-            console.error(err);
-            });
-        });
-    </script>
-
+    
 </body>
 </html>

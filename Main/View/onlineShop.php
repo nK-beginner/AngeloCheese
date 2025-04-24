@@ -48,7 +48,7 @@
                                             <form action="onlineShop.php" method="POST" class="product">
                                                 <button type="submit">
                                                     <input type="hidden" name="productId" value="<?php echo htmlspecialchars($item['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                                                    <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
+                                                    <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $item['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                                        
                                                 </button>
                                             </form>
 

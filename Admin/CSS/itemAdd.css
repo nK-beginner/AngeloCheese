@@ -58,7 +58,7 @@ main .preview-container img,
 main .sub-preview-container img {
     width: 100%;
     height: 100%;
-    aspect-ratio: 330/380;
+    /* aspect-ratio: 330/380; */
     object-fit: cover;
 }
 

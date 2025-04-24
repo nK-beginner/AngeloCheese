@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- ヘッダータグ -->
     <?php include 'headTags.php' ?>
-    <title>testView</title>
+    <title>商品追加</title>
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd.css?v=<?php echo time(); ?>">
 </head>
 <body>

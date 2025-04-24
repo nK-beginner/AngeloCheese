@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const taxIncludedHidden  = document.getElementById('tax-included-price-hidden');
 
     function fncCalcTaxIncludedPrice() {
-        const price           = parseFloat(priceInput.value) || 0;
+        const priceStr        = priceInput.value.replace(/,/g, '');
+        const price           = parseFloat(priceStr) || 0;
         const selectedTaxRate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value);
         const taxIncluded     = Math.floor(price * (1 + selectedTaxRate));
 
