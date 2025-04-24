@@ -86,6 +86,19 @@ main h1::after {
     width: 102px;
 }
 
+main .error-container {
+    background: rgb(255, 194, 194);
+    width: 100%;
+    margin-top: 11px;
+    padding: 11px;
+}
+
+main .error-container p {
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
+    font-size: 1.4rem;
+}
+
 main label {
     font-size: 1.6rem !important;
 }

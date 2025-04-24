@@ -1,11 +1,16 @@
-<?php require_once __DIR__ . '/../Backend/config.php'; ?>
+<?php 
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    require_once __DIR__ . '/../Backend/config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="jp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ヘッダータグ -->
     <?php include 'headTags.php' ?>
     <title>商品追加</title>
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd.css?v=<?php echo time(); ?>">
@@ -13,15 +18,22 @@
 <body>
     <form method="POST" class="product-form" enctype="multipart/form-data">
         <div class="grid-container">
-            <!-- サイドバー -->
             <?php include 'sidebar.php'; ?>
             
-            <!-- 商品詳細エリア -->
             <main>
                 <div class="main-container">
                     <h1>商品追加</h1>
+
+                    <?php if(!empty($_SESSION['errors'])): ?>
+                        <div class="error-container">
+                            <?php foreach($_SESSION['errors'] as $error): ?>
+                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>        
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                     
                     <div class="product-info">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                         <div class="form-block">
                             <div class="block">
                                 <h3>メイン画像</h3>
@@ -78,8 +90,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>       
+                        </div>
 
                         <div class="form-block">
                             <div class="block">

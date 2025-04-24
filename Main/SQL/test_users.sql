@@ -1,4 +1,5 @@
---use angelo_cheese
+use angelo_cheese
+
 select * from test_users
 
 select * from deletedUsers
@@ -7,7 +8,7 @@ select * from deletedUsers
 create table test_users (
     id int primary key AUTO_INCREMENT,
     firstName varchar(255) not NULL,
-    lastName varchar(255) not NULL
+    lastName varchar(255) not NULL,
     email varchar(255) not null unique,
     password varchar(255) not null,
     created_at timestamp default CURRENT_TIMESTAMP,

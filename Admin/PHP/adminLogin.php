@@ -44,16 +44,12 @@
             $errors[] = 'データベース接続エラー';
         }
 
-        if (!$admin) {
-            $errors[] = '存在しないメールアドレスです。';
-        }
-
-        if ($admin && !password_verify($password, $admin['password'])) {
-            $errors[] = 'パスワードが間違っています。';
+        if (!$admin || !password_verify($password, $admin['password'])) {
+            $errors[] = 'メールアドレスか、パスワードが間違っています。';
         }
 
         if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
+            $_SESSION['errors']    = $errors;
             $_SESSION['old-email'] = $email;
             
             header('Location: adminLogin.php');

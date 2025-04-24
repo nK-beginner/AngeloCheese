@@ -30,7 +30,7 @@
     }
 
     // allItems.phpから商品を選択されてきた時
-    $editItem = null;
+    $editItem  = null;
     $subImages = [];
 
     if(isset($_SESSION['edit_item_id'])) {
@@ -72,17 +72,14 @@
             $size1              = (int)$_POST['size1'];
             $size2              = (int)$_POST['size2'];
             $taxRate            = (float)$_POST['tax-rate'];
-            $price              = (int)$_POST['price'];
-            $taxIncludedPrice   = (int)$_POST['tax-included-price'];
-            $cost               = (int)$_POST['cost'];
+            $price              = (int)str_replace(',', '', $_POST['price']);
+            $taxIncludedPrice   = (int)str_replace(',', '', $_POST['tax-included-price']);
+            $cost               = (int)str_replace(',', '', $_POST['cost']);
             $expirationDateMin1 = (int)$_POST['expirationDate-min1'];
             $expirationDateMax1 = (int)$_POST['expirationDate-max1'];
             $expirationDateMin2 = (int)$_POST['expirationDate-min2'];
             $expirationDateMax2 = (int)$_POST['expirationDate-max2'];
-            $hiddenAt           = NULL;
-            if( $_POST['display'] === 'off' ) {
-                $hiddenAt = "NOW()";
-            }
+            $hiddenAt           = $_POST['display'] === 'off' ? "NOW()" : NULL;
 
             $productData = [
                 'id'                  => $itemId,
@@ -114,6 +111,8 @@
             error_log('データベース接続エラー:' . $e -> getMessage());
 
             $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
+            header("Location: itemEdit.php");
+            exit;
         }
     }
 ?>
