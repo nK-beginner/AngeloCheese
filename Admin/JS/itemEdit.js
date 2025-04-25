@@ -26,8 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.querySelector('.product-form');
 
-    let mainImage = null;
+    let mainImage = mainPreview.querySelector('div');
     let subImages = [];
+
+    console.log(mainImage);
+    if (mainImage) {
+        alert('選択済み');
+        return;
+    }
 
     if (mainPreview && mainPreview.classList.contains('show')) {
         fncDeleteMainImg(mainPreview);
@@ -54,14 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-	    
+        if (mainImage) {
+            alert('選択済み');
+            return;
+        }
+
+
         if (!mainImage) {
             alert('メイン画像を選択してください');
             return;
         }
-
-        // fncSubmitImages('test3.php', form, mainImage, subImages);
-        // fncSubmitImages('/AngeloCheese/Admin/PHP/itemAdd.php', form, mainImage, subImages);
     });
 
 

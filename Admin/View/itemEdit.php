@@ -3,32 +3,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- ヘッダータグ -->
     <?php include 'headTags.php' ?>
-
     <title>商品編集</title>
-
-    <!-- 商品削除CSS（テーブルスタイル流用） -->
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemDelete.css?v=<?php echo time(); ?>">
-
-    <!-- 商品編集用CSS -->
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemEdit.css?v=<?php echo time(); ?>">
-
-    <!-- 商品追加用CSS（画面スタイル流用） -->
     <link rel="stylesheet" href="/../AngeloCheese/Admin/CSS/itemAdd.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="grid-container">
-        <!-- サイドバー -->
         <?php include 'sidebar.php'; ?>
 
-        <!-- 商品詳細エリア -->
         <main>
             <h1>商品編集</h1>
 
             <?php if($editItem): ?>
                 <a href="itemEdit.php">一覧へ</a>
-                <!-- 商品編集画面 -->
                 <form method="POST" class="product-form" enctype="multipart/form-data">
                     <div class="product-info">
                         <div class="form-block">
@@ -41,7 +30,7 @@
                                 <h3>メイン画像</h3>
                                 <div class="preview-container <?php echo isset($editItem['image_path']) ? 'show' : '' ?>">
                                     <?php if(isset($editItem['image_path'])): ?>
-                                        <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                                        <img class="" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
                                         <div class="delete-main-img">✖</div>
                                     <?php endif; ?>
                                 </div>
@@ -119,12 +108,12 @@
                                 <div class="sub-block">
                                     <div class="sub-block2">
                                         <h3>価格</h3>
-                                        <input type="text" class="user-input" name="price" id="price" pattern="\d*" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['price']), ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="text" class="user-input" name="price" id="price" pattern="\d*" inputmode="numeric" value="<?php echo htmlspecialchars($editItem['price'], ENT_QUOTES, 'UTF-8'); ?>">
                                     </div>
                                     
                                     <div class="sub-block2">
                                         <h3>原価</h3>
-                                        <input type="text" class="user-input" name="cost" pattern="\d*" inputmode="numeric" value="<?php echo htmlspecialchars(number_format($editItem['cost']), ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="text" class="user-input" name="cost" pattern="\d*" inputmode="numeric" value="<?php echo htmlspecialchars($editItem['cost'], ENT_QUOTES, 'UTF-8'); ?>">
                                     </div>
                                 </div>
                             </div>
@@ -140,9 +129,9 @@
                             <div class="block">
                                 <h3>消費期限</h3>
                                 <div class="sub-block">
-                                    <input type="text" class="user-input" name="expiration-date-min1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars(number_format($editItem['expirationDate_min1']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" class="user-input" name="expiration-date-min1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_min1'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <p>〜</p>
-                                    <input type="text" class="user-input" name="expiration-date-max1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars(number_format($editItem['expirationDate_max1']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" class="user-input" name="expiration-date-max1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_max1'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <p>日間</p>
                                 </div>
                             </div>
@@ -150,23 +139,22 @@
                             <div class="block">
                                 <h3>消費期限（解凍後）</h3>
                                 <div class="sub-block">
-                                    <input type="text" class="user-input" name="expiration-date-min2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars(number_format($editItem['expirationDate_min2']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" class="user-input" name="expiration-date-min2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_min2'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <p>〜</p>
-                                    <input type="text" class="user-input" name="expiration-date-max2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars(number_format($editItem['expirationDate_max2']), ENT_QUOTES, 'UTF-8'); ?>">
+                                    <input type="text" class="user-input" name="expiration-date-max2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_max2'], ENT_QUOTES, 'UTF-8'); ?>">
                                     <p>日間</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <button type="submit">送信</button>
                 </form>
 
             <?php else: ?>
-                <!-- 商品一覧表示 -->
                 <h3 class="choose-data">編集したい商品を選択してください。</h3>
                 <div class="table-records">
                     <table>
                         <tr>
-                            <!-- 17個 -->
                             <th>商品画像</th>
                             <th>商品id</th>
                             <th>商品名</th>
@@ -187,7 +175,7 @@
                         </tr>
                         <?php 
                             for($i = 0; $i < count($products); $i++):
-                                $isHidden = !is_null($products[$i]['hidden_at']); // hidden_at が null でなければ true
+                                $isHidden = !is_null($products[$i]['hidden_at']);
                         ?>
                         <tr class="row" data-id="<?php echo htmlspecialchars($products[$i]['id'], ENT_QUOTES, 'UTF-8'); ?>" style="color: <?php echo $isHidden ? 'red' : 'inherit'; ?>; cursor: pointer;">
                             <td><img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $products[$i]['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像" class="product-image"></td>
@@ -210,14 +198,11 @@
                         </tr>
                         <?php endfor; ?>
                     </table>
-                    <!-- 隠しフォーム -->
                     <form action="itemEdit.php" method="POST" class="hidden-form">
                         <input type="hidden" name="id" class="product-id">
                     </form>
                 </div>
-
             <?php endif; ?>
-
         </main>
     </div>
     <script type="module" src="/../AngeloCheese/Admin/JS/sidebar.js"></script> <!-- サイドバー -->
