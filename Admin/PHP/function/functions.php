@@ -195,6 +195,7 @@
                 
             } else {
                 $errors[] = '画像の保存に失敗しました。';
+                return;
             }
         }
     }
@@ -223,7 +224,7 @@
 	/* 備考：なし											 */
 	/*======================================================*/
     function fncGetProduct($pdo, $editItemId) {
-        $stmt = $pdo -> prepare("SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main = 1");
+        $stmt = $pdo -> prepare("SELECT p.*, pi.image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main = 1");
         $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
         $stmt -> execute();
 
@@ -237,7 +238,7 @@
 	/* 備考：なし											 */
 	/*======================================================*/
     function fncGetSubImages($pdo, $editItemId) {
-        $stmt = $pdo -> prepare("SELECT image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main is NULL");
+        $stmt = $pdo -> prepare("SELECT pi.image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main is NULL");
         $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
         $stmt -> execute();
 
@@ -288,5 +289,59 @@
         $stmt -> bindValue(':id'                 , $productData['itemId'],             PDO::PARAM_INT);
         
         return $stmt -> execute();
+    }
+
+	/*======================================================*/
+	/* 用途：画像更新処理                           		  */
+	/* 引数：$file：投稿された画像ファイル
+            isMain：メイン画像かサブか（1またはnull）
+            $uploadFir：アップロード先
+            $allowedExt：許可する拡張子
+            $errors：エラー
+            $pdo：DB接続
+            $productId：商品ID                               */
+	/* 戻り値：SQL実行結果									  */
+	/* 備考：なし											 */
+	/*======================================================*/
+    function fncUpdateImage($pdo, $file, $isMain, $uploadDir, $allowedExt, $errors, $productId) {
+        $fineName = basename($file['name']);
+        $fileExt  = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
+
+        if(!in_array($fileExt, $allowedExt)) {
+            $errors[] = '許可されていないファイル形式です。';
+            return;
+        }
+
+        /********** 同一画像名があれば保存阻止＆置き換え **********/
+        $fileHash = hash_file('sha256', $file['tmp_name']);
+
+        $existingFilePath = null;
+        foreach(glob($uploadDir . '*.' . $fileExt) as $existingFile) {
+            if(hash_file('sha256', $existingFile) === $fileHash) {
+                $existingFilePath = $existingFile;
+                break;
+            }
+        }
+        
+        if($existingFilePath) {
+            $uploadFilePath = $existingFilePath;
+        } else {
+            $newFileName = uniqid() . bin2hex(random_bytes(32)) . '.' . $fileExt;
+            $uploadFilePath = $uploadDir . $newFileName;
+
+            if(!move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                $errors[] = '画像のアップロードに失敗しました。';
+                return;
+            }
+        }
+        /************************* END *************************/
+
+        if($isMain === 1) {
+            $stmt = $pdo -> prepare("UPDATE product_images SET image_path = :image_path WHERE product_id = :id and is_main = 1");
+            $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
+            $stmt -> bindValue(':id',         $productId,      PDO::PARAM_STR);
+
+            $stmt -> execute();
+        }
     }
 ?>

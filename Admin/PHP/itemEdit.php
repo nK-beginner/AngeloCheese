@@ -51,7 +51,12 @@
     // 商品情報更新
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
-        fncCheckCSRF();
+        if(!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $errors[] = "不正なアクセスです。";
+        }
+
+        $thumbnail          = $_FILES['image'] ?? null;
+        $subImages          = $_FILES['images'] ?? null;
 
         $itemId             = (int)$_POST['item_id'];
         $name               = trim($_POST['name'] ?? '');
@@ -88,39 +93,62 @@
         if($expirationDateMin1 > $expirationDateMax1) { $errors[] = '消費期限の大小関係が不正です。';  }
         if($expirationDateMin2 > $expirationDateMax2) { $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
 
+        if(!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+    
+            echo './itemEdit.php';
+            exit;
+        }
+
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        
         $productData = [
-            'id'                  => $itemId,
-            'name'                => $name,
-            'description'         => $description,
-            'category_id'         => $categoryId,
-            'category_name'       => $categoryName,
-            'keyword'             => $keyword,
-            'size1'               => $size1,
-            'size2'               => $size2,
-            'tax_rate'            => $taxRate,
-            'price'               => $price,
-            'tax-included-price'  => $taxIncludedPrice,
-            'cost'                => $cost,
-            'expirationDate_min1' => $expirationDateMin1,
-            'expirationDate_max1' => $expirationDateMax1,
-            'expirationDate_min2' => $expirationDateMin2,
-            'expirationDate_max2' => $expirationDateMax2,
-            'hidden_at'           => $hiddenAt,
+            'itemId'             => $itemId,
+            'name'               => $name,
+            'description'        => $description,
+            'categoryId'         => $categoryId,
+            'categoryName'       => $categoryName,
+            'keyword'            => $keyword,
+            'size1'              => $size1,
+            'size2'              => $size2,
+            'taxRate'            => $taxRate,
+            'price'              => $price,
+            'taxIncludedPrice'   => $taxIncludedPrice,
+            'cost'               => $cost,
+            'expirationDateMin1' => $expirationDateMin1,
+            'expirationDateMax1' => $expirationDateMax1,
+            'expirationDateMin2' => $expirationDateMin2,
+            'expirationDateMax2' => $expirationDateMax2,
+            'hiddenAt'           => $hiddenAt,
         ];
+
+        $uploadDir = '../uploads/';
+        if(!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        // 許可する拡張子
+        $allowedExt = ["jpg", "jpeg", "png"];
 
         $pdo2 -> beginTransaction();
         try {
             fncUpdateProduct($pdo2, $productData);
 
+            fncUpdateImage($pdo2, $thumbnail, 1, $uploadDir, $allowedExt, $errors, $itemId);
+
             $pdo2 -> commit();
-            header('Location: itemEdit.php');
+
+            echo './itemEdit.php';
+            exit;
 
         } catch(PDOException $e){
             $pdo2 -> rollback();
             error_log('データベース接続エラー:' . $e -> getMessage());
 
             $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
-            header("Location: itemEdit.php");
+
+            echo './itemEdit.php';
             exit;
         }
     }

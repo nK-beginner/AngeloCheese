@@ -20,6 +20,8 @@
                 <a href="itemEdit.php">一覧へ</a>
                 <form method="POST" class="product-form" enctype="multipart/form-data">
                     <div class="product-info">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="item_id" value="<?php echo htmlspecialchars($editItem['id'], ENT_QUOTES, 'UTF-8'); ?>">
                         <div class="form-block">
                             <div class="block">
                                 <h3>商品表示状態</h3>
@@ -30,7 +32,7 @@
                                 <h3>メイン画像</h3>
                                 <div class="preview-container <?php echo isset($editItem['image_path']) ? 'show' : '' ?>">
                                     <?php if(isset($editItem['image_path'])): ?>
-                                        <img class="" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                                        <img class="main-img" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $editItem['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="">
                                         <div class="delete-main-img">✖</div>
                                     <?php endif; ?>
                                 </div>
@@ -43,7 +45,7 @@
                                 <div class="sub-preview-wrapper">
                                     <?php foreach($subImages as $subImage): ?>
                                         <div class="sub-preview-container <?php echo isset($subImage) ? 'show' : '' ?>">
-                                            <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $subImage, ENT_QUOTES, 'UTF-8'); ?>" alt="">
+                                            <img class="sub-img" src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $subImage, ENT_QUOTES, 'UTF-8'); ?>" alt="">
                                             <div class="delete-sub-img">✖</div>
                                         </div>
                                     <?php endforeach; ?>

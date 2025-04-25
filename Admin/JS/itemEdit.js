@@ -26,14 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.querySelector('.product-form');
 
-    let mainImage = mainPreview.querySelector('div');
-    let subImages = [];
-
-    console.log(mainImage);
-    if (mainImage) {
-        alert('選択済み');
-        return;
-    }
+    let mainImage = mainPreview.querySelector('.main-img');
+    let subImages = Array.from(
+        subPreviewWrapper.querySelectorAll('.sub-img')
+    );
 
     if (mainPreview && mainPreview.classList.contains('show')) {
         fncDeleteMainImg(mainPreview);
@@ -60,18 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (mainImage) {
-            alert('選択済み');
-            return;
-        }
-
 
         if (!mainImage) {
             alert('メイン画像を選択してください');
             return;
         }
+        
+        // console.log(subImages);
+        fncSubmitImages('/AngeloCheese/Admin/PHP/itemEdit.php', form, mainImage, subImages);
     });
-
 
     /******************** 数字のみ許容 ********************/
     const numInputs = document.querySelectorAll('input[inputmode="numeric"]');

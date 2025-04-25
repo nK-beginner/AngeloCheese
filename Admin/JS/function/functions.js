@@ -141,7 +141,6 @@ export function fncSubmitImages(url, form, mainImage, subImages) {
         body: formData
     })
     .then(res => res.text())
-    // .then(html => { document.body.innerHTML = html; })
     .then(response => { window.location.href = response; })
     .catch(err => {
         alert('送信に失敗しました');
