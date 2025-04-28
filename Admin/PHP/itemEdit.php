@@ -10,6 +10,7 @@
     require_once __DIR__.'/../PHP/function/dataControl.php';
 
     $errors = $_SESSION['errors'] ?? [];
+    $success = $_SESSION['success'];
     unset($_SESSION['errors']);
 
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
@@ -59,7 +60,7 @@
         $subImages          = $_FILES['images'] ?? null;
 
         $itemId             = (int)$_POST['item_id'];
-        $name               = trim($_POST['name'] ?? '');
+        $name               = trim($_POST['productName'] ?? '');
         $description        = trim($_POST['description'] ?? '');
         $categoryId         = (int)($_POST['category'] ?? 0);
 
@@ -78,20 +79,20 @@
         $price              = (int)str_replace(',', '', $_POST['price']);
         $taxIncludedPrice   = (int)str_replace(',', '', $_POST['tax-included-price']);
         $cost               = (int)str_replace(',', '', $_POST['cost']);
-        // $expirationDateMin1 = (int)($_POST['expiration-date-min1'] ?? 0);
-        // $expirationDateMax1 = (int)($_POST['expiration-date-max1'] ?? 0);
-        // $expirationDateMin2 = (int)($_POST['expiration-date-min2'] ?? 0);
-        // $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
+        $expirationDateMin1 = (int)($_POST['expiration-date-min1'] ?? 0);
+        $expirationDateMax1 = (int)($_POST['expiration-date-max1'] ?? 0);
+        $expirationDateMin2 = (int)($_POST['expiration-date-min2'] ?? 0);
+        $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
         $hiddenAt           = $_POST['display'] === 'off' ? "NOW()" : NULL;
 
-        // if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
-        // if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
-        // if(!is_numeric($size1) || $size1 <= 0) {        $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
-        // if(!is_numeric($size2) || $size2 <= 0) {        $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
-        // if(!is_numeric($price) || $price <= 0) {        $errors[] = '値段には0より大きい数値を入力してください。';  }
-        // if(!is_numeric($cost)  || $cost  <= 0) {        $errors[] = '原価には0より大きい数値を入力してください。';  }
-        // if($expirationDateMin1 > $expirationDateMax1) { $errors[] = '消費期限の大小関係が不正です。';  }
-        // if($expirationDateMin2 > $expirationDateMax2) { $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
+        if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
+        if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
+        if(!is_numeric($size1) || $size1 <= 0) {        $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
+        if(!is_numeric($size2) || $size2 <= 0) {        $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
+        if(!is_numeric($price) || $price <= 0) {        $errors[] = '値段には0より大きい数値を入力してください。';  }
+        if(!is_numeric($cost)  || $cost  <= 0) {        $errors[] = '原価には0より大きい数値を入力してください。';  }
+        if($expirationDateMin1 > $expirationDateMax1) { $errors[] = '消費期限の大小関係が不正です。';  }
+        if($expirationDateMin2 > $expirationDateMax2) { $errors[] = '消費期限(解凍後)の大小関係が不正です。';  }
 
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
@@ -105,21 +106,21 @@
         
         $productData = [
             'itemId'             => $itemId,
-            'name'               => $name,
+            'productName'        => $name,
             'description'        => $description,
             'categoryId'         => $categoryId,
             'categoryName'       => $categoryName,
             'keyword'            => $keyword,
             'size1'              => $size1,
             'size2'              => $size2,
-            // 'taxRate'            => $taxRate,
-            // 'price'              => $price,
-            // 'taxIncludedPrice'   => $taxIncludedPrice,
-            // 'cost'               => $cost,
-            // 'expirationDateMin1' => $expirationDateMin1,
-            // 'expirationDateMax1' => $expirationDateMax1,
-            // 'expirationDateMin2' => $expirationDateMin2,
-            // 'expirationDateMax2' => $expirationDateMax2,
+            'taxRate'            => $taxRate,
+            'price'              => $price,
+            'taxIncludedPrice'   => $taxIncludedPrice,
+            'cost'               => $cost,
+            'expirationDateMin1' => $expirationDateMin1,
+            'expirationDateMax1' => $expirationDateMax1,
+            'expirationDateMin2' => $expirationDateMin2,
+            'expirationDateMax2' => $expirationDateMax2,
             'hiddenAt'           => $hiddenAt,
         ];
 
@@ -139,7 +140,8 @@
 
             $pdo2 -> commit();
 
-            header('Location: itemEdit.php');
+            // header('Location: itemEdit.php');
+            echo '../itemEdit.php';
             exit();
 
         } catch(PDOException $e){
@@ -148,7 +150,7 @@
 
             $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
 
-            echo './itemEdit.phpaaaaaaaaaaaaa';
+            echo './itemEdit.php';
             exit;
         }
     }

@@ -27,7 +27,7 @@
                     <?php if(!empty($_SESSION['errors'])): ?>
                         <div class="error-container">
                             <?php foreach($_SESSION['errors'] as $error): ?>
-                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>        
+                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>

@@ -111,7 +111,7 @@
                         <div class="form-block">
                             <div class="block">
                                 <h3>商品名</h3>
-                                <input autocomplete="off" type="text" class="user-input" name="name" placeholder="例：チーズケーキサンド" value="<?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input autocomplete="name" type="text" class="user-input" name="productName" placeholder="例：チーズケーキサンド" value="<?php echo htmlspecialchars($editItem['name'], ENT_QUOTES, 'UTF-8'); ?>">
                             </div>
                             <div class="block">
                                 <h3>商品説明</h3>
@@ -179,9 +179,28 @@
                                 <input autocomplete="off" type="hidden" value=""  name="tax-included-price" id="tax-included-price-hidden">
                             </div>
                         </div>
-                        <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
 
-                        <!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                        <div class="form-block">
+                            <div class="block">
+                                <h3>消費期限</h3>
+                                <div class="sub-block">
+                                    <input autocomplete="off" type="text" class="user-input" name="expiration-date-min1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_min1'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <p>〜</p>
+                                    <input autocomplete="off" type="text" class="user-input" name="expiration-date-max1" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_max1'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <p>日間</p>
+                                </div>
+                            </div>
+
+                            <div class="block">
+                                <h3>消費期限（解凍後）</h3>
+                                <div class="sub-block">
+                                    <input autocomplete="off" type="text" class="user-input" name="expiration-date-min2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_min2'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <p>〜</p>
+                                    <input autocomplete="off" type="text" class="user-input" name="expiration-date-max2" pattern="\d*" inputmode="numeric" maxlength="3" value="<?php echo htmlspecialchars($editItem['expirationDate_max2'], ENT_QUOTES, 'UTF-8'); ?>">
+                                    <p>日間</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit">送信</button>
                 </form>
