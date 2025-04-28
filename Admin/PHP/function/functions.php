@@ -261,16 +261,9 @@
                                             keyword = :keyword, 
                                             size1 = :size1, 
                                             size2 = :size2, 
-                                            tax_rate = :tax_rate, 
-                                            price = :price, 
-                                            tax_included_price = :tax_included_price,
-                                            cost = :cost, 
-                                            expirationDate_min1 = :expirationDate_min1, 
-                                            expirationDate_max1 = :expirationDate_max1,
-                                            expirationDate_min2 = :expirationDate_min2,
-                                            expirationDate_max2 = :expirationDate_max2, 
                                             hidden_at = " . ($productData['hiddenAt'] ? "NOW()" : "NULL") . " 
                                             WHERE id = :id");
+        $stmt -> bindValue(':id'                 , $productData['itemId'],             PDO::PARAM_INT);                                    
         $stmt -> bindValue(':name'               , $productData['name'],               PDO::PARAM_STR);
         $stmt -> bindValue(':description'        , $productData['description'],        PDO::PARAM_STR);
         $stmt -> bindValue(':category_id'        , $productData['categoryId'],         PDO::PARAM_INT);
@@ -282,11 +275,6 @@
         $stmt -> bindValue(':price'              , $productData['price'],              PDO::PARAM_INT);
         $stmt -> bindValue(':tax_included_price' , $productData['taxIncludedPrice'],   PDO::PARAM_INT);
         $stmt -> bindValue(':cost'               , $productData['cost'],               PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationDate_min1', $productData['expirationDateMin1'], PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationDate_max1', $productData['expirationDateMax1'], PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationDate_min2', $productData['expirationDateMin2'], PDO::PARAM_INT);
-        $stmt -> bindValue(':expirationDate_max2', $productData['expirationDateMax2'], PDO::PARAM_INT);
-        $stmt -> bindValue(':id'                 , $productData['itemId'],             PDO::PARAM_INT);
         
         return $stmt -> execute();
     }
@@ -303,7 +291,7 @@
 	/* 戻り値：SQL実行結果									  */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncUpdateImage($pdo, $file, $isMain, $uploadDir, $allowedExt, $errors, $productId) {
+    function fncUpdateImage($pdo, $file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
         $fineName = basename($file['name']);
         $fileExt  = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
 
