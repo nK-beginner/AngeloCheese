@@ -5,7 +5,7 @@
 
     require_once __DIR__.'/../Backend/connection.php';
     require_once __DIR__.'/../Backend/csrf_token.php';
-    // require_once __DIR__.'/../Backend/config.php';
+    require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
     require_once __DIR__.'/../PHP/function/dataControl.php';
 
@@ -18,6 +18,8 @@
         if(!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
             $errors[] = "不正なアクセスです。";
         }
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         $thumbnail          = $_FILES['image'] ?? null;
         $subImages          = $_FILES['images'] ?? null;
@@ -26,14 +28,12 @@
         $name               = trim($_POST['productName'] ?? '');
         $description        = trim($_POST['description'] ?? '');
         $categoryId         = (int)($_POST['category'] ?? 0);
-
-        $categoryMap       = [
+        $categoryMap        = [
             1 => '人気商品',
             2 => 'チーズケーキサンド',
             3 => 'アンジェロチーズ',
             99 => 'その他',
         ];
-        
         $categoryName       = $categoryMap[$categoryId];
         $keyword            = trim($_POST['keyword'] ?? '');
         $size1              = (int)($_POST['size1'] ?? 0);
@@ -60,13 +60,9 @@
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
     
-            // echo './itemEditList.php';
-            header("itemEditList.php");
+            echo './itemEditList.php';
             exit;
         }
-
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         
         $productData = [
             'itemId'             => $itemId,
@@ -93,7 +89,6 @@
             mkdir($uploadDir, 0755, true);
         }
 
-        // 許可する拡張子
         $allowedExt = ["jpg", "jpeg", "png"];
 
         $pdo2 -> beginTransaction();
@@ -103,9 +98,9 @@
 
             $pdo2 -> commit();
 
-            header('Location: itemEditList.php');
-            // echo './itemEditList.php';
-            exit();
+            // header('Location: itemEditList.php');
+            echo './itemEditList.php';
+            exit;
 
         } catch(PDOException $e){
             $pdo2 -> rollback();
@@ -113,8 +108,9 @@
 
             $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
 
-            header('Location: itemEditList.php');
-            // echo './itemEditList.php';
+            // header('Location: itemEditList.php');
+            echo './itemEditList.php';
+            // http_response_code(500);
             exit;
         }
     }

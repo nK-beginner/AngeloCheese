@@ -67,23 +67,17 @@
             mkdir($uploadDir, 0755, true);
         }
 
-        // 許可する拡張子
         $allowedExt    = ["jpg", "jpeg", "png"];
         $uploadedPaths = [];
 
-        // 保存トランザクション
         $pdo2 -> beginTransaction();
         try {
-            // productsへ保存
             fncSaveProduct($pdo2, $name, $description, $categoryId, $categoryName, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2);
 
-            // 保存した商品のID取得
             $productId = $pdo2 -> lastInsertId();
 
-            // メイン画像保存
             fncSaveImage($pdo2, $thumbnail, 1, $uploadDir, $allowedExt, $errors, $productId);
 
-            // サブ画像保存
             foreach($subImages['name'] as $index => $name) {
                 $file = [
                     'name'     => $subImages['name'][$index],

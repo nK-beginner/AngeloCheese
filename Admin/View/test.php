@@ -13,14 +13,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p><?php echo $_SESSION['test'] ?></p>
-    
-    <?php if(!empty($_SESSION['errors'])): ?>
-        <div class="error-container">
-            <?php foreach($_SESSION['errors'] as $error): ?>
-                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
+    <input type="file" class="file-input main-file" accept="image/*" name="image">
 </body>
 </html>

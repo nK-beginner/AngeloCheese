@@ -1,4 +1,8 @@
-<?php require_once __DIR__.'/../PHP/itemEditList.php' ?>
+<?php 
+require_once __DIR__.'/../PHP/itemEditList.php';
+
+$error = "エラー";
+?>
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -16,6 +20,14 @@
         <main>
             <h1>商品編集</h1>
 
+            <?php if(!empty($_SESSION['errors'])): ?>
+                <div class="error-container">
+                    <?php foreach($_SESSION['errors'] as $error): ?>
+                        <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+            
             <h3 class="choose-data">編集したい商品を選択してください。</h3>
             <div class="table-records">
                 <table>

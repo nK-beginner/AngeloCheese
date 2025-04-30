@@ -288,7 +288,7 @@
         $stmt -> bindValue(':expirationDate_min2', $productData['expirationDateMin2'], PDO::PARAM_INT);
         $stmt -> bindValue(':expirationDate_max2', $productData['expirationDateMax2'], PDO::PARAM_INT);
 
-        return $stmt -> execute();
+        $stmt -> execute();
     }
 
 	/*======================================================*/
@@ -325,6 +325,7 @@
         
         if($existingFilePath) {
             $uploadFilePath = $existingFilePath;
+            
         } else {
             $newFileName = uniqid() . bin2hex(random_bytes(32)) . '.' . $fileExt;
             $uploadFilePath = $uploadDir . $newFileName;

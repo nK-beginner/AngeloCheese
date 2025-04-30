@@ -141,11 +141,27 @@ export function fncSubmitImages(url, form, mainImage, subImages) {
         body: formData
     })
     .then(res => res.text())
-    .then(response => {
-        window.location.href = response;
-    })
+    // .then(html => { document.body.innerHTML = html; })
+    .then(response => { window.location.href = response; })
     .catch(err => {
         alert('送信に失敗しました');
         console.error(err);
+    });
+}
+
+
+
+export function fncSubmitImages2(url, form, mainImage, subImages) {
+    const formData = new FormData(form);
+    formData.append('csrf_token', document.querySelector('input[name="csrf_token"]').value);
+    formData.set('image', mainImage);
+
+    subImages.forEach(file => {
+        formData.append('images[]', file);
+    });
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
     });
 }
