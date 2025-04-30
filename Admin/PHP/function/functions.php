@@ -254,23 +254,23 @@
 	/*======================================================*/
     function fncUpdateProduct(PDO $pdo, array $productData) {
         $stmt = $pdo -> prepare("UPDATE products SET 
-                                            name = :name, 
-                                            description = :description,
-                                            category_id = :category_id, 
-                                            category_name = :category_name, 
-                                            keyword = :keyword, 
-                                            size1 = :size1, 
-                                            size2 = :size2, 
-                                            tax_rate = :tax_rate, 
-                                            price = :price, 
-                                            tax_included_price = :tax_included_price,
-                                            cost = :cost, 
-                                            expirationDate_min1 = :expirationDate_min1, 
-                                            expirationDate_max1 = :expirationDate_max1,
-                                            expirationDate_min2 = :expirationDate_min2,
-                                            expirationDate_max2 = :expirationDate_max2, 
-                                            hidden_at = " . ($productData['hiddenAt'] ? "NOW()" : "NULL") . " 
-                                            WHERE id = :id");
+                                        name = :name, 
+                                        description = :description,
+                                        category_id = :category_id, 
+                                        category_name = :category_name, 
+                                        keyword = :keyword, 
+                                        size1 = :size1, 
+                                        size2 = :size2, 
+                                        tax_rate = :tax_rate, 
+                                        price = :price, 
+                                        tax_included_price = :tax_included_price,
+                                        cost = :cost, 
+                                        expirationDate_min1 = :expirationDate_min1, 
+                                        expirationDate_max1 = :expirationDate_max1,
+                                        expirationDate_min2 = :expirationDate_min2,
+                                        expirationDate_max2 = :expirationDate_max2, 
+                                        hidden_at = " . ($productData['hiddenAt'] ? "NOW()" : "NULL") . " 
+                                        WHERE id = :id");
         $stmt -> bindValue(':id'                 , $productData['itemId'],             PDO::PARAM_INT);                                    
         $stmt -> bindValue(':name'               , $productData['productName'],        PDO::PARAM_STR);
         $stmt -> bindValue(':description'        , $productData['description'],        PDO::PARAM_STR);

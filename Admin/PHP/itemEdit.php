@@ -5,49 +5,12 @@
 
     require_once __DIR__.'/../Backend/connection.php';
     require_once __DIR__.'/../Backend/csrf_token.php';
-    require_once __DIR__.'/../Backend/config.php';
+    // require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
     require_once __DIR__.'/../PHP/function/dataControl.php';
 
     $errors = $_SESSION['errors'] ?? [];
-    $success = $_SESSION['success'];
     unset($_SESSION['errors']);
-
-    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-        $_SESSION['edit_item_id'] = intval($_POST['id']);
-
-        header('Location: itemEdit.php');
-        exit();
-    }
-
-    // 一覧表示
-    try {
-        $products = fncGetData($pdo2, 1, 1);
-
-    } catch(PDOException $e) {
-        error_log('データベース接続エラー:' . $e -> getMessage());
-
-        $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
-    }
-
-    // allItems.phpから商品を選択されてきた時
-    $editItem  = null;
-    $subImages = [];
-
-    if(isset($_SESSION['edit_item_id'])) {
-        $editItemId = $_SESSION['edit_item_id'];
-        unset($_SESSION['edit_item_id']);
-        
-        try {
-            $editItem  = fncGetProduct($pdo2, $editItemId);
-            $subImages = fncGetSubImages($pdo2, $editItemId); 
-
-        } catch(PDOException $e) {
-            error_log('データベース接続エラー:' . $e -> getMessage());
-
-            $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
-        }
-    }
 
     // 商品情報更新
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -97,7 +60,8 @@
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
     
-            echo './itemEdit.php';
+            // echo './itemEditList.php';
+            header("itemEditList.php");
             exit;
         }
 
@@ -135,13 +99,12 @@
         $pdo2 -> beginTransaction();
         try {
             fncUpdateProduct($pdo2, $productData);
-
             fncUpdateImage($pdo2, $thumbnail, 1, $uploadDir, $allowedExt, $errors, $itemId);
 
             $pdo2 -> commit();
 
-            // header('Location: itemEdit.php');
-            echo '../itemEdit.php';
+            header('Location: itemEditList.php');
+            // echo './itemEditList.php';
             exit();
 
         } catch(PDOException $e){
@@ -150,7 +113,8 @@
 
             $_SESSION['errors'] = 'データベース接続エラーが発生しました。管理者にお問い合わせください。';
 
-            echo './itemEdit.php';
+            header('Location: itemEditList.php');
+            // echo './itemEditList.php';
             exit;
         }
     }
