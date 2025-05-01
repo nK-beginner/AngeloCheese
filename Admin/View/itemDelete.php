@@ -56,7 +56,7 @@
                                 for($i = 0; $i < count($products); $i++):
                                     $isHidden = !is_null($products[$i]['hidden_at']); // hidden_at が null でなければ true
                             ?>
-                                <tr style="color: <?php echo $isHidden ? 'red' : 'inherit'; ?>;">
+                                <tr style="color: <?php echo $isHidden ? 'red' : 'inherit'; ?>;" class="clickable-row">
                                     <td><input type="checkbox" name="delete[]" class="check-boxes" value="<?php echo htmlspecialchars($products[$i]['id'], ENT_QUOTES, 'UTF-8'); ?>" <?php echo $isHidden ? 'disabled' : ''; ?>></td>
                                     <td><?php  echo htmlspecialchars($products[$i]['id'], ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php  echo htmlspecialchars($products[$i]['name'], ENT_QUOTES, 'UTF-8'); ?></td>
@@ -77,7 +77,7 @@
                                     <td><?php  echo htmlspecialchars($products[$i]['updated_at'], ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php  echo $isHidden ? '非表示中' : ''; ?></td>
                                 </tr>
-                            <?php endfor; ?>                            
+                            <?php endfor; ?>
                         </tbody>
                     </table>
                 </div>

@@ -172,8 +172,8 @@
     function fncSaveImage($pdo, $file, $isMain, $uploadDir, $allowedExt, $errors, $productId) {
         if($file && $file['error'] === UPLOAD_ERR_OK) {
             // 拡張子を取得＆チェック
-            $fineName = basename($file['name']);
-            $fileExt  = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
+            $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
+            $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
             if(!in_array($fileExt, $allowedExt)) {
                 $errors[] = '許可されていないファイル形式です。';
@@ -304,45 +304,58 @@
 	/* 備考：なし											 */
 	/*======================================================*/
     function fncUpdateImage($pdo, $file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
-        $fineName = basename($file['name']);
-        $fileExt  = strtolower(pathinfo($fineName, PATHINFO_EXTENSION));
-
-        if(!in_array($fileExt, $allowedExt)) {
-            $errors[] = '許可されていないファイル形式です。';
-            return;
-        }
-
-        /********** 同一画像名があれば保存阻止＆置き換え **********/
-        $fileHash = hash_file('sha256', $file['tmp_name']);
-
-        $existingFilePath = null;
-        foreach(glob($uploadDir . '*.' . $fileExt) as $existingFile) {
-            if(hash_file('sha256', $existingFile) === $fileHash) {
-                $existingFilePath = $existingFile;
-                break;
-            }
-        }
-        
-        if($existingFilePath) {
-            $uploadFilePath = $existingFilePath;
-            
-        } else {
-            $newFileName = uniqid() . bin2hex(random_bytes(32)) . '.' . $fileExt;
-            $uploadFilePath = $uploadDir . $newFileName;
-
-            if(!move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
-                $errors[] = '画像のアップロードに失敗しました。';
+        if($file && $file['error'] === UPLOAD_ERR_OK) {
+            $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
+            $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    
+            if(!in_array($fileExt, $allowedExt)) {
+                $errors[] = '許可されていないファイル形式です。';
                 return;
             }
-        }
-        /************************* END *************************/
 
-        if($isMain === 1) {
-            $stmt = $pdo -> prepare("UPDATE product_images SET image_path = :image_path WHERE product_id = :id and is_main = 1");
-            $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
-            $stmt -> bindValue(':id',         $productId,      PDO::PARAM_STR);
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime  = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
 
-            $stmt -> execute();
+            $allowedMime = ['image/jpeg', 'image/png']; // 必要に応じて拡張
+
+            if (!in_array($mime, $allowedMime)) {
+                $errors[] = '許可されていないMIMEタイプの画像です。';
+                return;
+            }
+
+            /********** 同一画像名があれば保存阻止＆置き換え **********/
+            $fileHash = hash_file('sha256', $file['tmp_name']);
+
+            $existingFilePath = null;
+            foreach(glob($uploadDir . '*.' . $fileExt) as $existingFile) {
+                if(hash_file('sha256', $existingFile) === $fileHash) {
+                    $existingFilePath = $existingFile;
+                    break;
+                }
+            }
+
+            if($existingFilePath) {
+                $uploadFilePath = $existingFilePath;
+                
+            } else {
+                $newFileName = uniqid() . bin2hex(random_bytes(32)) . '.' . $fileExt;
+                $uploadFilePath = $uploadDir . $newFileName;
+
+                if(!move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                    $errors[] = '画像のアップロードに失敗しました。';
+                    return;
+                }
+            }
+            /************************* END *************************/
+    
+            if($isMain === 1) {
+                $stmt = $pdo -> prepare("UPDATE product_images SET image_path = :image_path WHERE product_id = :id and is_main = 1");
+                $stmt -> bindValue(':image_path', $uploadFilePath, PDO::PARAM_STR);
+                $stmt -> bindValue(':id',         $productId,      PDO::PARAM_STR);
+    
+                $stmt -> execute();
+            }
         }
     }
 ?>

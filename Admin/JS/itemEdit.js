@@ -1,4 +1,4 @@
-import { fncSetupDrop, fncShowMainPreview, fncShowSubPreview, fncSubmitImages2, fncDeleteMainImg, fncDeleteSubImgs } from './function/functions.js';
+import { fncSetupDrop, fncShowMainPreview, fncShowSubPreview, fncSubmitImages, fncDeleteMainImg, fncDeleteSubImgs } from './function/functions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     /******************** 列クリックで編集 ********************/
@@ -62,8 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        fncSubmitImages2('/AngeloCheese/Admin/PHP/itemEdit.php', form, mainImage, subImages);
-        // window.location.href = "../View/itemEditList.php";
+        fncSubmitImages('/AngeloCheese/Admin/PHP/itemEdit.php', form, mainImage, subImages);
     });
 
     /******************** 数字のみ許容 ********************/

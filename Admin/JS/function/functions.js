@@ -148,20 +148,3 @@ export function fncSubmitImages(url, form, mainImage, subImages) {
         console.error(err);
     });
 }
-
-
-
-export function fncSubmitImages2(url, form, mainImage, subImages) {
-    const formData = new FormData(form);
-    formData.append('csrf_token', document.querySelector('input[name="csrf_token"]').value);
-    formData.set('image', mainImage);
-
-    subImages.forEach(file => {
-        formData.append('images[]', file);
-    });
-
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    });
-}

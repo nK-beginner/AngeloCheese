@@ -15,12 +15,11 @@
         if(!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
             $errors[] = "不正なアクセスです。";
         }
-        unset($_SESSION['csrf_token']);
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         
         // 画像データ
         $thumbnail          = $_FILES['image'] ?? null;
         $subImages          = $_FILES['images'] ?? null;
+        $maxFileSize        = 256000;
 
         // 文字データ
         $name               = trim($_POST['name'] ?? '');
@@ -45,7 +44,13 @@
         $expirationDateMin2 = (int)($_POST['expiration-date-min2'] ?? 0);
         $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
         
-        // 各入力バリデーション
+        // 各項目バリデーション
+        if($thumbnail['size'] > $maxFileSize) {         $errors[] = 'メイン画像のファイルサイズが大きすぎます。上限は250KB以下です。'; }
+        foreach ($subImages['size'] as $index => $size) {
+            if ($size > $maxFileSize) {
+                $errors[] = "サブ画像" . ($index + 1) . "のファイルサイズが大きすぎます。上限は250KB以下です。";
+            }
+        }
         if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
         if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
         if(!is_numeric($size1) || $size1 <= 0) {        $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
@@ -61,6 +66,9 @@
             echo './itemAdd.php';
             exit;
         }
+
+        unset($_SESSION['csrf_token']);
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         $uploadDir = '../uploads/';
         if(!is_dir($uploadDir)) {
@@ -92,7 +100,6 @@
 
             $pdo2 -> commit();
 
-            // echo './Admin/View/itemAdd.php';
             echo './itemAdd.php';
             exit;
 

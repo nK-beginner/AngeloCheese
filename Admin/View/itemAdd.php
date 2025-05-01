@@ -30,8 +30,9 @@
                                 <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
                             <?php endforeach; ?>
                         </div>
+                        <?php unset($_SESSION['errors']); ?>
                     <?php endif; ?>
-                    
+
                     <div class="product-info">
                         <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                         <div class="form-block">
@@ -57,7 +58,7 @@
                             </div>
                             <div class="block">
                                 <h3>商品説明</h3>
-                                <textarea class="user-input" name="description" ></textarea>
+                                <textarea class="user-input" name="description"></textarea>
                             </div>
                         </div>
 
@@ -82,7 +83,7 @@
 
                             <div class="form-block">
                                 <div class="block">
-                                    <h3>サイズ(cm)</h3>
+                                    <h3>サイズ (縦×横)</h3>
                                     <div class="sub-block">
                                         <input type="text" class="user-input" name="size1" inputmode="numeric" placeholder="例：15" maxlength="3">
                                         <p>✖</p>

@@ -25,7 +25,16 @@
                     <h1>商品編集</h1>
 
                     <a href="itemEditList.php">一覧へ</a>
-                    
+
+                    <?php if(!empty($_SESSION['errors'])): ?>
+                        <div class="error-container">
+                            <?php foreach($_SESSION['errors'] as $error): ?>
+                                <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php unset($_SESSION['errors']); ?>
+                    <?php endif; ?>
+
                     <div class="product-info">
                         <input autocomplete="off" type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
                         <input autocomplete="off" type="hidden" name="item_id" value="<?php echo htmlspecialchars($editItem['id'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -72,7 +81,7 @@
                                 <textarea autocomplete="off" class="user-input" name="description"><?php echo htmlspecialchars($editItem['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                             </div>
                         </div>
-                        
+
                         <div class="grid-block">
                             <div class="form-block">
                                 <div class="block">
@@ -94,7 +103,7 @@
 
                             <div class="form-block">
                                 <div class="block">
-                                    <h3>サイズ(cm)</h3>
+                                    <h3>サイズ (縦×横)</h3>
                                     <div class="sub-block">
                                         <input autocomplete="off" type="text" class="user-input" name="size1" inputmode="numeric" placeholder="例：15" maxlength="3" value="<?php echo htmlspecialchars($editItem['size1'], ENT_QUOTES, 'UTF-8'); ?>">
                                         <p>✖</p>
@@ -156,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit">送信</button>                    
+                    <button class="submit-btn" type="submit">送信</button>                    
                 </div>
             </main>
         </div>

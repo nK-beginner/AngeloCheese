@@ -12,7 +12,7 @@
     $editItem  = null;
     $subImages = [];
     
-    $itemId = $_SESSION['edit_item_id'] ?? $_POST['item_id'] ?? $_GET['item_id'] ?? null;
+    $itemId = $_SESSION['edit_item_id'] ?? null;
     
     if ($itemId !== null) {
         try {

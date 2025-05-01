@@ -146,6 +146,12 @@ main .submit-btn {
     width: 182px;
     display: block;
     margin: 40px auto 0 auto;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+main .submit-btn:hover {
+    filter: brightness(110%);
 }
 
 
