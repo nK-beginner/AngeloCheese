@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     rows.forEach(row => {
         row.addEventListener('click', (e) => {
             const checkBox = row.querySelector('input[type="checkbox"]');
+
+            if(checkBox.disabled) {
+                return;
+            }
+
             if (e.target !== checkBox) {
                 checkBox.checked = !checkBox.checked;
             }

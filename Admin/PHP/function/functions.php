@@ -316,17 +316,17 @@
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime  = finfo_file($finfo, $file['tmp_name']);
             finfo_close($finfo);
-
+            
             $allowedMime = ['image/jpeg', 'image/png']; // 必要に応じて拡張
-
+            
             if (!in_array($mime, $allowedMime)) {
                 $errors[] = '許可されていないMIMEタイプの画像です。';
                 return;
             }
-
+    
             /********** 同一画像名があれば保存阻止＆置き換え **********/
             $fileHash = hash_file('sha256', $file['tmp_name']);
-
+    
             $existingFilePath = null;
             foreach(glob($uploadDir . '*.' . $fileExt) as $existingFile) {
                 if(hash_file('sha256', $existingFile) === $fileHash) {
@@ -334,14 +334,14 @@
                     break;
                 }
             }
-
+            
             if($existingFilePath) {
                 $uploadFilePath = $existingFilePath;
                 
             } else {
                 $newFileName = uniqid() . bin2hex(random_bytes(32)) . '.' . $fileExt;
                 $uploadFilePath = $uploadDir . $newFileName;
-
+    
                 if(!move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
                     $errors[] = '画像のアップロードに失敗しました。';
                     return;

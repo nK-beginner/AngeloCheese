@@ -1,10 +1,3 @@
-<?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="file" class="file-input main-file" accept="image/*" name="image">
+    <script>for(let i = 0; i < 5; i++) {</script>
+        <h3>
+            <script>i</script>
+        </h3>
+    <script>}</script>
 </body>
 </html>

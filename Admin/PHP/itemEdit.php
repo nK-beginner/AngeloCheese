@@ -16,14 +16,11 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // CSRFトークンチェック
         if(!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            $_SESSION['errors'] = "不正なアクセスです。";
-            echo './itemEdit.php';
-            exit;
+            $errors[] = "不正なアクセスです。";
         }
 
         $thumbnail          = $_FILES['image'] ?? null;
         $subImages          = $_FILES['images'] ?? null;
-        $maxFileSize        = 256000;
 
         $itemId             = (int)$_POST['item_id'];
         $name               = trim($_POST['productName'] ?? '');
@@ -49,10 +46,6 @@
         $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
         $hiddenAt           = $_POST['display'] === 'off' ? "NOW()" : NULL;
 
-        if($thumbnail['size'] > $maxFileSize) {         $errors[] = 'メイン画像のファイルサイズが大きすぎます。上限は250KB以下です。'; }
-        foreach ($subImages['size'] as $index => $size) {
-            if ($size > $maxFileSize) {                 $errors[] = "サブ画像" . ($index + 1) . "のファイルサイズが大きすぎます。上限は250KB以下です。"; }
-        }
         if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
         if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
         if(!is_numeric($size1) || $size1 <= 0) {        $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
@@ -64,7 +57,7 @@
 
         if(!empty($errors)) {
             $_SESSION['errors'] = $errors;
-
+    
             echo './itemEdit.php';
             exit;
         }
@@ -103,21 +96,8 @@
         try {
             fncUpdateProduct($pdo2, $productData);
             fncUpdateImage($pdo2, $thumbnail, 1, $uploadDir, $allowedExt, $errors, $itemId);
-            foreach($subImages['name'] as $index => $name) {
-                $file = [
-                    'name'     => $subImages['name'][$index],
-                    'type'     => $subImages['type'][$index],
-                    'tmp_name' => $subImages['tmp_name'][$index],
-                    'error'    => $subImages['error'][$index],
-                    'size'     => $subImages['size'][$index],
-                ];
-                
-                fncUpdateImage($pdo2, $file, null, $uploadDir, $allowedExt, $errors, $itemId);
-            }
 
             $pdo2 -> commit();
-
-            unset($_SESSION['edit_item_id']);
 
             echo './itemEditList.php';
             exit;
