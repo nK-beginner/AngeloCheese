@@ -6,6 +6,7 @@
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
     require_once __DIR__ . '/../PHP/function/functions.php';
+    require_once __DIR__ . '/../PHP/class/adminRepository.php';
 
     $errors = $_SESSION['errors'] ?? [];
     $email  = $_SESSION['old-email'] ?? '';
@@ -37,7 +38,8 @@
         }
 
         try {
-            $admin = fncGetUserByEmail($pdo2, $email);
+            $adminRepo = new AdminRepository($pdo2);
+            $admin = $adminRepo -> fncGetUserByEmail($email);
             
         } catch(PDOException $e) {
             error_log('データベースエラー:' . $e->getMessage());

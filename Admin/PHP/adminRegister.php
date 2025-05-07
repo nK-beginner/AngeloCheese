@@ -6,6 +6,7 @@
     require_once __DIR__ . '/../Backend/connection.php';
     require_once __DIR__ . '/../Backend/csrf_token.php';
     require_once __DIR__ . '/../PHP/function/functions.php';
+    require_once __DIR__ . '/../PHP/class/adminRepository.php';
 
     $errors      = $_SESSION['errors'] ?? [];
     $firstName   = $_SESSION['old-firstName'] ?? '';
@@ -34,9 +35,12 @@
             $errors[] = 'パスワードは英数字記号を含む8文字以上で入力してください。';
         }
 
+        $adminRepo = new AdminRepository($pdo2);
+
         // メアド重複チェック
         try {
-            $admin = fncGetUserByEmail($pdo2, $email);
+            $admin = $adminRepo -> fncGetUserByEmail($email);
+
             if($admin) {
                 $errors[] = 'このメールアドレスは既に登録されています。';
             }
@@ -62,7 +66,7 @@
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
             // 登録
-            fncSaveUser($pdo2, $firstName, $lastName, $email, $hashedPassword);
+            $adminRepo -> fncSaveAdmin($firstName, $lastName, $email, $hashedPassword);
     
             // セッション固定攻撃対策
             session_regenerate_id(true);

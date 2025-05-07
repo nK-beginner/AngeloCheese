@@ -47,39 +47,6 @@
 
 	/*======================================================*/
 	/* 用途：ユーザー情報をDBから取得                		   */
-	/* 引数：$pdo：DB接続, $email：$_POSTされたemail          */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
-    function fncGetUserByEmail($pdo, $email) {
-        $stmt = $pdo -> prepare("SELECT * FROM admin WHERE email = :email LIMIT 1");
-        $stmt -> bindValue(":email", $email, PDO::PARAM_STR);
-        $stmt -> execute();
-        return $stmt -> fetch(PDO::FETCH_ASSOC);
-    }
-
-	/*======================================================*/
-	/* 用途：ユーザー登録        							  */
-	/* 引数：$pdo：DB接続, 
-            $firstName：$_POSTされたfirstName, 
-            $lastName：$_POSTされたlastName, 
-            $email：$_POSTされたemail, 
-            $hashedPassword：ハッシュ化されたpassword　*/
-	/* 戻り値：なし											 */
-	/* 備考：なし											 */
-	/*======================================================*/
-    function fncSaveUser($pdo, $firstName, $lastName, $email, $hashedPassword) {
-        $stmt = $pdo -> prepare("INSERT INTO admin (firstName, lastName, email, password)
-                                            VALUES (:firstName, :lastName, :email, :password)");
-        $stmt -> bindValue(":firstName", $firstName     , PDO::PARAM_STR);
-        $stmt -> bindValue(":lastName",  $lastName      , PDO::PARAM_STR);
-        $stmt -> bindValue(":email",     $email         , PDO::PARAM_STR);
-        $stmt -> bindValue(":password",  $hashedPassword, PDO::PARAM_STR);
-        $stmt -> execute();
-    }
-
-	/*======================================================*/
-	/* 用途：ユーザー情報をDBから取得                		   */
 	/* 引数：$pdo：DB接続, ($filename：ファイル名、デフォルト指定あり) */
 	/* 戻り値：SQL実行結果									  */
 	/* 備考：なし											 */
@@ -129,13 +96,7 @@
         exit;
     }
 
-	/*======================================================*/
-	/* 用途：ユーザー情報をDBから取得                		   */
-	/* 引数：$pdo：DB接続
-            その他：$_POSTされたデータ                        */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
+
     function fncSaveProduct($pdo, $name, $description, $category_id, $category_name, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2) {
             $stmt = $pdo -> prepare('INSERT INTO products (name,  description,  category_id, category_name,   keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
                                                    VALUES (:name, :description, :category_id, :category_name, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
@@ -157,18 +118,6 @@
             $stmt -> execute();
     }
 
-	/*======================================================*/
-	/* 用途：画像登録処理                           		  */
-	/* 引数：$file：投稿された画像ファイル
-            isMain：メイン画像かサブか（1またはnull）
-            $uploadFir：アップロード先
-            $allowedExt：許可する拡張子
-            $errors：エラー
-            $pdo：DB接続
-            $productId：商品ID                               */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
     function fncSaveImage($pdo, $file, $isMain, $uploadDir, $allowedExt, $errors, $productId) {
         if($file && $file['error'] === UPLOAD_ERR_OK) {
             // 拡張子を取得＆チェック
@@ -200,12 +149,6 @@
         }
     }
 
-	/*======================================================*/
-	/* 用途：商品の論理削除                         		   */
-	/* 引数：$pdo：DB接続, $ids：削除（非表示）する商品配列     */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
     function fncHideProducts(PDO $pdo, array $deletingItemIds) {
         $placeholders = implode(',', array_fill(0, count($deletingItemIds), '?'));
 
@@ -217,12 +160,6 @@
         $stmt -> execute();
     }
 
-	/*======================================================*/
-	/* 用途：商品情報をDBから取得（メイン画像）        		   */
-	/* 引数：$pdo：DB接続, $editItemId：編集する商品のID       */
-	/* 戻り値：更新する商品情報								   */
-	/* 備考：なし											 */
-	/*======================================================*/
     function fncGetProduct($pdo, $editItemId) {
         $stmt = $pdo -> prepare("SELECT p.*, pi.image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main = 1");
         $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
@@ -231,12 +168,6 @@
         return $stmt -> fetch(PDO::FETCH_ASSOC);
     }
 
-	/*======================================================*/
-	/* 用途：サブ画像の取得                            		  */
-	/* 引数：$pdo：DB接続, $editItemId：編集する商品のID       */
-	/* 戻り値：更新する商品情報								  */
-	/* 備考：なし											 */
-	/*======================================================*/
     function fncGetSubImages($pdo, $editItemId) {
         $stmt = $pdo -> prepare("SELECT pi.image_path FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = :id AND pi.is_main is NULL");
         $stmt -> bindValue(':id', $editItemId, PDO::PARAM_INT);
@@ -244,14 +175,7 @@
 
         return $stmt -> fetchAll(PDO::FETCH_COLUMN);
     }
-
-	/*======================================================*/
-	/* 用途：ユーザー情報をDBから取得                		   */
-	/* 引数：$pdo：DB接続
-            その他：$_POSTされたデータ                        */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
+    
     function fncUpdateProduct(PDO $pdo, array $productData) {
         $stmt = $pdo -> prepare("UPDATE products SET 
                                         name = :name, 
@@ -291,18 +215,6 @@
         $stmt -> execute();
     }
 
-	/*======================================================*/
-	/* 用途：画像更新処理                           		  */
-	/* 引数：$file：投稿された画像ファイル
-            isMain：メイン画像かサブか（1またはnull）
-            $uploadFir：アップロード先
-            $allowedExt：許可する拡張子
-            $errors：エラー
-            $pdo：DB接続
-            $productId：商品ID                               */
-	/* 戻り値：SQL実行結果									  */
-	/* 備考：なし											 */
-	/*======================================================*/
     function fncUpdateImage($pdo, $file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
         if($file && $file['error'] === UPLOAD_ERR_OK) {
             $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
