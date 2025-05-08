@@ -12,7 +12,7 @@
         /* 戻り値：SQL実行結果									  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncDeleteProduct(array $deletingItemIds) {
+        public function deleteProduct(array $deletingItemIds) {
             $placeholders = implode(',', array_fill(0, count($deletingItemIds), '?'));
 
             $stmt = $this -> pdo -> prepare(

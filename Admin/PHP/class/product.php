@@ -1,5 +1,5 @@
 <?php
-    class GetProduct {
+    class Product {
         private $pdo;
 
         public function __construct($pdo) {
@@ -12,7 +12,7 @@
         /* 戻り値：更新する商品情報								  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncGetProduct($itemId) {
+        public function getProduct($itemId) {
             $stmt = $this -> pdo -> prepare(
                 "SELECT 
                     id, 
@@ -46,7 +46,7 @@
         /* 戻り値：全商品       								 */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncGetProductAll() {
+        public function getProductAll() {
             $stmt = $this -> pdo -> prepare(
                 "SELECT 
                     id, 
@@ -82,16 +82,12 @@
         /* 戻り値：更新する商品情報								  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncGetMainImage($itemId) {
+        public function getMainImage($itemId) {
             $stmt = $this -> pdo -> prepare(
-                "SELECT
-                    image_path
-                FROM
-                    product_images
-                WHERE
-                    product_id = :id
-                AND
-                    is_main = 1
+                "SELECT image_path
+                FROM product_images
+                WHERE product_id = :id
+                AND is_main = 1
                 ");
             $stmt -> bindValue(':id', $itemId, PDO::PARAM_INT);
             $stmt -> execute();
@@ -105,16 +101,12 @@
         /* 戻り値：更新する商品情報								  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncGetSubImages($itemId) {
+        public function getSubImages($itemId) {
             $stmt = $this -> pdo -> prepare(
-                "SELECT
-                    image_path
-                FROM
-                    product_images
-                WHERE
-                    product_id = :id
-                AND
-                    is_main IS NULL
+                "SELECT image_path
+                FROM product_images
+                WHERE product_id = :id
+                AND is_main IS NULL
                 ");
             $stmt -> bindValue(':id', $itemId, PDO::PARAM_INT);
             $stmt -> execute();

@@ -12,7 +12,7 @@
         /* 戻り値：なし   									     */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncSaveProduct($name, $description, $category_id, $category_name, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2) {
+        public function saveProduct($name, $description, $category_id, $category_name, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2) {
             $stmt = $this -> pdo -> prepare('INSERT INTO products (name,  description,  category_id, category_name,   keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
                                                            VALUES (:name, :description, :category_id, :category_name, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
             $stmt -> bindValue(':name'               , $name,               PDO::PARAM_STR);
@@ -46,7 +46,7 @@
         /* 戻り値：SQL実行結果									  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncSaveProductImage($file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
+        public function saveProductImage($file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
             if($file && $file['error'] === UPLOAD_ERR_OK) {
                 // 拡張子を取得＆チェック
                 $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));

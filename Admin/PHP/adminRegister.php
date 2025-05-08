@@ -39,7 +39,7 @@
 
         // メアド重複チェック
         try {
-            $admin = $adminRepo -> fncGetUserByEmail($email);
+            $admin = $adminRepo -> getUserByEmail($email);
 
             if($admin) {
                 $errors[] = 'このメールアドレスは既に登録されています。';
@@ -66,7 +66,7 @@
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
             // 登録
-            $adminRepo -> fncSaveAdmin($firstName, $lastName, $email, $hashedPassword);
+            $adminRepo -> saveAdmin($firstName, $lastName, $email, $hashedPassword);
     
             // セッション固定攻撃対策
             session_regenerate_id(true);

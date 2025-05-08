@@ -39,7 +39,7 @@
 
         try {
             $adminRepo = new AdminRepository($pdo2);
-            $admin = $adminRepo -> fncGetUserByEmail($email);
+            $admin = $adminRepo -> getUserByEmail($email);
             
         } catch(PDOException $e) {
             error_log('データベースエラー:' . $e->getMessage());

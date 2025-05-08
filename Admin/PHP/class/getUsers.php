@@ -1,6 +1,6 @@
 <?php
 
-    class getUsers {
+    class Users {
         private $pdo;
 
         public function __construct($pdo) {
@@ -13,7 +13,7 @@
         /* 戻り値：更新する商品情報								  */
         /* 備考：なし											 */
         /*======================================================*/
-        public function fncGetUsersInfo() {
+        public function getUsers() {
             $stmt = $this -> pdo -> prepare(
             "SELECT
                 id,

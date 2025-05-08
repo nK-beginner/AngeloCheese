@@ -7,15 +7,15 @@
     require_once __DIR__.'/../Backend/csrf_token.php';
     require_once __DIR__.'/../Backend/config.php';
     require_once __DIR__.'/../PHP/function/functions.php';
-    require_once __DIR__.'/../PHP/class/getProduct.php';
+    require_once __DIR__.'/../PHP/class/product.php';
 
     $errors = $_SESSION['errors'] ?? [];
     unset($_SESSION['errors']);
 
     // データ取得・表示
     try {
-        $productAll = new GetProduct($pdo2);
-        $products = $productAll -> fncGetProductAll();
+        $productAll = new Product($pdo2);
+        $products = $productAll -> getProductAll();
 
     } catch(PDOException $e) {
         error_log('データベース接続エラー:' . $e -> getMessage());
