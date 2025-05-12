@@ -1,0 +1,118 @@
+
+
+
+
+
+/********** sidebar **********/
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    border-right: 1px solid #242424;
+    overflow: hidden; /* 初期時点ではスクロールオフ */
+}
+
+.sidebar-contents {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto; /* サイドバー内項目が沢山開いたらスクロールオン */
+}
+
+.sidebar .sidebar-logo {
+    height: auto;
+    width: 195px;
+    margin-top: 7px;
+}
+
+.sidebar-contents .menu .item {
+    width: 100%;
+    position: relative;
+}
+
+.sidebar-contents .menu .item::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    background: #d3d3d3;
+    height: 1px;
+    width: 70%;
+}
+
+.sidebar-contents .menu .item-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.sidebar-contents h3 {
+    font-size: 1.8rem;
+}
+
+.sidebar-contents .fa-solid {
+    position: absolute;
+    right: 30px;
+    transition: 0.3s ease;
+}
+
+.sidebar-contents .submenu {
+    text-align: center;
+    margin: 0 auto;
+    width: 70%;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.sidebar-contents .submenu li {
+    padding: 12px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.sidebar-contents .submenu li:hover {
+    background: #cccccc;
+}
+
+/*** user-info ***/
+.sidebar .user-info {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    width: 100%;
+    padding: 22px;
+    gap: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .user-info:hover {
+    background: var(--hoveredGold);
+}
+
+.sidebar .user-info i {
+    font-size: 28px;
+}
+
+.sidebar .user-info p {
+    font-size: 2.0rem;
+    font-weight: bolder;
+}
+
+/*** JS：クリック時反応 ***/
+.sidebar-contents .submenu.toggle {
+    max-height: 200px;
+    opacity: 1;
+}
+
+.sidebar-contents .fa-solid.toggle {
+    transform: rotate(180deg);
+}

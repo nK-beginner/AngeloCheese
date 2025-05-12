@@ -1,0 +1,20 @@
+main a {
+    font-size: 2.0rem;
+    border-bottom: 1px solid #000;
+}
+
+/* 一覧 */
+tr:not(:first-of-type):hover {
+    filter: brightness(80%) !important;
+}
+
+tr .product-image {
+    width: 50px;
+    aspect-ratio: 350/350;
+    object-fit: cover;
+}
+
+.choose-data {
+    margin: 30px 0 0 3px;
+    font-size: 1.7rem;
+}

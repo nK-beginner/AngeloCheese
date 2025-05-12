@@ -1,0 +1,101 @@
+:root {
+    --bgblack: #242424;     /* 全体背景色 */
+    --width: 100%;            /* 全体幅を100%に変更 */
+    --gold: #C2A26A;        /* メインの金色 */
+    --hoveredGold: #dabc89; /* ホバー時の金色 */
+    --bgblack: #242424;     /* 全体背景色 */
+    --bgblack2: #303030;    /* フォーム内背景色 */
+    --bgblack3: #272727;    /* インプット内、フッター背景色 */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 675px;
+    width: 1080px;
+    margin: 0 auto;
+}
+
+form {
+    border: none;
+    border-radius: 12px;
+    width: 52%;
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px;
+    background: #fcfcfc;
+    box-shadow: 10px 14px 16px rgba(0, 0, 0, 0.3);
+    margin: 70px 0;
+}
+
+form h1 {
+    margin-bottom: 0;
+}
+
+form img {
+    width: 70px;
+}
+
+form .block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 32px;
+}
+
+form .block h3 {
+    margin-left: 15px;
+}
+
+form .block input {
+    width: 90%;
+    border-radius: 7px;
+    height: 30px;
+    border: 1px solid #000;
+    padding: 5px 12px;
+    margin: 0 auto;
+    font-size: 1.3rem;
+    background: #fcfcfc;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+form .submit-btn {
+    padding: 17px 39px;
+    margin-top: 19px;
+    background: var(--gold);
+    border: none;
+    font-size: 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+form .submit-btn:hover {
+    background: var(--hoveredGold);
+}
+
+.error-container {
+    background: rgb(255, 194, 194);
+    width: 93%;
+}
+
+.error-container p {
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
+}

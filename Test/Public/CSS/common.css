@@ -1,0 +1,111 @@
+
+
+
+
+
+/********** メモ **********/
+/* サムネイル画像投稿枠の大きさは 370 x 400
+/*
+/* サブ画像の投稿枠は各数値 ÷ 5.3
+/*
+/* 今後Online Shop画面, 商品一覧画面で商品を見る場合は
+/* 基本、上記の大きさを割り算して並べるように
+/* 
+/* 
+/* 
+/* 
+
+/********** CSS変数の定義 **********/
+:root {
+    --bgblack: #242424;     /* 全体背景色 */
+    --width: 100%;            /* 全体幅を100%に変更 */
+    --gold: #C2A26A;        /* メインの金色 */
+    --hoveredGold: #dabc89; /* ホバー時の金色 */
+    --bgblack: #242424;     /* 全体背景色 */
+    --bgblack2: #303030;    /* フォーム内背景色 */
+    --bgblack3: #272727;    /* インプット内、フッター背景色 */
+}
+
+/********** 各種初期設定 **********/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style: none;
+}
+
+i {
+    font-size: 1.7rem;
+}
+
+/********** 全体をgridに指定 **********/
+.grid-container {
+    display: grid;
+    grid-template-columns: 215px 1fr; /* サイドバー、詳細書き込み欄 */
+    height: 100%;
+}
+
+/********** main **********/
+main {
+    background: #f1f1f1;
+    padding: 10px 20px 20px 20px;
+    overflow-y: auto;
+}
+
+main h1 {
+    position: relative;
+    font-size: 3.3rem;
+}
+
+main h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    background: var(--hoveredGold);
+    height: 1.21px;
+    width: 102px;
+}
+
+main .error-container {
+    background: rgb(255, 194, 194);
+    width: 100%;
+    margin-top: 11px;
+    padding: 11px;
+}
+
+main .error-container p {
+    color: rgb(255, 0, 0);
+    font-weight: bolder;
+    font-size: 1.4rem;
+}
+
+main label {
+    font-size: 1.6rem !important;
+}
+
+main input,
+main select,
+main .tax {
+    font-size: 1.7rem !important;
+}
+

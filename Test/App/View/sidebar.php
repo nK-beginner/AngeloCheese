@@ -1,0 +1,64 @@
+<aside class="sidebar">
+    <img src="/../Test/Public/Images/Gold/AngeloCheese_logo1.png" alt="logo" class="sidebar-logo">
+
+    <div class="sidebar-contents">
+        <ul class="menu">
+            <li class="item">
+                <div class="item-title">
+                    <h3>商品管理</h3>
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
+                
+                <ul class="submenu">
+                    <a href="#"><li>商品追加</li></a>
+                    <a href="#"><li>商品削除</li></a>
+                    <a href="/Test/Public/product_editList.php"><li>商品編集</li></a>
+                    <a href="/Test/Public/all_products.php"><li>商品一覧</li></a>
+                </ul>
+            </li>
+
+            <li class="item">
+                <div class="item-title">
+                    <h3>顧客管理</h3>
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <ul class="submenu">
+                    <a href="/Test/Public/customer_list.php"><li>顧客一覧</li></a>
+                </ul>
+            </li>
+
+            <li class="item">
+                <div class="item-title">
+                    <h3>注文管理</h3>
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <ul class="submenu">
+                    <!-- <li>商品追加</li>
+                    <li>商品削除</li>
+                    <li>商品編集</li>
+                    <li>商品一覧</li> -->
+                </ul>
+            </li>
+
+            <li class="item">
+                <div class="item-title">
+                    <h3>在庫管理</h3>
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
+                <ul class="submenu">
+                    <!-- <li>商品追加</li>
+                    <li>商品削除</li>
+                    <li>商品編集</li>
+                    <li>商品一覧</li> -->
+                </ul>
+            </li>
+
+        </ul>  
+    </div>
+
+    <div class="user-info">
+        <i class="fa-regular fa-circle-user"></i>
+        <p><?php echo isset($_SESSION['adminName']) ? htmlspecialchars($_SESSION['adminName'], ENT_QUOTES, 'UTF-8') : 'ゲストさん'; ?></p>
+    </div>
+</aside>
+
