@@ -20,7 +20,7 @@
     <main>
         <div class="grid-container">
             <div class="welcome-container">
-            <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="ロゴ">
+                <img src="/../AngeloCheese/images/AngeloCheese_logo1.png" alt="ロゴ">
                 <div class="sub-container">
                     <h1>おかえりなさいませ。</h1>
                 </div>

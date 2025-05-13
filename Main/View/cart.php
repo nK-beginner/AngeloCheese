@@ -32,7 +32,7 @@
                     <div class="cart">
                         <?php foreach ($products as $product): ?>
                             <div class="product">
-                                <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
+                                <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">
 
                                 <div class="product-info">
                                     <div class="name-price">
@@ -85,7 +85,7 @@
                             <button>
                                 <input type="hidden" name="productId" value="<?php echo htmlspecialchars($product['id'], ENT_QUOTES, 'UTF-8'); ?>">
                                 
-                                <img src="<?php echo htmlspecialchars('/AngeloCheese/admin/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                             
+                                <img src="<?php echo htmlspecialchars('/../AngeloCheese/Admin/uploads/' . $product['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="商品画像">                             
                             </button>
                             <h3><?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?></h3>
                             <p>¥<?php echo number_format($product['tax_included_price']); ?><span2>(税込)</span2></p>    
