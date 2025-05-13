@@ -6,8 +6,8 @@
             $this->pdo = $pdo;
         }
 
-        public function getAdminByEmail($email) {
-            $stmt = $this->pdo->prepare("SELECT * FROM admin WHERE email = :email LIMIT 1");
+        public function getUserByEmail($email) {
+            $stmt = $this->pdo->prepare("SELECT * FROM admin WHERE email = :email");
             $stmt->bindValue(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
