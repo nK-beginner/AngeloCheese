@@ -1,13 +1,11 @@
 /**/
-use angelo_cheese_management
+use angelo_cheese_management;
 
-select * from products
+select * from products;
 
+select * from product_images;
 
-
-select * from product_images
-
-SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = 1 AND pi.is_main = 1
+SELECT * FROM products AS p JOIN product_images AS pi ON p.id = pi.product_id WHERE p.id = 1 AND pi.is_main = 1;
 
 
 

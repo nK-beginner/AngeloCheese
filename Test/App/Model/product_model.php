@@ -66,67 +66,57 @@
             $stmt->execute($params);
         }
 
-        public function validateProductData(array $data, $thumbnail, $subImages, int $maxSize): array {
-            $errors = [];
-
-            // if ($thumbnail['size'] > $maxSize) {
-            //     $errors[] = 'メイン画像のファイルサイズが大きすぎます(最大250KB)。';
-            // }
-
-            // foreach ($subImages['size'] as $i => $size) {
-            //     if ($size > $maxSize) {
-            //         $errors[] = 'サブ画像' . ($i + 1) . 'のファイルサイズが大きすぎます(最大250KB)。';
-            //     }
-            // }
-
-            if (empty($data['name'])) { $errors[] = '商品名が入力されていません。'; }
-            if (empty($data['categoryId'])) { $errors[] = 'カテゴリーが選択されていません。'; }
-            if ($data['size1'] <= 0) { $errors[] = 'サイズ1は0より大きくしてください。'; }
-            if ($data['size2'] <= 0) { $errors[] = 'サイズ2は0より大きくしてください。'; }
-            if ($data['price'] <= 0) { $errors[] = '値段は0より大きくしてください。'; }
-            if ($data['cost'] <= 0) { $errors[] = '原価は0より大きくしてください。'; }
-            if ($data['expMin1'] > $data['expMax1']) { $errors[] = '消費期限(1)の大小が逆です。'; }
-            if ($data['expMin2'] > $data['expMax2']) { $errors[] = '消費期限(2)の大小が逆です。'; }
-
-            return $errors;
-        }
-
-        public function saveProduct(array $data): int {
-            $stmt = $this->pdo->prepare(
-                "INSERT INTO products (name, description, category_id, keyword, size1, size2, tax_rate, price, tax_included_price, cost, expirationDate_min1, expirationDate_max1, expirationDate_min2, expirationDate_max2, category_name)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ");
-
-            $categoryMap = [
-                1 => '人気商品', 2 => 'チーズケーキサンド', 3 => 'アンジェロチーズ', 99 => 'その他'
-            ];
-            $categoryName = $categoryMap[$data['categoryId']] ?? '不明';
-
-            $stmt->execute([
-                $data['name'], $data['description'], $data['categoryId'], $data['keyword'], $data['size1'],
-                $data['size2'], $data['taxRate'], $data['price'], $data['taxIncludedPrice'], $data['cost'],
-                $data['expMin1'], $data['expMax1'], $data['expMin2'], $data['expMax2'], $categoryName
-            ]);
+        public function saveProduct($name, $description, $category_id, $category_name, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2) {
+            $stmt = $this->pdo->prepare('INSERT INTO products (name,  description,  category_id, category_name,   keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
+                                                       VALUES (:name, :description, :category_id, :category_name, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
+            $stmt->bindValue(':name'               , $name,               PDO::PARAM_STR);
+            $stmt->bindValue(':description'        , $description,        PDO::PARAM_STR);
+            $stmt->bindValue(':category_id'        , $category_id,        PDO::PARAM_INT);
+            $stmt->bindValue(':category_name'      , $category_name,      PDO::PARAM_STR);
+            $stmt->bindValue(':keyword'            , $keyword,            PDO::PARAM_STR);
+            $stmt->bindValue(':size1'              , $size1,              PDO::PARAM_INT);
+            $stmt->bindValue(':size2'              , $size2,              PDO::PARAM_INT);
+            $stmt->bindValue(':tax_rate'           , $taxRate,            PDO::PARAM_STR);
+            $stmt->bindValue(':price'              , $price,              PDO::PARAM_INT);
+            $stmt->bindValue(':tax_included_price' , $taxIncludedPrice,   PDO::PARAM_INT);
+            $stmt->bindValue(':cost'               , $cost,               PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_min1', $expirationDateMin1, PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_max1', $expirationDateMax1, PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_min2', $expirationDateMin2, PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_max2', $expirationDateMax2, PDO::PARAM_INT);
+            $stmt->execute();
 
             return $this->pdo->lastInsertId();
         }
 
-        public function saveImage(int $productId, array $file, bool $isMain, string $uploadDir, array $allowedExt): void {
+        public function saveImage($file, $isMain, $uploadDir, $allowedExt, &$errors, $productId) {
             if ($file && $file['error'] === UPLOAD_ERR_OK) {
-                $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-                if (!in_array($ext, $allowedExt)) {
-                    throw new RuntimeException("許可されていない拡張子です: $ext");
+                $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
+                $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                if (!in_array($fileExt, $allowedExt)) {
+                    $errors[] = '許可されていないファイル形式です。';
+                    return;
                 }
 
-                $fileName = uniqid('img_', true) . '.' . $ext;
-                $filePath = $uploadDir . $fileName;
+                $newFileName = uniqid() . '_' . bin2hex(random_bytes(32)) . '.' . $fileExt;
 
-                if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-                    throw new RuntimeException("画像のアップロードに失敗しました。");
+                // 保存用のフルパス
+                $uploadFilePath = rtrim($uploadDir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $newFileName;
+
+                // 表示用の相対パス（DB保存用）
+                $relativePath = '../uploads/' . $newFileName;
+
+                if (move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                    $stmt = $this->pdo->prepare("INSERT INTO product_images (product_id, image_path, is_main)
+                                                                     VALUES (:product_id, :image_path, :is_main)");
+                    $stmt->bindValue(':product_id', $productId,    PDO::PARAM_INT);
+                    $stmt->bindValue(':image_path', $relativePath, PDO::PARAM_STR);
+                    $stmt->bindValue(':is_main',    $isMain,       PDO::PARAM_INT);
+                    $stmt->execute();
+                } else {
+                    $errors[] = '画像の保存に失敗しました。';
                 }
-
-                $stmt = $this->pdo->prepare("INSERT INTO product_images (product_id, image_path, is_main) VALUES (?, ?, ?)");
-                $stmt->execute([$productId, $filePath, $isMain ? 1 : 0]);
             }
         }
     }
