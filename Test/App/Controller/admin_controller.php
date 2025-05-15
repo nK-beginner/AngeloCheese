@@ -135,10 +135,10 @@
                     exit;
                 }
 
-                $this->model->beginTransaction();
                 try {
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $this->model->beginTransaction();
 
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     $this->model->saveAdmin($firstName, $lastName, $email, $hashedPassword);
 
                     session_regenerate_id(true);

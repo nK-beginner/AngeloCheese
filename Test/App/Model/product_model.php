@@ -21,7 +21,6 @@
         public function getAllProducts() {
             $stmt = $this->pdo->prepare("SELECT * FROM products");
             $stmt->execute();
-
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
@@ -35,7 +34,6 @@
         public function getNameAndPrice() {
             $stmt = $this->pdo->prepare("SELECT id, name, tax_included_price, category_name, hidden_at FROM products");
             $stmt->execute();
-
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
@@ -53,37 +51,31 @@
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        public function hideProducts(array $ids): void {
-            if (empty($ids)) return;
-
-            $now = date('Y-m-d H:i:s');
+        public function hideProducts($ids) {
+            if (empty($ids)) { return; }
             $placeholders = implode(',', array_fill(0, count($ids), '?'));
-
-            $sql = "UPDATE products SET hidden_at = ? WHERE id IN ($placeholders)";
-            $stmt = $this->pdo->prepare($sql);
-
-            $params = array_merge([$now], $ids);
-            $stmt->execute($params);
+            $stmt = $this->pdo->prepare("UPDATE products SET hidden_at = NOW() WHERE id IN ($placeholders)");
+            $stmt->execute($ids);
         }
 
-        public function saveProduct($name, $description, $category_id, $category_name, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2) {
+        public function saveProduct($data) {
             $stmt = $this->pdo->prepare('INSERT INTO products (name,  description,  category_id, category_name,   keyword,  size1,  size2,  tax_rate,  price,  tax_included_price,  cost,  expirationDate_min1,  expirationDate_max1,  expirationDate_min2,  expirationDate_max2)
                                                        VALUES (:name, :description, :category_id, :category_name, :keyword, :size1, :size2, :tax_rate, :price, :tax_included_price, :cost, :expirationDate_min1, :expirationDate_max1, :expirationDate_min2, :expirationDate_max2)');
-            $stmt->bindValue(':name'               , $name,               PDO::PARAM_STR);
-            $stmt->bindValue(':description'        , $description,        PDO::PARAM_STR);
-            $stmt->bindValue(':category_id'        , $category_id,        PDO::PARAM_INT);
-            $stmt->bindValue(':category_name'      , $category_name,      PDO::PARAM_STR);
-            $stmt->bindValue(':keyword'            , $keyword,            PDO::PARAM_STR);
-            $stmt->bindValue(':size1'              , $size1,              PDO::PARAM_INT);
-            $stmt->bindValue(':size2'              , $size2,              PDO::PARAM_INT);
-            $stmt->bindValue(':tax_rate'           , $taxRate,            PDO::PARAM_STR);
-            $stmt->bindValue(':price'              , $price,              PDO::PARAM_INT);
-            $stmt->bindValue(':tax_included_price' , $taxIncludedPrice,   PDO::PARAM_INT);
-            $stmt->bindValue(':cost'               , $cost,               PDO::PARAM_INT);
-            $stmt->bindValue(':expirationDate_min1', $expirationDateMin1, PDO::PARAM_INT);
-            $stmt->bindValue(':expirationDate_max1', $expirationDateMax1, PDO::PARAM_INT);
-            $stmt->bindValue(':expirationDate_min2', $expirationDateMin2, PDO::PARAM_INT);
-            $stmt->bindValue(':expirationDate_max2', $expirationDateMax2, PDO::PARAM_INT);
+            $stmt->bindValue(':name'               , $data['name'],               PDO::PARAM_STR);
+            $stmt->bindValue(':description'        , $data['description'],        PDO::PARAM_STR);
+            $stmt->bindValue(':category_id'        , $data['categoryId'],         PDO::PARAM_INT);
+            $stmt->bindValue(':category_name'      , $data['categoryName'],       PDO::PARAM_STR);
+            $stmt->bindValue(':keyword'            , $data['keyword'],            PDO::PARAM_STR);
+            $stmt->bindValue(':size1'              , $data['size1'],              PDO::PARAM_INT);
+            $stmt->bindValue(':size2'              , $data['size2'],              PDO::PARAM_INT);
+            $stmt->bindValue(':tax_rate'           , $data['taxRate'],            PDO::PARAM_STR);
+            $stmt->bindValue(':price'              , $data['price'],              PDO::PARAM_INT);
+            $stmt->bindValue(':tax_included_price' , $data['taxIncludedPrice'],   PDO::PARAM_INT);
+            $stmt->bindValue(':cost'               , $data['cost'],               PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_min1', $data['expirationDateMin1'], PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_max1', $data['expirationDateMax1'], PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_min2', $data['expirationDateMin2'], PDO::PARAM_INT);
+            $stmt->bindValue(':expirationDate_max2', $data['expirationDateMax2'], PDO::PARAM_INT);
             $stmt->execute();
 
             return $this->pdo->lastInsertId();

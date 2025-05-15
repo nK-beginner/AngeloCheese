@@ -38,7 +38,7 @@
             }
             unset($product); // 参照渡しの解放
 
-            require '../App/View/all_products_view.php';
+            require_once __DIR__.'/../View/all_products_view.php';
         }
 
         public function listProductsForDelete() {
@@ -64,8 +64,8 @@
 
             $deleteIds = $_POST['delete'] ?? [];
 
-            $this->model->beginTransaction();
             try {
+                $this->model->beginTransaction();
                 $this->model->hideProducts($deleteIds);
                 $this->model->commit();
 
@@ -89,30 +89,15 @@
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!isset($_POST['csrf_token'], $_SESSION['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
                     $errors[] = "不正なアクセスです。";
+                    $_SESSION['errors'] = $errors;
+                    echo './product_add.php';
+                    exit;
                 }
 
-                $thumbnail  = $_FILES['image'] ?? null;
-                $subImages  = $_FILES['images'] ?? null;
-                $maxFileSize    = 256000;
+                $thumbnail   = $_FILES['image'] ?? null;
+                $subImages   = $_FILES['images'] ?? null;
+                $maxFileSize = 256000;
 
-                // $data = [
-                //     'name'             => trim($_POST['name'] ?? ''),
-                //     'description'      => trim($_POST['description'] ?? ''),
-                //     'categoryId'       => (int)($_POST['category'] ?? 0),
-                //     'keyword'          => trim($_POST['keyword'] ?? ''),
-                //     'size1'            => (int)($_POST['size1'] ?? 0),
-                //     'size2'            => (int)($_POST['size2'] ?? 0),
-                //     'taxRate'          => (float)($_POST['tax-rate'] ?? 0.1),
-                //     'price'            => (int)str_replace(',', '', $_POST['price']),
-                //     'taxIncludedPrice' => (int)str_replace(',', '', $_POST['tax-included-price']),
-                //     'cost'             => (int)str_replace(',', '', $_POST['cost']),
-                //     'expMin1'          => (int)($_POST['expirationDate_min1'] ?? 0),
-                //     'expMax1'          => (int)($_POST['expirationDate_max1'] ?? 0),
-                //     'expMin2'          => (int)($_POST['expirationDate_min2'] ?? 0),
-                //     'expMax2'          => (int)($_POST['expirationDate_max2'] ?? 0),
-                // ];
-
-                // $errors = array_merge($errors, $this->model->validateProductData($data, $thumbnail, $subImages, $maxSize));
                 // 文字データ
                 $name               = trim($_POST['name'] ?? '');
                 $description        = trim($_POST['description'] ?? '');
@@ -123,7 +108,7 @@
                     3  => 'アンジェロチーズ',
                     99 => 'その他',
                 ];
-                $categoryName       = $categoryMap[$categoryId];
+                $categoryName       = array_key_exists($categoryId, $categoryMap) ? $categoryMap[$categoryId] : null;
                 $keyword            = trim($_POST['keyword'] ?? '');
                 $size1              = (int)($_POST['size1'] ?? 0);
                 $size2              = (int)($_POST['size2'] ?? 0);
@@ -134,16 +119,16 @@
                 $expirationDateMin1 = (int)($_POST['expiration-date-min1'] ?? 0);
                 $expirationDateMax1 = (int)($_POST['expiration-date-max1'] ?? 0);
                 $expirationDateMin2 = (int)($_POST['expiration-date-min2'] ?? 0);
-                $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);
+                $expirationDateMax2 = (int)($_POST['expiration-date-max2'] ?? 0);                
 
-                // if($thumbnail['size'] > $maxFileSize) {         $errors[] = 'メイン画像のファイルサイズが大きすぎます。上限は250KB以下です。'; }
-                // foreach ($subImages['size'] as $index => $size) {
-                //     if ($size > $maxFileSize) {
-                //         $errors[] = "サブ画像" . ($index + 1) . "のファイルサイズが大きすぎます。上限は250KB以下です。";
-                //     }
-                // }
+                if($thumbnail['size'] > $maxFileSize) {         $errors[] = 'メイン画像のファイルサイズが大きすぎます。上限は250KB以下です。'; }
+                foreach ($subImages['size'] as $index => $size) {
+                    if ($size > $maxFileSize) {                 $errors[] = "サブ画像" . ($index + 1) . "のファイルサイズが大きすぎます。上限は250KB以下です。"; }
+                }
                 if(empty($name))       {                        $errors[] = '商品名が入力されていません。'; }
-                if(empty($categoryId)) {                        $errors[] = 'カテゴリーが選択されていません。'; }
+                if($categoryId === 0) {                         $errors[] = 'カテゴリーが選択されていません。'; } 
+                    elseif(empty($categoryId)) {                $errors[] = 'カテゴリーが空'; }
+                    elseif(is_null($categoryName)) {            $errors[] = 'カテゴリーがNull'; }
                 if(!is_numeric($size1) || $size1 <= 0) {        $errors[] = 'サイズ1には0より大きい数値を入力してください。'; }
                 if(!is_numeric($size2) || $size2 <= 0) {        $errors[] = 'サイズ2には0より大きい数値を入力してください。';  }
                 if(!is_numeric($price) || $price <= 0) {        $errors[] = '値段には0より大きい数値を入力してください。';  }
@@ -157,22 +142,27 @@
                     exit;
                 }
 
-                // $uploadDir = '../uploads/';
-                // if (!is_dir($uploadDir)) {
-                //     mkdir($uploadDir, 0755, true);
-                // }
-                // $uploadDir = '../../Public/uploads/';
-                // if (!is_dir($uploadDir)) {
-                //     mkdir($uploadDir, 0755, true);
-                // }
+                $data = [
+                    'name'               => $name ,
+                    'description'        => $description ,
+                    'categoryId'         => $categoryId ,
+                    'categoryName'       => $categoryName ,
+                    'keyword'            => $keyword ,
+                    'size1'              => $size1,
+                    'size2'              => $size2,
+                    'taxRate'            => $taxRate ,
+                    'price'              => $price ,
+                    'taxIncludedPrice'   => $taxIncludedPrice ,
+                    'cost'               => $cost ,
+                    'expirationDateMin1' => $expirationDateMin1 ,
+                    'expirationDateMax1' => $expirationDateMax1 ,
+                    'expirationDateMin2' => $expirationDateMin2 ,
+                    'expirationDateMax2' => $expirationDateMax2 ,
+                ];
 
-                // $uploadDir = realpath(__DIR__ . '/../../Public/uploads');
-                // if ($uploadDir === false) {
-                //     $uploadDir = __DIR__ . '/../../Public/uploads';
-                //     if (!is_dir($uploadDir)) {
-                //         mkdir($uploadDir, 0755, true);
-                //     }
-                // }
+                unset($_SESSION['csrf_token']);
+                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+                
                 $uploadDir = realpath(__DIR__ . '/../../Public/uploads');
                 if ($uploadDir === false) {
                     $uploadDir = __DIR__ . '/../../Public/uploads';
@@ -187,9 +177,10 @@
 
                 $allowedExt = ['jpg', 'jpeg', 'png'];
 
-                $this->model->beginTransaction();
                 try {
-                    $productId = $this->model->saveProduct($name, $description, $categoryId, $categoryName, $keyword, $size1, $size2, $taxRate, $price, $taxIncludedPrice, $cost, $expirationDateMin1, $expirationDateMax1, $expirationDateMin2, $expirationDateMax2);
+                    $this->model->beginTransaction();
+
+                    $productId = $this->model->saveProduct($data);
                     $this->model->saveImage($thumbnail, 1, $uploadDir, $allowedExt, $errors, $productId);
 
                     foreach ($subImages['name'] as $index => $name) {
