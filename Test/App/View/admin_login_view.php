@@ -10,18 +10,16 @@
 <body>
     <main>
         <form action="/Test/Public/admin_login.php" method="POST" class="login-form">
-            <!-- CSRFトークン -->
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
             <img src="/../Test/Public/Images/Gold/AngeloCheese_logo3.png" alt="アンジェロチーズロゴ">
             <h1>ログイン</h1>
 
-            <!-- エラーメッセージ -->
             <?php if(!empty($errors)): ?>
                 <div class="error-container">
                     <?php foreach($errors as $error): ?>
                         <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>        
                     <?php endforeach; ?>
-                </div>  
+                </div>
             <?php endif; ?>
 
             <div class="block">

@@ -7,12 +7,30 @@
 	/*======================================================*/
     function fncCheckCSRF() {
         if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-            die('CSRFトークン不一致エラー');
+            return false;
         }
     
         // CSRFトークン再生成
         unset($_SESSION['csrf_token']);
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        return true;
+    }
+
+	/*======================================================*/
+	/* 用途：セッション状態チェック               			  */
+	/* 引数：なし                                            */
+	/* 戻り値：なし											 */
+	/* 備考：なし											 */
+	/*======================================================*/
+    function fncCheckSession() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if(!isset($_SESSION['adminId'])) {
+            header('Location: ../Public/admin_login.php');
+            exit;
+        }
     }
 
 	/*======================================================*/

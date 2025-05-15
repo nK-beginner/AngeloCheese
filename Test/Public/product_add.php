@@ -6,9 +6,11 @@
     require_once __DIR__.'/../App/Controller/product_controller.php';
 
     $controller = new ProductController($pdo);
-    if (isset($_GET['action']) && $_GET['action'] === 'detail' && isset($_GET['id'])) {
-        $controller->showDetail((int)$_GET['id']);
+
+    if($_SERVER['REQUEST_METHOD'] === 'GET') {
+        require_once __DIR__.'/../App/View/product_add_view.php';
+
     } else {
-        $controller->listProducts();
+        $controller->addProduct();
     }
 ?>

@@ -8,14 +8,11 @@
 </head>
 <body>
     <div class="grid-container">
-        <!-- サイドバー -->
         <?php include 'sidebar.php'; ?>
 
-        <!-- 顧客一覧エリア -->
         <main>
             <h1>顧客一覧</h1>
             <form action="itemDelete.php" method="POST">
-                <!-- CSRFトークン -->
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">  
                 
                 <div class="table-records">
@@ -48,7 +45,6 @@
 
         </main>
     </div>
-    <script src="/../AngeloCheese/Admin/JS/sidebar.js"></script> <!-- サイドバー -->
-    <script src="/../AngeloCheese/Admin/JS/allUsers.js"></script> <!-- 商品一覧用 -->
+    <script type="module" src="/../Test/Public/JS/sidebar.js"></script>
 </body>
 </html>

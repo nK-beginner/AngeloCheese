@@ -12,5 +12,5 @@
     require_once __DIR__ . '/../App/Controller/admin_controller.php';
 
     $controller = new AdminController($pdo);
-    $controller->handleLoginRequest();
+    $controller->handleRegisterRequest();
 ?>
