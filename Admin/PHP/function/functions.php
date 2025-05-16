@@ -193,7 +193,7 @@
                                         expirationDate_max1 = :expirationDate_max1,
                                         expirationDate_min2 = :expirationDate_min2,
                                         expirationDate_max2 = :expirationDate_max2, 
-                                        hidden_at = " . ($productData['hiddenAt'] ? "NOW()" : "NULL") . " 
+                                        hidden_at = :hidden_at 
                                         WHERE id = :id");
         $stmt -> bindValue(':id'                 , $productData['itemId'],             PDO::PARAM_INT);                                    
         $stmt -> bindValue(':name'               , $productData['productName'],        PDO::PARAM_STR);
@@ -211,6 +211,7 @@
         $stmt -> bindValue(':expirationDate_max1', $productData['expirationDateMax1'], PDO::PARAM_INT);
         $stmt -> bindValue(':expirationDate_min2', $productData['expirationDateMin2'], PDO::PARAM_INT);
         $stmt -> bindValue(':expirationDate_max2', $productData['expirationDateMax2'], PDO::PARAM_INT);
+        $stmt -> bindValue(':hidden_at'          , $productData['hiddenAt'] ? date('Y-m-d H:i:s') : null, PDO::PARAM_STR);
 
         $stmt -> execute();
     }
