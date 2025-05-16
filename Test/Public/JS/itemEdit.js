@@ -3,14 +3,13 @@ import { fncSetupDrop, fncShowMainPreview, fncShowSubPreview, fncSubmitImages, f
 document.addEventListener('DOMContentLoaded', () => {
     /******************** 列クリックで編集 ********************/
     const rows       = document.querySelectorAll('.row');
-    const hiddenForm = document.querySelector('.hidden-form');
-    const inputId    = document.querySelector('.product-id');
 
     rows.forEach(row => {
         row.addEventListener('click', function() {
             const productId = this.getAttribute('data-id');
-            inputId.value = productId;
-            hiddenForm.submit();
+            if(productId) {
+                window.location.href = `/Test/Public/product_edit.php?id=${productId}`;
+            }
         });
     });
 
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        fncSubmitImages('/AngeloCheese/Admin/PHP/itemEdit.php', form, mainImage, subImages);
+        fncSubmitImages('./product_edit.php', form, mainImage, subImages);
     });
 
     /******************** 数字のみ許容 ********************/

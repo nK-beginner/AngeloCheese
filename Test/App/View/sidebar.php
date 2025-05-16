@@ -12,7 +12,7 @@
                 <ul class="submenu">
                     <a href="/Test/Public/product_add.php"><li>商品追加</li></a>
                     <a href="/Test/Public/product_delete.php"><li>商品削除</li></a>
-                    <a href="/Test/Public/product_editList.php"><li>商品編集</li></a>
+                    <a href="/Test/Public/product_edit.php"><li>商品編集</li></a>
                     <a href="/Test/Public/all_products.php"><li>商品一覧</li></a>
                 </ul>
             </li>

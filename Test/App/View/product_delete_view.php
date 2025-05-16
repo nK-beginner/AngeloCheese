@@ -13,7 +13,7 @@
         <main>
             <h1>商品削除</h1>
 
-            <form action="/Test/Public/product_delete_process.php" method="POST">
+            <form action="/Test/Public/product_delete.php" method="POST">
                 <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">  
                 
                 <div class="table-records">

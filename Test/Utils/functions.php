@@ -115,12 +115,60 @@
     }
 
 	/*======================================================*/
-	/* 用途：ファイルのバリデーションチェック                   */
+	/* 用途：画像のバリデーション、重複チェック            		*/
 	/* 引数：                                                */
-	/* 戻り値：         									 */
+	/* 戻り値：相対パス									      */
 	/* 備考：なし											 */
 	/*======================================================*/
-    function fncCheckImageFile() {
-        
+    function fncHandleImageUpload($file, $uploadDir, $allowedExt, &$errors) {
+        if($file && $file['error'] === UPLOAD_ERR_OK) {
+            $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '_', basename($file['name']));
+            $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            if(!in_array($fileExt, $allowedExt)) {
+                return null;
+            }
+
+            // 重複画像確認（ハッシュ照合）
+            $fileHash = hash_file('sha256', $file['tmp_name']);
+            $existingFilePath = null;
+
+            foreach (glob($uploadDir . '*.' . $fileExt) as $existingFile) {
+                if (hash_file('sha256', $existingFile) === $fileHash) {
+                    $existingFilePath = $existingFile;
+                    break;
+                }
+            }
+
+            if ($existingFilePath) {
+                $uploadFilePath = $existingFilePath;
+            } else {
+                $newFileName    = uniqid() . '_' . bin2hex(random_bytes(16)) . '.' . $fileExt;
+                $uploadFilePath = $uploadDir . $newFileName;
+
+                if (!move_uploaded_file($file['tmp_name'], $uploadFilePath)) {
+                    return null;
+                }
+            }
+            return '../uploads/' . basename($uploadFilePath);
+
+        } else {
+            switch($file['error']) {
+                case UPLOAD_ERR_INI_SIZE:
+                case UPLOAD_ERR_FORM_SIZE:
+                    $errors[] = "ファイルサイズが大きすぎます。";
+                    break;
+                case UPLOAD_ERR_NO_FILE:
+                    $errors[] = "ファイルが選択されていません。";
+                    break;
+                case UPLOAD_ERR_PARTIAL:
+                    $errors[] = "ファイルのアップロードが途中で終了しました。";
+                    break;
+                default:
+                    $errors[] = "ファイルアップロード中に不明なエラーが発生しました。";
+                    break;
+            }
+            return null;
+        }
     }
 ?>
