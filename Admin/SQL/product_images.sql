@@ -7,6 +7,12 @@ select * from product_images
 
 
 
+SELECT image_path FROM product_images WHERE product_id = 4 AND is_main is NULL
+
+
+
+
+
 CREATE TABLE product_images (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     product_id INT(11) NOT NULL,
