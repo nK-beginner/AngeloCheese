@@ -50,27 +50,27 @@
                                 <input type="file" class="file-input main-file" accept="image/*" name="image">
                             </div>
 
-                            <div class="block">
+                            <!-- <div class="block">
                                 <h3>サブ画像（複数追加可能）</h3>
                                 <div class="sub-preview-wrapper">
                                     <?php foreach($subImgs as $subImg): ?>
                                         <input type="hidden" name="SubImgChanged" class="sub-img-changed" value="0">
-                                        <div class="sub-preview-container <?php echo isset($subImg) ? 'show' : '' ?>">
-                                            <img class="sub-img" src="<?php echo htmlspecialchars('/../Test/Public/uploads/' . $subImg['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="サブ画像">
+                                        <div class="sub-preview-container <?php isset($subImg) ? 'show' : '' ?>">
+                                            <img class="sub-img" src="<?php htmlspecialchars('/../Test/Public/uploads/' . $subImg['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="サブ画像">
                                             <div class="delete-sub-img">✖</div>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                                 <div class="drop-area sub-drop" id="sub-drop-area">画像をドラッグ&ドロップ、またはクリックで選択</div>
                                 <input type="file" class="sub-file" accept="image/*" name="images[]" multiple>
-                            </div>
+                            </div> -->
 
                             <div class="block">
                                 <h3>サブ画像（複数追加可能）</h3>
                                 <div class="sub-preview-wrapper">
                                     <?php foreach($subImgs as $index => $subImg): ?>
-                                        <input type="hidden" name="SubImgChanged[<?php echo $index; ?>]" class="sub-img-changed" value="0">
                                         <div class="sub-preview-container <?php echo isset($subImg) ? 'show' : '' ?>">
+                                            <input type="hidden" name="subImgChanged[<?php echo $index; ?>]" class="sub-img-changed" value="0">
                                             <img class="sub-img" src="<?php echo htmlspecialchars('/../Test/Public/uploads/' . $subImg['image_path'], ENT_QUOTES, 'UTF-8'); ?>" alt="サブ画像">
                                             <div class="delete-sub-img">✖</div>
                                         </div>
@@ -79,9 +79,6 @@
                                 <div class="drop-area sub-drop" id="sub-drop-area">画像をドラッグ&ドロップ、またはクリックで選択</div>
                                 <input type="file" class="sub-file" accept="image/*" name="images[]" multiple>
                             </div>
-
-
-
                         </div>
 
                         <div class="form-block">

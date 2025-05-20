@@ -61,6 +61,7 @@ export function fncShowMainPreview(file, mainPreview) {
 /* 戻り値：なし											 */
 /* 備考：なし											 */
 /*======================================================*/
+let subImgIndex = document.querySelectorAll('.sub-img-changed').length;
 export function fncShowSubPreview(files, subPreviewWrapper) {
     files.forEach(file => {
         const reader = new FileReader();
@@ -70,18 +71,29 @@ export function fncShowSubPreview(files, subPreviewWrapper) {
 
             const img = document.createElement('img');
             img.src = e.target.result;
+            img.classList.add('sub-img');
 
             const deleteBtn = document.createElement('div');
             deleteBtn.textContent = '✖'
             deleteBtn.classList.add('delete-sub-img');
 
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = `subImgChanged[${subImgIndex}]`;
+            hiddenInput.classList.add('sub-img-changed');
+            hiddenInput.value = ('1');
+
             deleteBtn.addEventListener('click', () => {
                 container.remove();
+                hiddenInput.remove();
             });
 
+            subPreviewWrapper.appendChild(hiddenInput);
             subPreviewWrapper.appendChild(container);
             container.appendChild(img);
             container.appendChild(deleteBtn);
+
+            subImgIndex++;
         };
         reader.readAsDataURL(file);
     });

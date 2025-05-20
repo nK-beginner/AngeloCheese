@@ -354,12 +354,14 @@
                         }
                     }
 
+                    $existingSubImgs = $this->model->getSubImgs($productId);
+                    $existingCount   = count($existingSubImgs);
+
                     // サブ画像
                     if(!empty($subImages['name']) && is_array($subImages['name'])) {
                         foreach($subImages['name'] as $index => $name) {
                             if(!isset($subImagesValue[$index]) || $subImagesValue[$index] !== '1') continue;
                             if(empty($name)) continue;
-
                             $file = [
                                 'name'     => $subImages['name'][$index],
                                 'type'     => $subImages['type'][$index],
@@ -369,7 +371,11 @@
                             ];
                             $subPath = fncHandleImageUpload($file, $uploadDir, $allowedExt, $errors);
                             if($subPath !== null) {
-                                $this->model->updateImage($productId, $subPath, null);
+                                if($index >= $existingCount) {
+                                    $this->model->saveImage($productId, $subPath, null);
+                                } else {
+                                    $this->model->updateImage($productId, $subPath, null);
+                                }
                             } else {
                                 $errors[] = "サブ画像{$index}のアップロードに失敗しました。";
                                 $this->model->rollBack();
