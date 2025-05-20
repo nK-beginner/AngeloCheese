@@ -14,14 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /******************** 画像のDnD処理 ********************/
-    const mainDrop    = document.querySelector('.main-drop');
-    const mainInput   = document.querySelector('.main-file');
-    const mainPreview = document.querySelector('.preview-container');
+    const mainDrop       = document.querySelector('.main-drop');
+    const mainInput      = document.querySelector('.main-file');
+    const mainImgChanged = document.querySelector('.main-img-changed');
+    const mainPreview    = document.querySelector('.preview-container');
 
-    const subDrop     = document.querySelector('.sub-drop');
-    const subInput    = document.querySelector('.sub-file');
+    const subDrop           = document.querySelector('.sub-drop');
+    const subInput          = document.querySelector('.sub-file');
+    const subImgsChanged    = document.querySelectorAll('.sub-img-changed');
     const subPreviewWrapper = document.querySelector('.sub-preview-wrapper');
-    const subPreviews = subPreviewWrapper.querySelectorAll('.sub-preview-container');
+    const subPreviews       = subPreviewWrapper.querySelectorAll('.sub-preview-container');
 
     const form = document.querySelector('.product-form');
 
@@ -38,6 +40,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (subPreview.classList.contains('show')) {
             fncDeleteSubImgs(subPreview);
         }
+    });
+
+    mainInput.addEventListener('change', () => {
+        mainImgChanged.value = '1';
+    });
+
+    subInput.addEventListener('change', () => {
+        subImgsChanged.forEach(input => {
+            input.value  ='1';
+        });
     });
 
     fncSetupDrop(mainDrop, mainInput, (files) => {
@@ -95,4 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     fncCalcTaxIncludedPrice();
+
+    /******************** 画像変更時にフラグ ********************/
+    // const mainImgValue = document.querySelector('input[name="mainImageChanged"]');
+
+    // mainImgValue.addEventListener('changed', () => {
+    //     console.log("CHANGED");
+    // });
 });

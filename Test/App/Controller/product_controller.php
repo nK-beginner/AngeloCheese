@@ -252,9 +252,12 @@
                     exit;
                 }
 
-                $thumbnail   = $_FILES['image'] ?? null;
-                $subImages   = $_FILES['images'] ?? null;
-                $maxFileSize = 256000;
+                $thumbnail      = $_FILES['image'] ?? null;
+                $thumbnailValue = $_POST['mainImgChanged'];
+
+                $subImages      = $_FILES['images'] ?? null;
+                $subImagesValue = $_POST['subImgChanged'] ?? [];
+                $maxFileSize    = 256000;
 
                 $productId          = (int)($_POST['productId'] ?? 0);
                 $name               = trim($_POST['name'] ?? '');
@@ -339,19 +342,22 @@
                     $this->model->updateProduct($data);
 
                     // メイン画像
-                    $mainPath = fncHandleImageUpload($thumbnail, $uploadDir, $allowedExt, $errors);
-                    if($mainPath !== null) {
-                        $this->model->updateImage($productId, $mainPath, 1);
-                    } else {
-                        $this->model->rollBack();
-                        $_SESSION['errors'] = $errors;
-                        echo './product_edit.php';
-                        exit;
+                    if(isset($thumbnailValue) && $thumbnailValue === '1') {
+                        $mainPath = fncHandleImageUpload($thumbnail, $uploadDir, $allowedExt, $errors);
+                        if($mainPath !== null) {
+                            $this->model->updateImage($productId, $mainPath, 1);
+                        } else {
+                            $this->model->rollBack();
+                            $_SESSION['errors'] = $errors;
+                            echo './product_edit.php';
+                            exit;
+                        }
                     }
 
                     // サブ画像
                     if(!empty($subImages['name']) && is_array($subImages['name'])) {
                         foreach($subImages['name'] as $index => $name) {
+                            if(!isset($subImagesValue[$index]) || $subImagesValue[$index] !== '1') continue;
                             if(empty($name)) continue;
 
                             $file = [
@@ -375,7 +381,7 @@
                     }
 
                     $this->model->commit();
-                    echo './product_add.php';
+                    echo './product_edit.php';
                     exit;
 
                 } catch (PDOException $e) {
